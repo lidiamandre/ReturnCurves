@@ -1,3 +1,25 @@
+#' Return curve
+#' 
+#' @name wads_tawn_curve_exp
+#' 
+#' @description to do
+#'
+#' @docType methods
+#' 
+#' @param data_exp to do
+#' @param prob to do
+#' @param q to do
+#' @param w to do
+#'  
+#' @return to do
+#' 
+#' @rdname functions
+#' 
+#' @aliases wads_tawn_curve_exp
+#' 
+#' @examples
+#' library(ReturnCurves)
+#'
 wads_tawn_curve_exp = function(data_exp,prob,q,w=seq(0.001,0.999,length.out = 200)){#function for estimating return curve for data on standard exponential margins using WT model
   #prob is curve survival probability (small)
   #q is quantile cdf probability for estimating hill estimator of the angular dependence function
