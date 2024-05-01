@@ -17,8 +17,7 @@
 #' 
 #' @return return curve estimation
 #' 
-#' @details
-#' \loadmathjax{} this function estimates the return curve given by \mjdeqn{RC(p):=\{(x, y) \in \mathbb{R}^2: \text{Pr}\left(X>x, Y>y\right)=p\}.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
+#' @details This function estimates the return curve given by \deqn{RC(p):=\{(x, y) \in \mathbb{R}^2: \text{Pr}\left(X>x, Y>y\right)=p\}.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
 #' 
 #' @rdname returncurve
 #' 
