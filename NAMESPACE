@@ -1,2 +1,2 @@
 export("rc_est", "curvetransf")
-import(evd, ismev, lubridate)
+import(evd, ismev)
