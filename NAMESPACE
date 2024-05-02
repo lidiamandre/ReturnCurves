@@ -1,3 +1,6 @@
-export("rc_est", "curvetransf")
-import(evd, ismev)
+export("rc_est")
+export("curvetransf")
+export("est_lamb")
+import(evd)
+import(ismev)
 import(mathjaxr)
