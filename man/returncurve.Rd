@@ -26,7 +26,7 @@ rc_est(
 
 \item{q}{quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95}
 
-\item{k}{polynomial degree for the Bernstein-B\'ezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7}
+\item{k}{polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7}
 
 \item{constrained}{indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no"}
 }
@@ -37,8 +37,7 @@ return curve estimation
 computes the return curve estimation... to do
 }
 \details{
-\loadmathjax{} This function estimates the return curve given by 
-\mjdeqn{RC(p):=\brace(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p\brace.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
+This function estimates the return curve given by \deqn{RC(p):=\brace(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p\brace.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
 }
 \examples{
 library(ReturnCurves)
