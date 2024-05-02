@@ -9,3 +9,4 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Imports: evd,ismev,mathjaxr
 RoxygenNote: 7.3.1
+RdMacros: mathjaxr
