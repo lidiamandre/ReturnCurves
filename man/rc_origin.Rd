@@ -4,6 +4,9 @@
 \name{curvetransf}
 \alias{curvetransf}
 \title{Return Curve in Original margins}
+\usage{
+curvetransf(curvedata, data, q = 0.95)
+}
 \arguments{
 \item{curvedata}{matrix containing an object of function \code{\link{rc_est}}}
 
