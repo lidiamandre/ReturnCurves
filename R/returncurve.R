@@ -17,7 +17,7 @@
 #' 
 #' @return return curve estimation
 #' 
-#' @details This function estimates the return curve given by \deqn{RC(p):=\{(x, y) \in \mathbb{R}^2: \text{Pr}\left(X>x, Y>y\right)=p\}.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
+#' @details This function estimates the return curve given by \deqn{RC(p):=\\{(x, y) \\in \\mathbb{R}^2: \\text{Pr}(X>x, Y>y)=p\\}.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
 #' 
 #' @rdname returncurve
 #' 
@@ -27,20 +27,22 @@
 #' 
 #' @examples
 #' library(ReturnCurves)
-rc_est <- function(data, p, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
+rc_est <- function(data, w, p, method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
-    stop("ADF should be estimated through the Hill estimator or Composite likelihood estimation")
+    stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
   n <- length(w)
   xp <- qexp(1 - p)
-  x <- 0
-  y <- xp
   lambda <- est_lamb(data = data, w = w, method = method, q = q, k = k, constrained = constrained)
   lambda <- properties(w, lambda)
   thresh <- sapply(w, function(i) minproj_lambda(data, i)$thresh)
   r <- sapply(1:n, function(i) thresh[i] - log(p/(1-q))/lambda[i])
-  x <- c(x, sapply(2:(n + 1), function(i) r[i-1] * w[i-1]), xp)
-  y <- c(y, sapply(2:(n + 1), function(i) r[i-1] * (1 - w[i-1])), 0)
+  x <- sapply(1:n, function(i) r[i] * w[i])
+  y <- sapply(1:n, function(i) r[i] * (1 - w[i]))
+  x[1] <- 0
+  y[1] <- xp
+  x[n] <- xp
+  y[n] <- 0
   for(i in length(w[w < 0.5]):1){
     if(x[i] > x[i + 1]){
       x[i] <- x[i + 1]
