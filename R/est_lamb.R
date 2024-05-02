@@ -33,7 +33,7 @@
 #' 
 #' @export
 #' 
-est_lamb <- function(data, w, method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
+est_lamb <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }

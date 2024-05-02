@@ -8,8 +8,8 @@
 #' @docType methods
 #' 
 #' @param data matrix that contains the data, in standard exponential margins
-#' @param p probability for the return curve
 #' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
+#' @param p probability for the return curve
 #' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
 #' @param q quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95
 #' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
@@ -32,7 +32,7 @@
 #' 
 #' @export
 #' 
-rc_est <- function(data, w, p, method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
+rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
