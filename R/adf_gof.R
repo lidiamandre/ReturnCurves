@@ -1,9 +1,9 @@
-#' Diagnostic tool for the ADF estimates \eqn{\hat\lambda(\omega)}
+#' Diagnostic tool for the ADF estimates \eqn{\lambda(\omega)}
 #' 
 #' @name adf_gof
 #' 
 #' @description
-#' computes the goodness of fit of the angular dependence function estimates \eqn{\hat\lambda(\omega)}
+#' computes the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)}
 #' 
 #' @docType methods
 #' 

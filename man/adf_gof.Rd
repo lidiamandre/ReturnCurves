@@ -3,7 +3,7 @@
 \docType{methods}
 \name{adf_gof}
 \alias{adf_gof}
-\title{Diagnostic tool for the ADF estimates \eqn{\hat\lambda(\omega)}}
+\title{Diagnostic tool for the ADF estimates \eqn{\lambda(\omega)}}
 \usage{
 adf_gof(
   data,
@@ -37,7 +37,7 @@ adf_gof(
 return a list containing the model and empirical quantiles, and the lower and upper bounds for the confidence interval
 }
 \description{
-computes the goodness of fit of the angular dependence function estimates \eqn{\hat\lambda(\omega)}
+computes the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)}
 }
 \details{
 to do
