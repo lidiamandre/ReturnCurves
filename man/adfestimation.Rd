@@ -7,7 +7,7 @@
 \usage{
 est_lamb(
   data,
-  w,
+  w = seq(0, 1, by = 0.01),
   method = c("hill", "cl"),
   q = 0.95,
   k = 7,
