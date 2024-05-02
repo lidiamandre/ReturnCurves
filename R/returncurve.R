@@ -18,7 +18,7 @@
 #' @return return curve estimation
 #' 
 #' @details \loadmathjax{} This function estimates the return curve given by 
-#' \mjdeqn{RC(p):=\brace{(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p\brace.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
+#' \mjdeqn{RC(p):=\brace(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p\brace.} ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
 #' 
 #' @rdname returncurve
 #' 
@@ -28,6 +28,9 @@
 #' 
 #' @examples
 #' library(ReturnCurves)
+#' 
+#' @export
+#' 
 rc_est <- function(data, w, p, method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
