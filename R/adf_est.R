@@ -1,6 +1,6 @@
 #' Estimation of the Angular Dependence function \eqn{\lambda(\omega)}
 #' 
-#' @name est_lamb
+#' @name adf_est
 #' 
 #' @description
 #' estimates the angular dependence function \eqn{\lambda(\omega)} ... to do
@@ -26,14 +26,14 @@
 #' 
 #' @references to do
 #' 
-#' @aliases est_lamb
+#' @aliases adf_est
 #' 
 #' @examples
 #' library(ReturnCurves)
 #' 
 #' @export
 #' 
-est_lamb <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
+adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }

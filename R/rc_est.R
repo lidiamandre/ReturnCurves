@@ -19,7 +19,7 @@
 #' 
 #' @details \loadmathjax{} This function estimates the return curve given by 
 #' \mjdeqn{RC(p):=\brace(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p\brace.} 
-#' ... talk about how it connects to the estimation of the adf and the methods used, reference the est_lamb function
+#' ... talk about how it connects to the estimation of the adf and the methods used, reference the \code{\link{adf_est}} function
 #' 
 #' @rdname returncurve
 #' 
@@ -38,7 +38,7 @@ rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   }
   n <- length(w)
   xp <- qexp(1 - p)
-  lambda <- est_lamb(data = data, w = w, method = method, q = q, k = k, constrained = constrained)
+  lambda <- adf_est(data = data, w = w, method = method, q = q, k = k, constrained = constrained)
   lambda <- properties(w, lambda)
   thresh <- sapply(w, function(i) minproj_lambda(data, i)$thresh)
   r <- sapply(1:n, function(i) thresh[i] - log(p/(1-q))/lambda[i])

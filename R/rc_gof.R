@@ -3,7 +3,7 @@
 #' @name rc_gof
 #' 
 #' @description
-#' computes the goodness of fir of the return curve estimates
+#' computes the goodness of fit of the return curve estimates
 #' 
 #' @docType methods
 #' 

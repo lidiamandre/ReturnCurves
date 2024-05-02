@@ -46,7 +46,7 @@ rc_gof(
 return a list with estimates for the median and lower and upper bounds of the CI for the empirical probability of lying in a survival region
 }
 \description{
-computes the goodness of fir of the return curve estimates
+computes the goodness of fit of the return curve estimates
 }
 \details{
 to do
