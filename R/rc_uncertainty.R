@@ -43,8 +43,7 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- block_bootstrap_function(data = data, k = blocksize)
-    bootdata_unif <- margtransf(bootdata, q = q)
-    bootdata_exp <- apply(bootdata_unif, 2, qexp)
+    bootdata_exp <- margtransf(bootdata, q = q)
     rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, k = k, constrained = constrained)
     rc_orig <- curvetransf(rc, data = bootdata, q = q)
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
