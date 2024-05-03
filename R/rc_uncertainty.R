@@ -1,8 +1,3 @@
-prop <- function(data, pa, pb = c(0, 0)){
-  n <- dim(data)[1]
-  rbind(c(pa[1] - pb[1], data[1, 2]), data, c(data[n, 1], pa[2] - pb[2]))
-}
-
 #' Uncertainty of the Return Curve Estimates
 #' 
 #' @name rc_unc
@@ -45,7 +40,6 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
   data0 <- apply(data, 2, min)
-  datamax <- apply(data, 2, max)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- block_bootstrap_function(data = data, k = blocksize)
@@ -53,7 +47,6 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
     bootdata_exp <- apply(bootdata_unif, 2, qexp)
     rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, k = k, constrained = constrained)
     rc_orig <- curvetransf(rc, data = bootdata, q = q)
-    rc_orig <- prop(rc_orig, data0)
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){
       idx <- min(which(angles[j] >= curve_w))
@@ -70,13 +63,9 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   med <- sapply(1:nangles, function(i) quantile(norms[[i]], 0.5))
   mea <- sapply(1:nangles, function(i) mean(norms[[i]]))
   rc_mean <- cbind(mea/sqrt(1 + grad^2) + data0[1], grad * (mea/sqrt(1 + grad^2)) + data0[2])
-  rc_mean <- prop(rc_mean, data0, datamax)
   rc_median <- cbind(med/sqrt(1 + grad^2) + data0[1], grad * (med/sqrt(1 + grad^2)) + data0[2])
-  rc_median <- prop(rc_median, data0, datamax)
   rc_lb <- cbind(lb/sqrt(1 + grad^2) + data0[1], grad * (lb/sqrt(1 + grad^2)) + data0[2])
-  rc_lb <- prop(rc_lb, data0, datamax)
   rc_ub <- cbind(ub/sqrt(1 + grad^2) + data0[1], grad * (ub/sqrt(1 + grad^2)) + data0[2])
-  rc_ub <- prop(rc_ub, data0, datamax)
   return(list("median" = rc_median, "mean" = rc_mean, "lower" = rc_lb, "upper" = rc_ub))
 }
 
