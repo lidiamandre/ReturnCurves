@@ -17,8 +17,8 @@
 #' 
 #' @return return curve estimates
 #' 
-#' @details \loadmathjax{} This function estimates the return curve given by 
-#' \mjdeqn{RC(p):=\brace(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p\brace.} 
+#' @details This function estimates the return curve given by 
+#' \deqn{RC(p):={(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p}.} 
 #' ... talk about how it connects to the estimation of the adf and the methods used, reference the \code{\link{adf_est}} function
 #' 
 #' @rdname returncurve
