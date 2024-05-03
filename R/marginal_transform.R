@@ -35,7 +35,7 @@ empirical_cdf <- function(data, q = 0.95){
 #' 
 margtransf <- function(data, q = 0.95){
   dataunif <- apply(data, 2, empirical_cdf, q = q)
-  aplly(dataunif, 2, qexp)
+  apply(dataunif, 2, qexp)
 }  
 
 
