@@ -7,7 +7,7 @@
 #' 
 #' @docType methods
 #' 
-#' @param data matrix that contains the data, in standard exponential margins
+#' @param data matrix that contains the data in the original margins
 #' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
 #' @param p probability for the return curve
 #' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
