@@ -46,6 +46,7 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
     bootdata_exp <- margtransf(bootdata, q = q)
     rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, k = k, constrained = constrained)
     rc_orig <- curvetransf(rc, data = bootdata, q = q)
+    rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){
       idx <- min(which(angles[j] >= curve_w))

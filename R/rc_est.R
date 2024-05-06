@@ -39,11 +39,25 @@ rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   n <- length(w)
   xp <- qexp(1 - p)
   lambda <- adf_est(data = data, w = w, method = method, q = q, k = k, constrained = constrained)
-  lambda <- properties(w, lambda)
-  thresh <- sapply(w, function(i) minproj_lambda(data, i)$thresh)
+  lambda <- ReturnCurves:::properties(w, lambda)
+  thresh <- sapply(w, function(i) ReturnCurves:::minproj_lambda(data, i)$thresh)
   r <- sapply(1:n, function(i) thresh[i] - log(p/(1-q))/lambda[i])
   x <- sapply(1:n, function(i) r[i] * w[i])
   y <- sapply(1:n, function(i) r[i] * (1 - w[i]))
+  for(i in 1:length(x)){
+    if(x[i] > xp){
+      x[i] <- xp
+    } 
+    if(x[i] < 0){
+      x[i] <- 0
+    } 
+    if(y[i] > xp){
+      y[i] <- xp
+    } 
+    if(y[i] < 0){
+      y[i] <- 0
+    } 
+  }
   x[1] <- 0
   y[1] <- xp
   x[n] <- xp
