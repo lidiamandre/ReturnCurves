@@ -7,7 +7,7 @@ properties <- function(w = seq(0, 1, by = 0.01), lambda){
     idxl <- viol[1]
     idxu <- viol[length(viol)]
     if(idxl < idxhalf){
-      ind_wl <- max(which((lambda < lower)[1:idxhalf]))
+      ind_wl <- max(which((lambda < lower)[1:(idxhalf-1)]))
       lambda[1:ind_wl] <- lower[1:ind_wl]
     }
     if(idxu >= idxhalf){
