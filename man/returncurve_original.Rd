@@ -3,27 +3,47 @@
 \docType{methods}
 \name{curvetransf}
 \alias{curvetransf}
-\title{Return Curve in Original margins}
+\title{Return Curve estimates in original margins}
 \usage{
 curvetransf(curvedata, data, q = 0.95)
 }
 \arguments{
-\item{curvedata}{matrix containing an object of function \code{\link{rc_est}}}
+\item{curvedata}{A matrix or data frame containing an object of function \code{\link{rc_est}}}
 
-\item{data}{matrix containing the data in the original margins}
+\item{data}{A matrix or data frame containing the data in the original margins}
 
-\item{q}{quantile to be used for the fit of the GPD; default set to 0.95}
+\item{q}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.}
 }
 \value{
-return curve estimation in original margins
+A matrix or data frame containing the estimates of the Return Curve in the original margins.
 }
 \description{
-computes the return curve estimation in the original margins following the equation in the paper
+Back transformation of the return curve estimates onto the original margins, following \cite{m2023}
 }
 \examples{
 library(ReturnCurves)
 
+# Generating data for illustration purposes
+set.seed(321)
+data <- cbind(rnorm(100), runif(100))
+
+dataexp <- margtransf(data)
+
+rc <- rc_est(data = dataexp, p = 1e^-3, method = "hill")
+
+\dontrun{
+plot(dataexp, pch = 20, main = "Return Curve in exponential margins")
+lines(rc, col = 2, lwd = 2)
+}
+
+rc_orig <- curvetransf(curvedata = rc, data = data)
+
+\dontrun{
+plot(data, pch = 20, main = "Return Curve in original margins")
+lines(rc_origin, col = 2, lwd = 2)
+}
+
 }
 \references{
-to do
+\insertRef{MurphyBarltropetal2023}{m2023}
 }

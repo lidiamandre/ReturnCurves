@@ -39,7 +39,17 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' 
 #' rc <- rc_est(data = dataexp, p = 1e^-3, method = "hill")
 #' 
+#' \dontrun{
+#' plot(dataexp, pch = 20, main = "Return Curve in exponential margins")
+#' lines(rc, col = 2, lwd = 2)
+#' }
+#' 
 #' rc_orig <- curvetransf(curvedata = rc, data = data)
+#' 
+#' \dontrun{
+#' plot(data, pch = 20, main = "Return Curve in original margins")
+#' lines(rc_origin, col = 2, lwd = 2)
+#' }
 #' 
 #' @export
 curvetransf <- function(curvedata, data, q = 0.95){

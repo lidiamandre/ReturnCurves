@@ -24,8 +24,10 @@ library(ReturnCurves)
 # Generating data for illustration purposes
 set.seed(321)
 data <- cbind(rnorm(100), runif(100))
+\dontrun{plot(data, pch = 20))} 
 
 dataexp <- margtransf(data)
+\dontrun{plot(dataexp, pch = 20))} 
 
 }
 \references{
