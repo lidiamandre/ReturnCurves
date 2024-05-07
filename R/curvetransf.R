@@ -18,6 +18,7 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' 
 #' @param curvedata matrix containing an object of function \code{\link{rc_est}}
 #' @param data matrix containing the data in the original margins
+#' @param q quantile to be used for the fit of the GPD; default set to 0.95
 #' 
 #' @return return curve estimation in original margins
 #' 

@@ -9,7 +9,8 @@ adf_est(
   data,
   w = seq(0, 1, by = 0.01),
   method = c("hill", "cl"),
-  q = 0.95,
+  qhill = 0.95,
+  qalphas = 0.95,
   k = 7,
   constrained = "no"
 )
@@ -21,7 +22,9 @@ adf_est(
 
 \item{method}{method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator}
 
-\item{q}{quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95}
+\item{qhill}{quantile to be used for the Hill estimator; default set to 0.95}
+
+\item{qalphas}{quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95}
 
 \item{k}{polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7}
 

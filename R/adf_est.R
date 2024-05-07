@@ -10,7 +10,8 @@
 #' @param data matrix that contains the data, in standard exponential margins
 #' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
 #' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
-#' @param q quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95
+#' @param qhill quantile to be used for the Hill estimator; default set to 0.95
+#' @param qalphas quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95
 #' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
 #' @param constrained indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no" 
 #' 
@@ -33,13 +34,13 @@
 #' 
 #' @export
 #' 
-adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
+adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), qhill = 0.95, qalphas = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
   if(constrained == "no"){
     if(method == "hill"){
-      lambda_hill <- sapply(w, function(i) minproj_lambda(data, w = i)$lambdahill)
+      lambda_hill <- sapply(w, function(i) minproj_lambda(data, w = i, q = qhill)$lambdahill)
       lambda_hill <- properties(w, lambda_hill)
       return(lambda_hill)
     }
@@ -52,7 +53,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
     }
   }
   else{
-    alphas <- heff_tawn_alphas(data = data, q = q)
+    alphas <- heff_tawn_alphas(data = data, q = qalphas)
     a <- alphas[1]/(1 + alphas[1])
     b <- 1/(1 + alphas[2])
     indx <- w < a | w > b
@@ -63,7 +64,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
         return(lambda_hill)
       }
       lambda_hill[indx] <- pmax(w, 1 - w)[indx]
-      lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i)$lambdahill)
+      lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i, q = qhill)$lambdahill)
       lambda_hill <- properties(w, lambda_hill)
       return(lambda_hill)
     }

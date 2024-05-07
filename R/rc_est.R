@@ -11,7 +11,8 @@
 #' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
 #' @param p probability for the return curve
 #' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
-#' @param q quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95
+#' @param q quantile to be used for the min-projection variable and Hill estimator; default set to 0.95
+#' @param qalphas quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95
 #' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
 #' @param constrained indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no" 
 #' 
@@ -32,16 +33,16 @@
 #' 
 #' @export
 #' 
-rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, k = 7, constrained = "no"){
+rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = "no"){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
   n <- length(w)
   xp <- qexp(1 - p)
-  lambda <- adf_est(data = data, w = w, method = method, q = q, k = k, constrained = constrained)
-  lambda <- ReturnCurves:::properties(w, lambda)
-  thresh <- sapply(w, function(i) ReturnCurves:::minproj_lambda(data, i)$thresh)
-  r <- sapply(1:n, function(i) thresh[i] - log(p/(1-q))/lambda[i])
+  lambda <- adf_est(data = data, w = w, method = method, qhill = q, qalphas = qalphas, k = k, constrained = constrained)
+  lambda <- properties(w, lambda)
+  thresh <- sapply(w, function(i) minproj_lambda(data, i, q = q)$thresh)
+  r <- sapply(1:n, function(i) thresh[i] - log(p/(1 - q))/lambda[i])
   x <- sapply(1:n, function(i) r[i] * w[i])
   y <- sapply(1:n, function(i) r[i] * (1 - w[i]))
   for(i in 1:length(x)){

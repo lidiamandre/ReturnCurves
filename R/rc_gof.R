@@ -9,11 +9,7 @@
 #' 
 #' @param data matrix that contains the data, in standard exponential margins
 #' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
-#' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
 #' @param rc_origin matrix containing the return curve estimates in the original margins
-#' @param q quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95
-#' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
-#' @param constrained indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no" 
 #' @param blocksize size of the blocks for the block bootstrap; default to 1 for a standard bootstrap approach
 #' @param nboot number of bootstrap samples; default to 250
 #' @param nangles number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval; default is set to 150
@@ -34,8 +30,8 @@
 #' 
 #' @export
 #'  
-rc_gof <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), rc_origin, q = 0.95, k = 7, 
-                   constrained = "no", blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin, 
+                   blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
   data0 <- apply(data, 2, min)

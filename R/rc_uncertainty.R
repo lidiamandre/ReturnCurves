@@ -11,7 +11,9 @@
 #' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
 #' @param p probability for the return curve
 #' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
-#' @param q quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95
+#' @param qmarg quantile to be used for the GPD; default to 0.95.
+#' @param q quantile to be used for the min-projection variable and Hill estimator; default set to 0.95
+#' @param qalphas quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95
 #' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
 #' @param constrained indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no" 
 #' @param blocksize size of the blocks for the block bootstrap; default to 1 for a standard bootstrap approach
@@ -34,18 +36,18 @@
 #' 
 #' @export
 #' 
-rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, k = 7, 
-                   constrained = "no", blocksize = 1, nboot = 250, nangles = 150,
-                   alpha = 0.05){ 
+rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), qmarg = 0.95, q = 0.95, 
+                   qalphas = 0.95, k = 7, constrained = "no", blocksize = 1, 
+                   nboot = 250, nangles = 150, alpha = 0.05){ 
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
   data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- block_bootstrap_function(data = data, k = blocksize)
-    bootdata_exp <- margtransf(bootdata, q = q)
-    rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, k = k, constrained = constrained)
-    rc_orig <- curvetransf(rc, data = bootdata, q = q)
+    bootdata_exp <- margtransf(bootdata, q = qmarg)
+    rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained)
+    rc_orig <- curvetransf(rc, data = bootdata, q = qmarg)
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){

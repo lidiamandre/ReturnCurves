@@ -11,6 +11,8 @@ curvetransf(curvedata, data, q = 0.95)
 \item{curvedata}{matrix containing an object of function \code{\link{rc_est}}}
 
 \item{data}{matrix containing the data in the original margins}
+
+\item{q}{quantile to be used for the fit of the GPD; default set to 0.95}
 }
 \value{
 return curve estimation in original margins

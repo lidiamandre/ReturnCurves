@@ -8,11 +8,7 @@
 rc_gof(
   data,
   w = seq(0, 1, by = 0.01),
-  method = c("hill", "cl"),
   rc_origin,
-  q = 0.95,
-  k = 7,
-  constrained = "no",
   blocksize = 1,
   nboot = 250,
   nangles = 150,
@@ -24,15 +20,7 @@ rc_gof(
 
 \item{w}{sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles}
 
-\item{method}{method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator}
-
 \item{rc_origin}{matrix containing the return curve estimates in the original margins}
-
-\item{q}{quantile to be used for the Hill estimator and/or the Heffernan and Tawn conditional extremes model; default set to 0.95}
-
-\item{k}{polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7}
-
-\item{constrained}{indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no"}
 
 \item{blocksize}{size of the blocks for the block bootstrap; default to 1 for a standard bootstrap approach}
 
