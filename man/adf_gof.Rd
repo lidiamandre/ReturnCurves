@@ -25,7 +25,7 @@ adf_gof(
 
 \item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda{\omega}}.}
 
-\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T} (see *Details*). Default is 0.95.}
+\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T^*} (see [Details]). Default is 0.95.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
 
@@ -34,8 +34,7 @@ adf_gof(
 \item{alpha}{Significance level to compute the \eqn{(1-\alpha)}% confidence intervals. Default is 0.05.}
 }
 \value{
-Returns a list containing:
-\itemize{
+Returns a list containing: \describe{
 \item{model}{A vector containing the model quantiles.} 
 \item{empirical}{A vector containing the empirical quantiles.}
 \item{lower}{A vector containing the lower bound of the confidence interval.}
@@ -46,8 +45,8 @@ Returns a list containing:
 Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{m2024}.
 }
 \details{
-Define the min projection variable as \eqn{*t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  
-Variable \eqn{\lambda(\omega)T_\omega \sim Exp(1)} as \eqn{u_\omega \to \infty} for all \eqn{\omega \in [0,1].} 
+Define the min projection variable as \eqn{t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  
+Variable \eqn{\lambda(\omega)T^*_\omega \sim Exp(1)} as \eqn{u_\omega \to \infty} for all \eqn{\omega \in [0,1].} 
 Therefore, a good agreement between the model and empirical quantiles should occur and a the \eqn{y=x} between the quantiles should lie within the \eqn{(1-\alpha)}% confidence band.
 The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable.
 }
