@@ -7,29 +7,39 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
   return(nvec)
 }
 
-#' Return Curve in Original margins
+#' Return Curve estimates in original margins
 #' 
 #' @name curvetransf
 #' 
 #' @description
-#' computes the return curve estimation in the original margins following the equation in the paper
+#' Back transformation of the return curve estimates onto the original margins, following \cite{m2023}
 #' 
 #' @docType methods
 #' 
-#' @param curvedata matrix containing an object of function \code{\link{rc_est}}
-#' @param data matrix containing the data in the original margins
-#' @param q quantile to be used for the fit of the GPD; default set to 0.95
+#' @param curvedata A matrix or data frame containing an object of function \code{\link{rc_est}}
+#' @param data A matrix or data frame containing the data in the original margins
+#' @param q Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.
 #' 
-#' @return return curve estimation in original margins
+#' @return A matrix or data frame containing the estimates of the Return Curve in the original margins.
 #' 
 #' @rdname returncurve_original
 #' 
-#' @references to do
+#' @references \insertRef{MurphyBarltropetal2023}{m2023}
 #' 
 #' @aliases curvetransf
 #' 
 #' @examples
 #' library(ReturnCurves)
+#' 
+#' # Generating data for illustration purposes
+#' set.seed(321)
+#' data <- cbind(rnorm(100), runif(100))
+#' 
+#' dataexp <- margtransf(data)
+#' 
+#' rc <- rc_est(data = dataexp, p = 1e^-3, method = "hill")
+#' 
+#' rc_orig <- curvetransf(curvedata = rc, data = data)
 #' 
 #' @export
 curvetransf <- function(curvedata, data, q = 0.95){
