@@ -34,7 +34,8 @@ empirical_cdf <- function(data, q = 0.95){
 #' library(ReturnCurves)
 #' 
 #' # Generating data for illustration purposes
-#' data <- cbind(rnorm(10), runif(10))
+#' set.seed(321)
+#' data <- cbind(rnorm(100), runif(100))
 #' 
 #' dataexp <- margtransf(data)
 #' 
