@@ -35,10 +35,12 @@ adf_gof(
 }
 \value{
 Returns a list containing:
+\itemize{
 \item{model}{A vector containing the model quantiles.} 
 \item{empirical}{A vector containing the empirical quantiles.}
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
+}
 }
 \description{
 Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{m2024}.

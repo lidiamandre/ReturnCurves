@@ -17,10 +17,13 @@
 #' @param alpha Significance level to compute the \eqn{(1-\alpha)}% confidence intervals. Default is 0.05.
 #' 
 #' @return Returns a list containing:
+#' \itemize{
 #' \item{model}{A vector containing the model quantiles.} 
 #' \item{empirical}{A vector containing the empirical quantiles.}
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
+#' }
+#' 
 #' 
 #' @details Define the min projection variable as \eqn{*t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  
 #' Variable \eqn{\lambda(\omega)T_\omega \sim Exp(1)} as \eqn{u_\omega \to \infty} for all \eqn{\omega \in [0,1].} 
