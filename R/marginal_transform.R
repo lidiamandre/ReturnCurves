@@ -15,16 +15,18 @@ empirical_cdf <- function(data, q = 0.95){
 #' @name margtransf
 #' 
 #' @description
-#' computes the marginal transformation to standard exponential through the probability integral transform... to do
+#' Marginal transformation of the random vector to standard exponential margins, following \insertCite{m2023}. 
 #' 
 #' @docType methods
 #' 
-#' @param data matrix that contains the data, in the original margins
-#' @param q quantile to be used for the GPD; default set to 0.95
+#' @param data A matrix or data frame containing the data in original margins.
+#' @param q Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
 #' 
-#' @return matrix containing the variables in standard exponential margins
+#' @return A matrix or data frame containing the data in standard exponential margins.
 #' 
 #' @rdname marginaltransformation
+#' 
+#' @references \insertRef{MurphyBarltropetal2023}{m2023}
 #' 
 #' @aliases margtransf
 #' 
