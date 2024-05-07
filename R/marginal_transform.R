@@ -36,8 +36,10 @@ empirical_cdf <- function(data, q = 0.95){
 #' # Generating data for illustration purposes
 #' set.seed(321)
 #' data <- cbind(rnorm(100), runif(100))
+#' print(head(data)) 
 #' 
 #' dataexp <- margtransf(data)
+#' print(head(dataexp)) 
 #' 
 #' @export
 #' 
