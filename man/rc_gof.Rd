@@ -3,7 +3,7 @@
 \docType{methods}
 \name{rc_gof}
 \alias{rc_gof}
-\title{Diagnostic tool for the Return Curve Estimates}
+\title{Goodness of fit of the Return Curve estimates}
 \usage{
 rc_gof(
   data,
@@ -16,33 +16,64 @@ rc_gof(
 )
 }
 \arguments{
-\item{data}{matrix that contains the data, in standard exponential margins}
+\item{data}{A matrix or data frame containing the data in standard exponential margins.}
 
-\item{w}{sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles}
+\item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{rc_origin}{matrix containing the return curve estimates in the original margins}
+\item{rc_origin}{A matrix or data frame containing the estimates of the return curve, in the original margins.}
 
-\item{blocksize}{size of the blocks for the block bootstrap; default to 1 for a standard bootstrap approach}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
 
-\item{nboot}{number of bootstrap samples; default to 250}
+\item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval; default is set to 150}
+\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see \cite{m2023}). Default is 150 angles.}
 
-\item{alpha}{significance level to compute the confidence intervals}
+\item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
 }
 \value{
-return a list with estimates for the median and lower and upper bounds of the CI for the empirical probability of lying in a survival region
+Returns a list containing: \describe{
+\item{median}{A vector containing the median of the empirical probability of lying in a survival region.} 
+\item{lower}{A vector containing the lower bound of the confidence interval.}
+\item{upper}{A vector containing the upper bound of the confidence interval.}
+}
 }
 \description{
-computes the goodness of fit of the return curve estimates
+Assessment of the goodness-of-fit of the return curve estimates follwoing \cite{m2023}.
 }
 \details{
-to do
+Given a return curve RC(p), the probability of lying on a survival region is p. 
+For each angle \eqn{\theta} and corresponding point in the estimated return curve \eqn{{x_\theta, y_\theta}}, 
+the empirical probability \eqn{\hat{p}} of lying in the survival region is given by the proportion of points in the region
+\eqn{(x_\theta, \infty) x (y_\theta, \infty)}.
+The true value \eqn{p} should be contained within the \eqn{(1-\alpha)} confidence region.
 }
 \examples{
 library(ReturnCurves)
 
+#' # Generating data for illustration purposes
+set.seed(321)
+data <- cbind(rnorm(100), runif(100))
+
+dataexp <- margtransf(data)
+
+prob <- 1e^-3
+
+rc <- rc_est(data = dataexp, p = prob, method = "hill")
+
+rc_orig <- curvetransf(curvedata = rc, data = data)
+
+rc_gof <- rc_gof(data = dataexp, rc_origin = rc_orig)
+
+\dontrun{
+ang <- 1:length(rc_gof$median)
+plot(ang, rc_gof$median, xlab = "Angle Index", ylab = "Probability")
+polygon(c(rev(ang), ang), c(rev(rc_gof$lower), rc_gof$upper), col = 'grey80', border = NA)
+lines(ang, rc_gof$median, lwd = 2)
+lines(ang, rc_gof$upper, lty = 'dashed', col = 'blue', lwd = 2)
+lines(ang, rc_gof$lower, lty = 'dashed', col = 'blue', lwd = 2)
+lines(ang, rep(prob, length(ang)), lwd = 3, col = 2)
+}
 }
 \references{
-to do
+\insertRef{MurphyBarltropetal2023}{m2023}
 }

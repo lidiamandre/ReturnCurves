@@ -14,7 +14,7 @@
 #' @param q Marginal quantile to be used for the min-projection variable \eqn{T^*} (see [Details]). Default is 0.95.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param alpha Significance level to compute the \eqn{(1-\alpha)}% confidence intervals. Default is 0.05.
+#' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
 #' 
 #' 
 #' @return Returns a list containing: \describe{
@@ -27,7 +27,7 @@
 #' 
 #' @details Define the min projection variable as \eqn{t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  
 #' Variable \eqn{\lambda(\omega)T^*_\omega \sim Exp(1)} as \eqn{u_\omega \to \infty} for all \eqn{\omega \in [0,1].} 
-#' Therefore, a good agreement between the model and empirical quantiles should occur and a the \eqn{y=x} between the quantiles should lie within the \eqn{(1-\alpha)}% confidence band.
+#' Therefore, a good agreement between the model and empirical quantiles should occur and a the \eqn{y=x} between the quantiles should lie within the \eqn{(1-\alpha)} confidence band.
 #' The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable.
 #'
 #' @rdname adf_gof
