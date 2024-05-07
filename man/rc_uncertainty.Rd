@@ -20,7 +20,7 @@ rc_unc(
 )
 }
 \arguments{
-\item{data}{matrix that contains the data, in standard exponential margins}
+\item{data}{matrix that contains the data in the original margins}
 
 \item{w}{sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles}
 

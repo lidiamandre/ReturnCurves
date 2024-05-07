@@ -8,17 +8,25 @@
 margtransf(data, q = 0.95)
 }
 \arguments{
-\item{data}{matrix that contains the data, in the original margins}
+\item{data}{A matrix or data frame containing the data in original margins.}
 
-\item{q}{quantile to be used for the GPD; default set to 0.95}
+\item{q}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
 }
 \value{
-matrix containing the variables in standard exponential margins
+A matrix or data frame containing the data in standard exponential margins.
 }
 \description{
-computes the marginal transformation to standard exponential through the probability integral transform... to do
+Marginal transformation of the random vector to standard exponential margins, following \insertCite{m2023}.
 }
 \examples{
 library(ReturnCurves)
 
+# Generating data for illustration purposes
+data <- cbind(rnorm(10), runif(10))
+
+dataexp <- margtransf(data)
+
+}
+\references{
+\insertRef{MurphyBarltropetal2023}{m2023}
 }
