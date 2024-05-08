@@ -25,7 +25,7 @@
 #' For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
 #' the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
 #' \mjeqn{(x_\theta, \infty) \times (y_\theta, \infty)}{}.
-#' The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)}{} confidence region. 
+#' The true value \mjeqn{p}{p} should be contained within the \mjeqn{(1-\alpha)}{} confidence region. 
 #'
 #' @rdname rc_gof
 #' 
