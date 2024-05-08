@@ -11,7 +11,7 @@
 #' @param w_ind Index of the ray to be considered on the goodness of fit assessment.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param lambda Vector containing the estimates of the angular dependence function \eqn{\lambda{\omega}}.
-#' @param q Marginal quantile to be used for the min-projection variable \eqn{T^*} (see Details). Default is 0.95.
+#' @param q Marginal quantile to be used for the min-projection variable \eqn{T^*} (see \strong{Details}). Default is 0.95.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
 #' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.

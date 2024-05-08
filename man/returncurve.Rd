@@ -40,8 +40,8 @@ return curve estimates
 computes the return curve estimation... to do
 }
 \details{
-This function estimates the return curve given by 
-\deqn{RC(p):={(x, y) \in \mathbb{R}^2: \text{Pr}(X>x, Y>y)=p}.} 
+\loadmathjax{} This function estimates the return curve given by 
+\mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
 ... talk about how it connects to the estimation of the adf and the methods used, reference the \code{\link{adf_est}} function
 }
 \examples{

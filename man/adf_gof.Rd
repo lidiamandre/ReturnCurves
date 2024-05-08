@@ -25,7 +25,7 @@ adf_gof(
 
 \item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda{\omega}}.}
 
-\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T^*} (see Details). Default is 0.95.}
+\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T^*} (see \strong{Details}). Default is 0.95.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
 
