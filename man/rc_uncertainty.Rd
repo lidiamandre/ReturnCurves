@@ -3,7 +3,7 @@
 \docType{methods}
 \name{rc_unc}
 \alias{rc_unc}
-\title{Uncertainty of the Return Curve Estimates}
+\title{Uncertainty of the Return Curve estimates}
 \usage{
 rc_unc(
   data,
@@ -14,7 +14,7 @@ rc_unc(
   q = 0.95,
   qalphas = 0.95,
   k = 7,
-  constrained = "no",
+  constrained = FALSE,
   blocksize = 1,
   nboot = 250,
   nangles = 150,
@@ -22,37 +22,42 @@ rc_unc(
 )
 }
 \arguments{
-\item{data}{matrix that contains the data in the original margins}
+\item{data}{A matrix or a data frame which contains the data in the original margins.}
 
-\item{w}{sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles}
+\item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{p}{probability for the return curve}
+\item{p}{Curve survival probability.}
 
-\item{method}{method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator}
+\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be "hill", to use the Hill estimator, or "cl" to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.}
 
-\item{qmarg}{quantile to be used for the GPD; default to 0.95.}
+\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
 
-\item{q}{quantile to be used for the min-projection variable and Hill estimator; default set to 0.95}
+\item{q}{Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95}
 
-\item{qalphas}{quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95}
+\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model (see \cite{ht2004}). Default set to 0.95}
 
-\item{k}{polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7}
+\item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.}
 
-\item{constrained}{indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no"}
+\item{constrained}{Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
-\item{blocksize}{size of the blocks for the block bootstrap; default to 1 for a standard bootstrap approach}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
 
-\item{nboot}{number of bootstrap samples; default to 250}
+\item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval; default is set to 150}
+\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see \cite{m2023}). Default is 150 angles.}
 
-\item{alpha}{significance level to compute the confidence intervals}
+\item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
 }
 \value{
-return a list with estimates for the median, mean return curves and lower and upper bounds of the CI
+Returns a list containing: \describe{
+\item{median}{A vector containing the median estimates of the return curve.} 
+\item{mean}{A vector containing the mean estimates of the return curve.} 
+\item{lower}{A vector containing the lower bound of the confidence interval.}
+\item{upper}{A vector containing the upper bound of the confidence interval.}
+}
 }
 \description{
-computes the uncertainty of the return curve estimates
+Uncertainty assessment of the return curve estimates following \cite{m2023}.
 }
 \details{
 to do
@@ -60,7 +65,31 @@ to do
 \examples{
 library(ReturnCurves)
 
+# Generating data for illustration purposes
+set.seed(321)
+data <- cbind(rnorm(100), runif(100))
+
+dataexp <- margtransf(data)
+
+prob <- 1e^-3
+
+rc <- rc_est(data = dataexp, p = prob, method = "hill")
+
+rc_orig <- curvetransf(curvedata = rc, data = data)
+
+unc <- rc_unc(data = data, p = prob, method = "hill")
+
+
+\dontrun{
+plot(data, xlab = "X", ylab = "Y", pch = 16)
+lines(rc_orig, lwd = 2, col = 2)
+lines(unc$median, lwd = 2, col = "orange") # to plot median estimates
+lines(unc$mean, lwd = 2, col = "orange") # to plot mean estimates
+lines(unc$upper, lty = 'dashed', col = 'blue', lwd = 2)
+lines(unc$lower, lty = 'dashed', col = 'blue', lwd = 2)
+}
+
 }
 \references{
-to do
+\insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2024}{ReturnCurves}
 }
