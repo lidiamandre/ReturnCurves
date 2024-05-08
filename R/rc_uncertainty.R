@@ -13,7 +13,7 @@
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be "hill", to use the Hill estimator, or "cl" to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
 #' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
 #' @param q Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95
-#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model. Default set to 0.95
+#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model (see \cite{ht2004}). Default set to 0.95
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.
@@ -32,12 +32,37 @@
 #'
 #' @rdname rc_uncertainty
 #' 
-#' @references to do
+#' @references \insertRef{MurphyBarltropetal2023}{m2023} \insertRef{HeffernanTawn2024}{ht2004}
+#' 
 #' 
 #' @aliases rc_unc
 #' 
 #' @examples
 #' library(ReturnCurves)
+#' 
+#' # Generating data for illustration purposes
+#' set.seed(321)
+#' data <- cbind(rnorm(100), runif(100))
+#' 
+#' dataexp <- margtransf(data)
+#' 
+#' prob <- 1e^-3
+#' 
+#' rc <- rc_est(data = dataexp, p = prob, method = "hill")
+#' 
+#' rc_orig <- curvetransf(curvedata = rc, data = data)
+#' 
+#' unc <- rc_unc(data = data, p = prob, method = "hill")
+#' 
+#' 
+#' \dontrun{
+#' plot(data, xlab = "X", ylab = "Y", pch = 16)
+#' lines(rc_orig, lwd = 2, col = 2)
+#' lines(unc$median, lwd = 2, col = "orange") # to plot median estimates
+#' lines(unc$mean, lwd = 2, col = "orange") # to plot mean estimates
+#' lines(unc$upper, lty = 'dashed', col = 'blue', lwd = 2)
+#' lines(unc$lower, lty = 'dashed', col = 'blue', lwd = 2)
+#' }
 #' 
 #' @export
 #' 

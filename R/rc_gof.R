@@ -36,7 +36,7 @@
 #' @examples
 #' library(ReturnCurves)
 #' 
-#' #' # Generating data for illustration purposes
+#' # Generating data for illustration purposes
 #' set.seed(321)
 #' data <- cbind(rnorm(100), runif(100))
 #' 
@@ -48,17 +48,18 @@
 #' 
 #' rc_orig <- curvetransf(curvedata = rc, data = data)
 #'
-#' rc_gof <- rc_gof(data = dataexp, rc_origin = rc_orig)
+#' gof <- rc_gof(data = dataexp, rc_origin = rc_orig)
 #' 
 #' \dontrun{
-#' ang <- 1:length(rc_gof$median)
-#' plot(ang, rc_gof$median, xlab = "Angle Index", ylab = "Probability")
-#' polygon(c(rev(ang), ang), c(rev(rc_gof$lower), rc_gof$upper), col = 'grey80', border = NA)
-#' lines(ang, rc_gof$median, lwd = 2)
-#' lines(ang, rc_gof$upper, lty = 'dashed', col = 'blue', lwd = 2)
-#' lines(ang, rc_gof$lower, lty = 'dashed', col = 'blue', lwd = 2)
+#' ang <- 1:length(gof$median)
+#' plot(ang, gof$median, xlab = "Angle Index", ylab = "Probability")
+#' polygon(c(rev(ang), ang), c(rev(gof$lower), gof$upper), col = 'grey80', border = NA)
+#' lines(ang, gof$median, lwd = 2)
+#' lines(ang, gof$upper, lty = 'dashed', col = 'blue', lwd = 2)
+#' lines(ang, gof$lower, lty = 'dashed', col = 'blue', lwd = 2)
 #' lines(ang, rep(prob, length(ang)), lwd = 3, col = 2)
 #' }
+#' 
 #' @export
 #'  
 rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin, 
