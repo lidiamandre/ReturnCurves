@@ -1,27 +1,32 @@
-#' Uncertainty of the Return Curve Estimates
+#' Uncertainty of the Return Curve estimates
 #' 
 #' @name rc_unc
 #' 
 #' @description
-#' computes the uncertainty of the return curve estimates
+#' Uncertainty assessment of the return curve estimates following \cite{m2023}.
 #' 
 #' @docType methods
 #' 
-#' @param data matrix that contains the data in the original margins
-#' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
-#' @param p probability for the return curve
-#' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
-#' @param qmarg quantile to be used for the GPD; default to 0.95.
-#' @param q quantile to be used for the min-projection variable and Hill estimator; default set to 0.95
-#' @param qalphas quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95
-#' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
-#' @param constrained indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no" 
-#' @param blocksize size of the blocks for the block bootstrap; default to 1 for a standard bootstrap approach
-#' @param nboot number of bootstrap samples; default to 250
-#' @param nangles number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval; default is set to 150
-#' @param alpha significance level to compute the confidence intervals
+#' @param data A matrix or a data frame which contains the data in the original margins.
+#' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}. 
+#' @param p Curve survival probability.
+#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be "hill", to use the Hill estimator, or "cl" to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
+#' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
+#' @param q Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95
+#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model. Default set to 0.95
+#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
+#' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
+#' @param blocksize Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.
+#' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
+#' @param nangles Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see \cite{m2023}). Default is 150 angles.
+#' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
 #' 
-#' @return return a list with estimates for the median, mean return curves and lower and upper bounds of the CI
+#' @return Returns a list containing: \describe{
+#' \item{median}{A vector containing the median estimates of the return curve.} 
+#' \item{mean}{A vector containing the mean estimates of the return curve.} 
+#' \item{lower}{A vector containing the lower bound of the confidence interval.}
+#' \item{upper}{A vector containing the upper bound of the confidence interval.}
+#' }
 #' 
 #' @details to do
 #'
@@ -37,7 +42,7 @@
 #' @export
 #' 
 rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), qmarg = 0.95, q = 0.95, 
-                   qalphas = 0.95, k = 7, constrained = "no", blocksize = 1, 
+                   qalphas = 0.95, k = 7, constrained = FALSE, blocksize = 1, 
                    nboot = 250, nangles = 150, alpha = 0.05){ 
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)

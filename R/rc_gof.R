@@ -3,7 +3,7 @@
 #' @name rc_gof
 #' 
 #' @description
-#' Assessment of the goodness-of-fit of the return curve estimates follwoing \cite{m2023}.
+#' Assessment of the goodness-of-fit of the return curve estimates following \cite{m2023}.
 #' 
 #' @docType methods
 #' 
