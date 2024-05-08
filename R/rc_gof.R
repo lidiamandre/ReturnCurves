@@ -21,7 +21,7 @@
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' }
 #' 
-#' @details \loadmathjax{} Given a return curve RC(p), the probability of lying on a survival region is p. 
+#' @details \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying on a survival region is \mjeqn{p}{p}. 
 #' For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
 #' the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
 #' \mjeqn{(x_\theta, \infty) \times (y_\theta, \infty)}{}.

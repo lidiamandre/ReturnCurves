@@ -27,13 +27,10 @@
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' }
-#' 
-#' @details to do
 #'
 #' @rdname rc_uncertainty
 #' 
 #' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2004}{ReturnCurves}
-#' 
 #' 
 #' @aliases rc_unc
 #' 

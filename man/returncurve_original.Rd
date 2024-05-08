@@ -8,9 +8,9 @@
 curvetransf(curvedata, data, q = 0.95)
 }
 \arguments{
-\item{curvedata}{A matrix or data frame containing an object of function \code{\link{rc_est}}}
+\item{curvedata}{A matrix or data frame containing an object of function \code{\link{rc_est}}.}
 
-\item{data}{A matrix or data frame containing the data in the original margins}
+\item{data}{A matrix or data frame containing the data in the original margins.}
 
 \item{q}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.}
 }
@@ -32,11 +32,6 @@ dataexp <- margtransf(data)
 prob <- 0.001
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
-
-\dontrun{
-plot(dataexp, pch = 20, main = "Return Curve in exponential margins")
-lines(rc, col = 2, lwd = 2)
-}
 
 rc_orig <- curvetransf(curvedata = rc, data = data)
 

@@ -59,9 +59,6 @@ Returns a list containing: \describe{
 \description{
 Uncertainty assessment of the return curve estimates following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
 }
-\details{
-to do
-}
 \examples{
 library(ReturnCurves)
 

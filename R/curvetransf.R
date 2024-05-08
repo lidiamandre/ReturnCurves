@@ -16,8 +16,8 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' 
 #' @docType methods
 #' 
-#' @param curvedata A matrix or data frame containing an object of function \code{\link{rc_est}}
-#' @param data A matrix or data frame containing the data in the original margins
+#' @param curvedata A matrix or data frame containing an object of function \code{\link{rc_est}}.
+#' @param data A matrix or data frame containing the data in the original margins.
 #' @param q Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.
 #' 
 #' @return A matrix or data frame containing the estimates of the Return Curve in the original margins.
@@ -40,11 +40,6 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' prob <- 0.001
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
-#' 
-#' \dontrun{
-#' plot(dataexp, pch = 20, main = "Return Curve in exponential margins")
-#' lines(rc, col = 2, lwd = 2)
-#' }
 #' 
 #' rc_orig <- curvetransf(curvedata = rc, data = data)
 #' 
