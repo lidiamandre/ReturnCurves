@@ -18,7 +18,7 @@
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param nangles Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.
+#' @param nangles Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.
 #' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
 #' 
 #' @return Returns a list containing: \describe{
@@ -46,7 +46,7 @@
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' prob <- 1e^-3
+#' prob <- 0.001
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
 #' 
@@ -74,7 +74,7 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
-    bootdata <- block_bootstrap_function(data = data, k = blocksize)
+    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize)
     bootdata_exp <- margtransf(bootdata, q = qmarg)
     rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained)
     rc_orig <- curvetransf(rc, data = bootdata, q = qmarg)

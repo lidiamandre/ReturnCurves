@@ -44,7 +44,7 @@ rc_unc(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.}
+\item{nangles}{Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.}
 
 \item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
 }
@@ -71,7 +71,7 @@ data <- cbind(rnorm(100), runif(100))
 
 dataexp <- margtransf(data)
 
-prob <- 1e^-3
+prob <- 0.001
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 

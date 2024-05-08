@@ -44,8 +44,8 @@ Assessment of the goodness-of-fit of the return curve estimates following \inser
 \loadmathjax{} Given a return curve RC(p), the probability of lying on a survival region is p. 
 For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
-\mjeqn{(x_\theta, \infty) x (y_\theta, \infty)}{}.
-The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)\%}{(1-\alpha)} confidence region.
+\mjeqn{(x_\theta, \infty) \times (y_\theta, \infty)}{}.
+The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)\%}{} confidence region.
 }
 \examples{
 library(ReturnCurves)
@@ -56,7 +56,7 @@ data <- cbind(rnorm(100), runif(100))
 
 dataexp <- margtransf(data)
 
-prob <- 1e^-3
+prob <- 0.001
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 

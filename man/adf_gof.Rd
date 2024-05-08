@@ -23,9 +23,9 @@ adf_gof(
 
 \item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda{\omega}}.}
+\item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda(\omega)}.}
 
-\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{}(see \strong{Details}). Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
 
@@ -47,7 +47,7 @@ Assessment of the goodness of fit of the angular dependence function estimates \
 \details{
 \loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}.  
 Variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-Therefore, a good agreement between the model and empirical quantiles should occur and a the \eqn{y=x} between the quantiles should lie within the \mjeqn{(1-\alpha)\%} confidence band.
+Therefore, a good agreement between the model and empirical quantiles should occur and a the \mjeqn{y=x} between the quantiles should lie within the \mjeqn{(1-\alpha)\%}{} confidence band.
 The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable at \mjeqn{\omega}{}.
 }
 \examples{

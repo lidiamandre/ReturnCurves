@@ -24,8 +24,8 @@
 #' @details \loadmathjax{} Given a return curve RC(p), the probability of lying on a survival region is p. 
 #' For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
 #' the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
-#' \mjeqn{(x_\theta, \infty) x (y_\theta, \infty)}{}.
-#' The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)\%}{(1-\alpha)} confidence region. 
+#' \mjeqn{(x_\theta, \infty) \times (y_\theta, \infty)}{}.
+#' The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)\%}{} confidence region. 
 #'
 #' @rdname rc_gof
 #' 
@@ -42,7 +42,7 @@
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' prob <- 1e^-3
+#' prob <- 0.001
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
 #' 
@@ -80,7 +80,7 @@ rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin,
     angles_est[i, ] <- c(xhat, yhat)
   }
   for(i in 1:nboot){
-    bootdata <- block_bootstrap_function(data = data, k = blocksize)
+    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize)
     for(j in 1:nangles){
       emp_prob[[j]][i] <- mean(bootdata[, 1] > angles_est[j, 1] & bootdata[, 2] > angles_est[j, 2])
     }

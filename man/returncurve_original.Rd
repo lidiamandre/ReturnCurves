@@ -29,7 +29,9 @@ data <- cbind(rnorm(100), runif(100))
 
 dataexp <- margtransf(data)
 
-rc <- rc_est(data = dataexp, p = 1e^-3, method = "hill")
+prob <- 0.001
+
+rc <- rc_est(data = dataexp, p = prob, method = "hill")
 
 \dontrun{
 plot(dataexp, pch = 20, main = "Return Curve in exponential margins")
