@@ -34,7 +34,7 @@ rc_unc(
 
 \item{q}{Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95}
 
-\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model (see \cite{ht2004}). Default set to 0.95}
+\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model (see ). Default set to 0.95}
 
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.}
 
@@ -44,7 +44,7 @@ rc_unc(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see \cite{m2023}). Default is 150 angles.}
+\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.}
 
 \item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
 }
@@ -57,7 +57,7 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Uncertainty assessment of the return curve estimates following \cite{m2023}.
+Uncertainty assessment of the return curve estimates following .
 }
 \details{
 to do

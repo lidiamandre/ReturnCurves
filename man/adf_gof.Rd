@@ -25,7 +25,7 @@ adf_gof(
 
 \item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda{\omega}}.}
 
-\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T^*} (see [Details]). Default is 0.95.}
+\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T^*} (see Details). Default is 0.95.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
 
@@ -42,7 +42,7 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{m2024}.
+Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of .
 }
 \details{
 Define the min projection variable as \eqn{t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  
@@ -73,5 +73,5 @@ abline(0, 1, col = 2,lwd = 3)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2024}{m2024}
+\insertRef{MurphyBarltropetal2024}{ReturnCurves}
 }

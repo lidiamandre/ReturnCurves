@@ -15,7 +15,7 @@ empirical_cdf <- function(data, q = 0.95){
 #' @name margtransf
 #' 
 #' @description
-#' Marginal transformation of the random vector to standard exponential margins, following \insertCite{m2023}. 
+#' Marginal transformation of the random vector to standard exponential margins, following . 
 #' 
 #' @docType methods
 #' 
@@ -26,7 +26,7 @@ empirical_cdf <- function(data, q = 0.95){
 #' 
 #' @rdname marginaltransformation
 #' 
-#' @references \insertRef{MurphyBarltropetal2023}{m2023}
+#' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}
 #' 
 #' @aliases margtransf
 #' 

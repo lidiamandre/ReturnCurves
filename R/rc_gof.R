@@ -3,7 +3,7 @@
 #' @name rc_gof
 #' 
 #' @description
-#' Assessment of the goodness-of-fit of the return curve estimates following \cite{m2023}.
+#' Assessment of the goodness-of-fit of the return curve estimates following .
 #' 
 #' @docType methods
 #' 
@@ -12,7 +12,7 @@
 #' @param rc_origin A matrix or data frame containing the estimates of the return curve, in the original margins.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param nangles Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see \cite{m2023}). Default is 150 angles.
+#' @param nangles Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.
 #' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
 #' 
 #' @return Returns a list containing: \describe{
@@ -29,7 +29,7 @@
 #'
 #' @rdname rc_gof
 #' 
-#' @references \insertRef{MurphyBarltropetal2023}{m2023}
+#' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}
 #' 
 #' @aliases rc_gof
 #' 

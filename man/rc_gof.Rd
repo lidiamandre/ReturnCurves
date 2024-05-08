@@ -26,7 +26,7 @@ rc_gof(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see \cite{m2023}). Default is 150 angles.}
+\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.}
 
 \item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
 }
@@ -38,7 +38,7 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Assessment of the goodness-of-fit of the return curve estimates following \cite{m2023}.
+Assessment of the goodness-of-fit of the return curve estimates following .
 }
 \details{
 Given a return curve RC(p), the probability of lying on a survival region is p. 
@@ -76,5 +76,5 @@ lines(ang, rep(prob, length(ang)), lwd = 3, col = 2)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2023}{m2023}
+\insertRef{MurphyBarltropetal2023}{ReturnCurves}
 }

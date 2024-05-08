@@ -16,7 +16,7 @@ margtransf(data, q = 0.95)
 A matrix or data frame containing the data in standard exponential margins.
 }
 \description{
-Marginal transformation of the random vector to standard exponential margins, following \insertCite{m2023}.
+Marginal transformation of the random vector to standard exponential margins, following .
 }
 \examples{
 library(ReturnCurves)
@@ -31,5 +31,5 @@ dataexp <- margtransf(data)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2023}{m2023}
+\insertRef{MurphyBarltropetal2023}{ReturnCurves}
 }
