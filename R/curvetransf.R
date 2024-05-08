@@ -12,7 +12,7 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' @name curvetransf
 #' 
 #' @description
-#' Back transformation of the return curve estimates onto the original margins, following 
+#' Back transformation of the return curve estimates onto the original margins, following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 

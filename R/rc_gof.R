@@ -3,16 +3,16 @@
 #' @name rc_gof
 #' 
 #' @description
-#' Assessment of the goodness-of-fit of the return curve estimates following .
+#' Assessment of the goodness-of-fit of the return curve estimates following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
 #' @param data A matrix or data frame containing the data in standard exponential margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}. 
 #' @param rc_origin A matrix or data frame containing the estimates of the return curve, in the original margins.
-#' @param blocksize Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.
+#' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param nangles Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.
+#' @param nangles Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.
 #' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
 #' 
 #' @return Returns a list containing: \describe{
@@ -21,11 +21,11 @@
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' }
 #' 
-#' @details Given a return curve RC(p), the probability of lying on a survival region is p. 
-#' For each angle \eqn{\theta} and corresponding point in the estimated return curve \eqn{{x_\theta, y_\theta}}, 
-#' the empirical probability \eqn{\hat{p}} of lying in the survival region is given by the proportion of points in the region
-#' \eqn{(x_\theta, \infty) x (y_\theta, \infty)}.
-#' The true value \eqn{p} should be contained within the \eqn{(1-\alpha)} confidence region. 
+#' @details \loadmathjax{} Given a return curve RC(p), the probability of lying on a survival region is p. 
+#' For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
+#' the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
+#' \mjeqn{(x_\theta, \infty) x (y_\theta, \infty)}{}.
+#' The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)\%}{(1-\alpha)} confidence region. 
 #'
 #' @rdname rc_gof
 #' 

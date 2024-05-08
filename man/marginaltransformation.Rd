@@ -16,7 +16,7 @@ margtransf(data, q = 0.95)
 A matrix or data frame containing the data in standard exponential margins.
 }
 \description{
-Marginal transformation of the random vector to standard exponential margins, following .
+Marginal transformation of the random vector to standard exponential margins, following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
 }
 \examples{
 library(ReturnCurves)

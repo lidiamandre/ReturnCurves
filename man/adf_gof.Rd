@@ -25,9 +25,9 @@ adf_gof(
 
 \item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda{\omega}}.}
 
-\item{q}{Marginal quantile to be used for the min-projection variable \eqn{T^*} (see \strong{Details}). Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{}(see \strong{Details}). Default is 0.95.}
 
-\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
@@ -45,10 +45,10 @@ Returns a list containing: \describe{
 Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{MurphyBarltropetal2024}{ReturnCurves}.
 }
 \details{
-Define the min projection variable as \eqn{t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  
-Variable \eqn{\lambda(\omega)T^*_\omega \sim Exp(1)} as \eqn{u_\omega \to \infty} for all \eqn{\omega \in [0,1].} 
-Therefore, a good agreement between the model and empirical quantiles should occur and a the \eqn{y=x} between the quantiles should lie within the \eqn{(1-\alpha)} confidence band.
-The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable.
+\loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}.  
+Variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
+Therefore, a good agreement between the model and empirical quantiles should occur and a the \eqn{y=x} between the quantiles should lie within the \mjeqn{(1-\alpha)\%} confidence band.
+The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable at \mjeqn{\omega}{}.
 }
 \examples{
 library(ReturnCurves)

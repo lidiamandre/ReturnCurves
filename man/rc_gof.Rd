@@ -22,11 +22,11 @@ rc_gof(
 
 \item{rc_origin}{A matrix or data frame containing the estimates of the return curve, in the original margins.}
 
-\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1, then a standard bootstrap approach is applied.}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{Number of angles \eqn{m} in the \eqn{(0, \pi/2)} interval (see ). Default is 150 angles.}
+\item{nangles}{Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.}
 
 \item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
 }
@@ -38,14 +38,14 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Assessment of the goodness-of-fit of the return curve estimates following .
+Assessment of the goodness-of-fit of the return curve estimates following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
 }
 \details{
-Given a return curve RC(p), the probability of lying on a survival region is p. 
-For each angle \eqn{\theta} and corresponding point in the estimated return curve \eqn{{x_\theta, y_\theta}}, 
-the empirical probability \eqn{\hat{p}} of lying in the survival region is given by the proportion of points in the region
-\eqn{(x_\theta, \infty) x (y_\theta, \infty)}.
-The true value \eqn{p} should be contained within the \eqn{(1-\alpha)} confidence region.
+\loadmathjax{} Given a return curve RC(p), the probability of lying on a survival region is p. 
+For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
+the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
+\mjeqn{(x_\theta, \infty) x (y_\theta, \infty)}{}.
+The true value \mjeqn{p} should be contained within the \mjeqn{(1-\alpha)\%}{(1-\alpha)} confidence region.
 }
 \examples{
 library(ReturnCurves)
