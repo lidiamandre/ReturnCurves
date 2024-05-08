@@ -26,9 +26,9 @@ rc_gof(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.}
+\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the \mjeqn{(0, \pi/2)}{} interval \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
 
-\item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
+\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
 \value{
 Returns a list containing: \describe{
@@ -38,7 +38,7 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Assessment of the goodness-of-fit of the return curve estimates following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
+Assessment of the goodness-of-fit of the return curve estimates following the approach of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \details{
 \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying on a survival region is \mjeqn{p}{p}. 
@@ -76,5 +76,5 @@ lines(ang, rep(prob, length(ang)), lwd = 3, col = 2)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2023}{ReturnCurves}
+\insertAllCited{}
 }

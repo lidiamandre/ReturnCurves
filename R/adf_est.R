@@ -1,44 +1,57 @@
-#' Estimation of the Angular Dependence function \eqn{\lambda(\omega)}
+#' Estimation of the Angular Dependence function (ADF)
 #' 
 #' @name adf_est
 #' 
-#' @description
-#' estimates the angular dependence function \eqn{\lambda(\omega)} ... to do
+#' @description \loadmathjax{}
+#' Estimation of the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
-#' @param data matrix that contains the data, in standard exponential margins
-#' @param w sequence of angles between 0 and 1; default set to a vector of 101 equally spaced angles 
-#' @param method method to be used in the estimation of the angular dependence function: "hill" to use the Hill estimator, "cl" for the composite likelihood estimator
-#' @param qhill quantile to be used for the Hill estimator; default set to 0.95
-#' @param qalphas quantile to be used for the Heffernan and Tawn conditional extremes model; default set to 0.95
-#' @param k polynomial degree for the Bernstein-Bezier polynomials used in the estimation of the angular dependence function using the composite likelihood method; default set to 7
-#' @param constrained indicates whether or not to incorporate knowledge of the conditional extremes parameters; default set to "no" 
+#' @param data A matrix or data frame containing the data in standard exponential margins.
+#' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
+#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
+#' @param qhill Marginal quantile used for the Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.
+#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
+#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
+#' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' 
-#' @return adf estimates
+#' @return A vector containing the estimates of the angular dependence function.
 #' 
-#' @details This function returns the estimation of the Angular Dependence Function (ADF) denoted by \eqn{\lambda(\omega)} given in ...
-#' 
-#' This can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smooth approach, 
-#' obtained using Composite likelihood methods. Knowledge of the conditional extremes framework introduced by Heffernan 
-#' and Tawn can be incorporated by setting the argument "contrained" to "no"
+#' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, 
+#' obtained using Composite likelihood methods. Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
+#' For more details see \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 #' 
 #' @rdname adfestimation
 #' 
-#' @references to do
+#' @references \insertAllCited{}
 #' 
 #' @aliases adf_est
 #' 
 #' @examples
 #' library(ReturnCurves)
+#'
+#' # Generating data for illustration purposes
+#' set.seed(321)
+#' data <- cbind(rnorm(100), runif(100))
 #' 
+#' dataexp <- margtransf(data)
+#'
+#' w <- seq(0, 1, by = 0.01)
+#'
+#' adf <- adf_est(data = dataexp, method = "hill")
+#'
+#' \dontrun{
+#' plot(w, pmax(w, 1-w), type = "l", lty = 2)
+#' lines(w, adf, col = 2, lwd = 2)
+#' }
+#'
 #' @export
 #' 
-adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), qhill = 0.95, qalphas = 0.95, k = 7, constrained = "no"){
+adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), qhill = 0.95, qalphas = 0.95, k = 7, constrained = FALSE){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
-  if(constrained == "no"){
+  if(constrained == FALSE){
     if(method == "hill"){
       lambda_hill <- sapply(w, function(i) minproj_lambda(data, w = i, q = qhill)$lambdahill)
       lambda_hill <- properties(w, lambda_hill)

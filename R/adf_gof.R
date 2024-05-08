@@ -1,20 +1,20 @@
-#' Goodness of fit of the ADF estimates \eqn{\lambda(\omega)}
+#' Goodness of fit of the Angular Dependence function estimates \eqn{\lambda(\omega)}
 #' 
 #' @name adf_gof
 #' 
-#' @description
-#' Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{MurphyBarltropetal2024}{ReturnCurves}.
+#' @description \loadmathjax{}
+#' Assessment of the goodness of fit of the angular dependence function estimates \mjeqn{\lambda(\omega)}{} following the procedure of \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
 #' @param data A matrix or a data frame that contains the data in standard exponential margins.
 #' @param w_ind Index of the ray to be considered on the goodness of fit assessment.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
-#' @param lambda Vector containing the estimates of the angular dependence function \eqn{\lambda(\omega)}.
+#' @param lambda \loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.
 #' @param q \loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
+#' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
 #' 
 #' 
 #' @return Returns a list containing: \describe{
@@ -25,14 +25,13 @@
 #' }
 #' 
 #' 
-#' @details \loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}.  
-#' Variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-#' Therefore, a good agreement between the model and empirical quantiles should occur and a the \mjeqn{y=x}{} between the quantiles should lie within the \mjeqn{(1-\alpha)}{} confidence band.
-#' The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable at \mjeqn{\omega}{}.
-#'
+#' @details \loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
+#' variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
+#' A good agreement between the model and empirical quantiles should occur and the \mjeqn{y=x}{} between the quantiles should lie within the \mjeqn{(1-\alpha)}{} confidence band.
+#' 
 #' @rdname adf_gof
 #' 
-#' @references \insertRef{MurphyBarltropetal2024}{ReturnCurves}
+#' @references \insertAllCited{}
 #' 
 #' @aliases adf_gof
 #' 
@@ -45,10 +44,10 @@
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' lambda <- adf_est(data = dataexp, method = "hill")
+#' adf <- adf_est(data = dataexp, method = "hill")
 #' 
 #' w_ind <- 31
-#' gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = lambda)
+#' gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = adf)
 #' 
 #' \dontrun{
 #' plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")

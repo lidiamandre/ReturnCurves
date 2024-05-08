@@ -3,30 +3,30 @@
 #' @name rc_est
 #' 
 #' @description
-#' \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve.
+#' \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix or data frame containing the data in standard exponential margins
+#' @param data A matrix or data frame containing the data in standard exponential margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param p Curve survival probability.
-#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
-#' @param q Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95
-#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model (see \insertCite{HeffernanTawn2004}{ReturnCurves}). Default set to 0.95
+#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
+#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{} and Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.
+#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' 
 #' @return A matrix or data frame containing the estimates of the Return Curve.
 #' 
-#' @details \loadmathjax{} Given a probability \mjeqn{p}{p} and a join survival function \mjeqn{Pr(X>x, Y>y)}{}, 
+#' @details \loadmathjax{} Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
 #' the \mjeqn{p}{p}-probability return curve is defined as 
 #' \mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
 #' 
-#' Estimation of \mjeqn{Pr(X>x, Y>y)}{} is done by estimation of the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
+#' \mjeqn{Pr(X>x, Y>y)}{} is estimated using the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
 #' 
 #' @rdname returncurve
 #' 
-#' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{WadsworthTawn2013}{ReturnCurves}, \insertRef{HeffernanTawn2004}{ReturnCurves}
+#' @references \insertAllCited{}
 #' 
 #' @aliases rc_est
 #' 

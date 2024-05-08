@@ -18,7 +18,7 @@ curvetransf(curvedata, data, q = 0.95)
 A matrix or data frame containing the estimates of the Return Curve in the original margins.
 }
 \description{
-Back transformation of the return curve estimates onto the original margins, following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
+Back transformation of the return curve estimates onto the original margins, following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \examples{
 library(ReturnCurves)
@@ -42,5 +42,5 @@ lines(rc_origin, col = 2, lwd = 2)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2023}{ReturnCurves}
+\insertAllCited{}
 }

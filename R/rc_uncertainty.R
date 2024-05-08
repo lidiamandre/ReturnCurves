@@ -3,23 +3,23 @@
 #' @name rc_unc
 #' 
 #' @description
-#' Uncertainty assessment of the return curve estimates following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
+#' Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
 #' @param data A matrix or a data frame which contains the data in the original margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}. 
 #' @param p Curve survival probability.
-#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
+#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
 #' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
-#' @param q Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95
-#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model (see \insertCite{HeffernanTawn2004}{ReturnCurves}). Default set to 0.95
+#' @param q Marginal quantile used for the min-projection variable and Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95
+#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param nangles Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.
-#' @param alpha Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.
+#' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the \mjeqn{(0, \pi/2)}{} interval \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.
+#' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
 #' 
 #' @return Returns a list containing: \describe{
 #' \item{median}{A vector containing the median estimates of the return curve.} 
@@ -30,7 +30,7 @@
 #'
 #' @rdname rc_uncertainty
 #' 
-#' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2004}{ReturnCurves}
+#' @references \insertAllCited{}
 #' 
 #' @aliases rc_unc
 #' 

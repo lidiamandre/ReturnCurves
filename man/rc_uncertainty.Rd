@@ -28,13 +28,13 @@ rc_unc(
 
 \item{p}{Curve survival probability.}
 
-\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.}
+\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.}
 
 \item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
 
-\item{q}{Marginal quantile used for the min-projection variable and Hill estimator. Default is 0.95}
+\item{q}{Marginal quantile used for the min-projection variable and Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95}
 
-\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model (see \insertCite{HeffernanTawn2004}{ReturnCurves}). Default set to 0.95}
+\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.}
 
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.}
 
@@ -44,9 +44,9 @@ rc_unc(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{Number of angles \code{m} in the \eqn{(0, \pi/2)} interval (see \insertCite{MurphyBarltropetal2023}{ReturnCurves}). Default is 150 angles.}
+\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the \mjeqn{(0, \pi/2)}{} interval \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
 
-\item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
+\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
 \value{
 Returns a list containing: \describe{
@@ -57,7 +57,7 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Uncertainty assessment of the return curve estimates following \insertCite{MurphyBarltropetal2023}{ReturnCurves}.
+Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \examples{
 library(ReturnCurves)
@@ -88,5 +88,5 @@ lines(unc$lower, lty = 'dashed', col = 'blue', lwd = 2)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2004}{ReturnCurves}
+\insertAllCited{}
 }

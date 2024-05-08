@@ -3,7 +3,7 @@
 \docType{methods}
 \name{adf_gof}
 \alias{adf_gof}
-\title{Goodness of fit of the ADF estimates \eqn{\lambda(\omega)}}
+\title{Goodness of fit of the Angular Dependence function estimates \eqn{\lambda(\omega)}}
 \usage{
 adf_gof(
   data,
@@ -23,7 +23,7 @@ adf_gof(
 
 \item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{lambda}{Vector containing the estimates of the angular dependence function \eqn{\lambda(\omega)}.}
+\item{lambda}{\loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.}
 
 \item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.}
 
@@ -31,7 +31,7 @@ adf_gof(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{alpha}{Significance level to compute the \eqn{(1-\alpha)} confidence intervals. Default is 0.05.}
+\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
 \value{
 Returns a list containing: \describe{
@@ -42,13 +42,13 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{MurphyBarltropetal2024}{ReturnCurves}.
+\loadmathjax{}
+Assessment of the goodness of fit of the angular dependence function estimates \mjeqn{\lambda(\omega)}{} following the procedure of \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}.  
-Variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-Therefore, a good agreement between the model and empirical quantiles should occur and a the \mjeqn{y=x}{} between the quantiles should lie within the \mjeqn{(1-\alpha)}{} confidence band.
-The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable at \mjeqn{\omega}{}.
+\loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
+variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
+A good agreement between the model and empirical quantiles should occur and the \mjeqn{y=x}{} between the quantiles should lie within the \mjeqn{(1-\alpha)}{} confidence band.
 }
 \examples{
 library(ReturnCurves)
@@ -59,10 +59,10 @@ data <- cbind(rnorm(100), runif(100))
 
 dataexp <- margtransf(data)
 
-lambda <- adf_est(data = dataexp, method = "hill")
+adf <- adf_est(data = dataexp, method = "hill")
 
 w_ind <- 31
-gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = lambda)
+gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = adf)
 
 \dontrun{
 plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")
@@ -73,5 +73,5 @@ abline(0, 1, col = 2,lwd = 3)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2024}{ReturnCurves}
+\insertAllCited{}
 }
