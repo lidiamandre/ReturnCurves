@@ -44,7 +44,7 @@ A matrix or data frame containing the estimates of the Return Curve.
 the \mjeqn{p}{p}-probability return curve is defined as 
 \mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
 
-Estimation of \mjeqn{Pr(X>x, Y>y)}{} is done by estimation of the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
+Estimation of \mjeqn{Pr(X>x, Y>y)}{} is done by estimation of the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
 }
 \examples{
 library(ReturnCurves)
