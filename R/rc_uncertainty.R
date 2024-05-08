@@ -32,7 +32,7 @@
 #'
 #' @rdname rc_uncertainty
 #' 
-#' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2024}{ReturnCurves}
+#' @references \insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2004}{ReturnCurves}
 #' 
 #' 
 #' @aliases rc_unc

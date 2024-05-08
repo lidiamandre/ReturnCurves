@@ -47,7 +47,7 @@ Assessment of the goodness of fit of the angular dependence function estimates \
 \details{
 \loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}.  
 Variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-Therefore, a good agreement between the model and empirical quantiles should occur and a the \mjeqn{y=x} between the quantiles should lie within the \mjeqn{(1-\alpha)\%}{} confidence band.
+Therefore, a good agreement between the model and empirical quantiles should occur and a the \mjeqn{y=x}{} between the quantiles should lie within the \mjeqn{(1-\alpha)}{} confidence band.
 The lower and upper bounds of the confidence interval are obtained through bootstrapp of the min-projection variable at \mjeqn{\omega}{}.
 }
 \examples{

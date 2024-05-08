@@ -91,5 +91,5 @@ lines(unc$lower, lty = 'dashed', col = 'blue', lwd = 2)
 
 }
 \references{
-\insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2024}{ReturnCurves}
+\insertRef{MurphyBarltropetal2023}{ReturnCurves}, \insertRef{HeffernanTawn2004}{ReturnCurves}
 }
