@@ -42,7 +42,7 @@ Returns a list containing: \describe{
 }
 }
 \description{
-Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of .
+Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{MurphyBarltropetal2024}{ReturnCurves}.
 }
 \details{
 Define the min projection variable as \eqn{t*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}.  

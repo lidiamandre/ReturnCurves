@@ -3,7 +3,7 @@
 #' @name adf_gof
 #' 
 #' @description
-#' Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of .
+#' Assessment of the goodness of fit of the angular dependence function estimates \eqn{\lambda(\omega)} following the procedure of \insertCite{MurphyBarltropetal2024}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
