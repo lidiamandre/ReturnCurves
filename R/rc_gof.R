@@ -7,7 +7,7 @@
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix containing the data on standard exponential margins.
+#' @param data A matrix containing the data on the original margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}. 
 #' @param rc_origin A matrix containing the estimates of the return curve, on the original margins. Should be an object of function \code{\link{curvetransform}}.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.

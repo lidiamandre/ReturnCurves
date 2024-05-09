@@ -16,7 +16,7 @@ rc_gof(
 )
 }
 \arguments{
-\item{data}{A matrix containing the data on standard exponential margins.}
+\item{data}{A matrix containing the data on the original margins.}
 
 \item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
