@@ -31,11 +31,10 @@ rc_gof(
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
 \value{
-Returns a list containing: \describe{
+Returns a list containing:
 \item{median}{A vector containing the median of the empirical probability of lying in a survival region.} 
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
-}
 }
 \description{
 Assessment of the goodness-of-fit of the return curve estimates following the approach of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.

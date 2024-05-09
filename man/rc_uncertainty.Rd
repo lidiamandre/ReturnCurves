@@ -49,12 +49,11 @@ rc_unc(
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
 \value{
-Returns a list containing: \describe{
+Returns a list containing: 
 \item{median}{A vector containing the median estimates of the return curve.} 
 \item{mean}{A vector containing the mean estimates of the return curve.} 
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
-}
 }
 \description{
 Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
