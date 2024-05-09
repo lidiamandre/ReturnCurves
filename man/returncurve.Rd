@@ -25,7 +25,7 @@ rc_est(
 
 \item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator. More details can be found in \code{\link{adf_est}}.}
 
-\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^'_\omega = t_\omega - u_\omega \mid t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.}
 
 \item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.}
 

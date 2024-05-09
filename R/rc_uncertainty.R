@@ -12,9 +12,9 @@
 #' @param p Curve survival probability.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
 #' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
-#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^'_\omega = t_\omega - u_\omega \mid t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95
+#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.
 #' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
-#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
+#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
@@ -28,9 +28,9 @@
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' }
 #'
-#' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ \mid \tan(\theta)=y/x\rbrace\right.}{}
-#' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated RC\mjeqn{p} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
-#' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023}{ReturnCurves}
+#' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace.}{}
+#' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{RC(p)}{} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
+#' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}
 #' 
 #' 
 #' 

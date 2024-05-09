@@ -11,21 +11,21 @@
 #' @param w_ind Index of the ray to be considered on the goodness of fit assessment.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param lambda \loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.
-#' @param q \loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.
+#' @param q \loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
 #' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
 #' 
 #' 
-#' @return Returns a list containing: \itemize{
+#' @return Returns a list containing: \describe{
 #' \item{model}{A vector containing the model quantiles.} 
 #' \item{empirical}{A vector containing the empirical quantiles.}
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' }
 #' 
-#' @details \loadmathjax{} Define the min-projection variable as \mjeqn{t^'_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
-#' variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
+#' @details \loadmathjax{} Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
+#' variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
 #' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
 #' 
 #' @rdname adf_gof
