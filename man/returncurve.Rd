@@ -17,24 +17,24 @@ rc_est(
 )
 }
 \arguments{
-\item{data}{A matrix or data frame containing the data in standard exponential margins.}
+\item{data}{A matrix containing the data on standard exponential margins.}
 
 \item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
 \item{p}{Curve survival probability.}
 
-\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.}
+\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator. More details can be found in \code{\link{adf_est}}.}
 
-\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{} and Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^'_\omega = t_\omega - u_\omega \mid t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.}
 
 \item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.}
 
-\item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.}
+\item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to 7.}
 
 \item{constrained}{Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 }
 \value{
-A matrix or data frame containing the estimates of the Return Curve.
+A matrix containing the estimates of the Return Curve on standard exponential margins.
 }
 \description{
 \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.

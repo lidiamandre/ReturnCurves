@@ -1,12 +1,12 @@
 ranktransform <- function(data, thresh) rank(data)[data <= thresh]/(length(data) + 1) 
 gpdtransform <- function(data, thresh, par, q) 1 - (1 - q)*pgpd(data, loc = thresh, scale = par[1], shape = par[2], lower.tail = F)
 
-empirical_cdf <- function(data, q = 0.95){ 
+empirical_cdf <- function(data, qmarg = 0.95){ 
   u <- c()
-  thresh <- quantile(data, q)
+  thresh <- quantile(data, qmarg)
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
   u[data <= thresh] <- ranktransform(data, thresh)
-  u[data > thresh] <- gpdtransform(data[data > thresh], thresh, par, q)
+  u[data > thresh] <- gpdtransform(data[data > thresh], thresh, par, qmarg)
   return(u)
 } 
 
@@ -15,14 +15,14 @@ empirical_cdf <- function(data, q = 0.95){
 #' @name margtransf
 #' 
 #' @description
-#' Marginal transformation of the random vector to standard exponential margins, following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}. 
+#' Marginal transformation of the random vector to standard exponential margins following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}. 
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix or data frame containing the data in original margins.
-#' @param q Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
+#' @param data A matrix containing the data on the original margins.
+#' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
 #' 
-#' @return A matrix or data frame containing the data in standard exponential margins.
+#' @return A matrix containing the data on standard exponential margins.
 #' 
 #' @rdname marginaltransformation
 #' 
@@ -43,8 +43,8 @@ empirical_cdf <- function(data, q = 0.95){
 #' 
 #' @export
 #' 
-margtransf <- function(data, q = 0.95){
-  dataunif <- apply(data, 2, empirical_cdf, q = q)
+margtransf <- function(data, qmarg = 0.95){
+  dataunif <- apply(data, 2, empirical_cdf, qmarg = qmarg)
   apply(dataunif, 2, qexp)
 }  
 

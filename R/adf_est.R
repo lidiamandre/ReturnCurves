@@ -7,12 +7,12 @@
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix or data frame containing the data in standard exponential margins.
+#' @param data A matrix containing the data on standard exponential margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
-#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
+#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.
 #' @param qhill Marginal quantile used for the Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.
 #' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
-#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
+#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' 
 #' @return A vector containing the estimates of the angular dependence function.

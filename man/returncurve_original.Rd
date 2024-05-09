@@ -3,22 +3,25 @@
 \docType{methods}
 \name{curvetransf}
 \alias{curvetransf}
-\title{Return Curve estimates in original margins}
+\title{Return Curve estimates on original margins}
 \usage{
-curvetransf(curvedata, data, q = 0.95)
+curvetransf(curvedata, data, qmarg = 0.95)
 }
 \arguments{
-\item{curvedata}{A matrix or data frame containing an object of function \code{\link{rc_est}}.}
+\item{curvedata}{A matrix containing an object of function \code{\link{rc_est}}.}
 
-\item{data}{A matrix or data frame containing the data in the original margins.}
+\item{data}{A matrix containing the data on the original margins.}
 
-\item{q}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.}
+\item{qmarg}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.}
 }
 \value{
-A matrix or data frame containing the estimates of the Return Curve in the original margins.
+A matrix containing the estimates of the Return Curve on the original margins.
 }
 \description{
-Back transformation of the return curve estimates onto the original margins, following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
+Back transformation of the return curve estimates onto the original margins following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
+}
+\note{
+The parameter \code{qmarg} should be the same as the one used in \code{\link{margtransf}}.
 }
 \examples{
 library(ReturnCurves)

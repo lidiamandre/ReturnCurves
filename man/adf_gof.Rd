@@ -3,7 +3,7 @@
 \docType{methods}
 \name{adf_gof}
 \alias{adf_gof}
-\title{Goodness of fit of the Angular Dependence function estimates \eqn{\lambda(\omega)}}
+\title{Goodness of fit of the Angular Dependence function estimates}
 \usage{
 adf_gof(
   data,
@@ -17,7 +17,7 @@ adf_gof(
 )
 }
 \arguments{
-\item{data}{A matrix or a data frame that contains the data in standard exponential margins.}
+\item{data}{A matrix containing the data on standard exponential margins.}
 
 \item{w_ind}{Index of the ray to be considered on the goodness of fit assessment.}
 
@@ -25,7 +25,7 @@ adf_gof(
 
 \item{lambda}{\loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.}
 
-\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^*}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
 
@@ -34,7 +34,7 @@ adf_gof(
 \item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
 \value{
-Returns a list containing: \describe{
+Returns a list containing: \itemize{
 \item{model}{A vector containing the model quantiles.} 
 \item{empirical}{A vector containing the empirical quantiles.}
 \item{lower}{A vector containing the lower bound of the confidence interval.}
@@ -46,9 +46,9 @@ Returns a list containing: \describe{
 Assessment of the goodness of fit of the angular dependence function estimates \mjeqn{\lambda(\omega)}{} following the procedure of \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Define the min projection variable as \mjeqn{t^*_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
+\loadmathjax{} Define the min-projection variable as \mjeqn{t^'_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
 variable \mjeqn{\lambda(\omega)T^*_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-A good agreement between the model and empirical quantiles should occur and the \mjeqn{y=x}{} between the quantiles should lie within the \mjeqn{(1-\alpha)}{} confidence band.
+A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
 }
 \examples{
 library(ReturnCurves)

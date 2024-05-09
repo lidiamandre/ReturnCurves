@@ -22,7 +22,7 @@ rc_unc(
 )
 }
 \arguments{
-\item{data}{A matrix or a data frame which contains the data in the original margins.}
+\item{data}{A matrix which contains the data on the original margins.}
 
 \item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
@@ -32,7 +32,7 @@ rc_unc(
 
 \item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
 
-\item{q}{Marginal quantile used for the min-projection variable and Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95}
+\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^'_\omega = t_\omega - u_\omega \mid t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95}
 
 \item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.}
 
@@ -44,7 +44,7 @@ rc_unc(
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the \mjeqn{(0, \pi/2)}{} interval \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
+\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
 
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
@@ -58,6 +58,11 @@ Returns a list containing: \describe{
 }
 \description{
 Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
+}
+\details{
+\loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ \mid \tan(\theta)=y/x\rbrace\right.}{}
+For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated RC\mjeqn{p} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
+Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023}{ReturnCurves}
 }
 \examples{
 library(ReturnCurves)

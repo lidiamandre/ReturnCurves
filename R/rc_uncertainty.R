@@ -7,18 +7,18 @@
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix or a data frame which contains the data in the original margins.
+#' @param data A matrix which contains the data on the original margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}. 
 #' @param p Curve survival probability.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
 #' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
-#' @param q Marginal quantile used for the min-projection variable and Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95
+#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^'}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^'_\omega = t_\omega - u_\omega \mid t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95
 #' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the \mjeqn{(0, \pi/2)}{} interval \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.
+#' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.
 #' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
 #' 
 #' @return Returns a list containing: \describe{
@@ -28,6 +28,12 @@
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' }
 #'
+#' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ \mid \tan(\theta)=y/x\rbrace\right.}{}
+#' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated RC\mjeqn{p} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
+#' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023}{ReturnCurves}
+#' 
+#' 
+#' 
 #' @rdname rc_uncertainty
 #' 
 #' @references \insertAllCited{}
@@ -74,7 +80,7 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
     bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize)
     bootdata_exp <- margtransf(bootdata, q = qmarg)
     rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained)
-    rc_orig <- curvetransf(rc, data = bootdata, q = qmarg)
+    rc_orig <- curvetransf(rc, data = bootdata, qmarg = qmarg)
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){

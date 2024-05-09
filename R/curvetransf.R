@@ -7,20 +7,22 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
   return(nvec)
 }
 
-#' Return Curve estimates in original margins
+#' Return Curve estimates on original margins
 #' 
 #' @name curvetransf
 #' 
 #' @description
-#' Back transformation of the return curve estimates onto the original margins, following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
+#' Back transformation of the return curve estimates onto the original margins following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 #' 
 #' @docType methods
 #' 
-#' @param curvedata A matrix or data frame containing an object of function \code{\link{rc_est}}.
-#' @param data A matrix or data frame containing the data in the original margins.
-#' @param q Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.
+#' @param curvedata A matrix containing an object of function \code{\link{rc_est}}.
+#' @param data A matrix containing the data on the original margins.
+#' @param qmarg Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.
 #' 
-#' @return A matrix or data frame containing the estimates of the Return Curve in the original margins.
+#' @return A matrix containing the estimates of the Return Curve on the original margins.
+#' 
+#' @note The parameter \code{qmarg} should be the same as the one used in \code{\link{margtransf}}.
 #' 
 #' @rdname returncurve_original
 #' 
@@ -49,9 +51,9 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' }
 #' 
 #' @export
-curvetransf <- function(curvedata, data, q = 0.95){
+curvetransf <- function(curvedata, data, qmarg = 0.95){
   curveunif <- apply(curvedata, 2, pexp)
-  sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], q = q))
+  sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], q = qmarg))
 }
 
 

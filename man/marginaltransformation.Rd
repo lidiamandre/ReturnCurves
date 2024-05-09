@@ -5,18 +5,18 @@
 \alias{margtransf}
 \title{Marginal Transformation}
 \usage{
-margtransf(data, q = 0.95)
+margtransf(data, qmarg = 0.95)
 }
 \arguments{
-\item{data}{A matrix or data frame containing the data in original margins.}
+\item{data}{A matrix containing the data on the original margins.}
 
-\item{q}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
+\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
 }
 \value{
-A matrix or data frame containing the data in standard exponential margins.
+A matrix containing the data on standard exponential margins.
 }
 \description{
-Marginal transformation of the random vector to standard exponential margins, following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
+Marginal transformation of the random vector to standard exponential margins following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \examples{
 library(ReturnCurves)

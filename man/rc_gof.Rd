@@ -16,17 +16,17 @@ rc_gof(
 )
 }
 \arguments{
-\item{data}{A matrix or data frame containing the data in standard exponential margins.}
+\item{data}{A matrix containing the data on standard exponential margins.}
 
 \item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{rc_origin}{A matrix or data frame containing the estimates of the return curve, in the original margins.}
+\item{rc_origin}{A matrix containing the estimates of the return curve, on the original margins. Should be an object of function \code{\link{curvetransform}}.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
 
-\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the \mjeqn{(0, \pi/2)}{} interval \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
+\item{nangles}{\loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
 
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 }
@@ -42,10 +42,10 @@ Assessment of the goodness-of-fit of the return curve estimates following the ap
 }
 \details{
 \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying on a survival region is \mjeqn{p}{p}. 
-For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace x_\theta, y_\theta \rbrace}{}, 
+For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
-\mjeqn{(x_\theta, \infty) \times (y_\theta, \infty)}{}.
-The true value \mjeqn{p}{p} should be contained within the \mjeqn{(1-\alpha)}{} confidence region.
+\mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. 
+The \mjeqn{(1-\alpha)}{} confidence region is obtained via a (block) bootstrapping procedure and ideally should contain the true probability \mjeqn{p}{p}.
 }
 \examples{
 library(ReturnCurves)
