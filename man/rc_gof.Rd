@@ -61,7 +61,7 @@ rc <- rc_est(data = dataexp, p = prob, method = "hill")
 
 rc_orig <- curvetransf(curvedata = rc, data = data)
 
-gof <- rc_gof(data = dataexp, rc_origin = rc_orig)
+gof <- rc_gof(data = data, rc_origin = rc_orig)
 
 \dontrun{
 ang <- 1:length(gof$median)
