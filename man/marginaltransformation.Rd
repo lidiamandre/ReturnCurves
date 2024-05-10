@@ -10,24 +10,29 @@ margtransf(data, qmarg = 0.95)
 \arguments{
 \item{data}{A matrix containing the data on the original margins.}
 
-\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
+\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is 0.95.}
 }
 \value{
 A matrix containing the data on standard exponential margins.
 }
 \description{
-Marginal transformation of the random vector to standard exponential margins following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
+Marginal transformation of a random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}.
+}
+\details{
+\loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
+\mjeqn{\boldsymbol{X}}{} is transformed by using the empirical cumulative distribution function 
+(cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.
 }
 \examples{
 library(ReturnCurves)
 
 # Generating data for illustration purposes
 set.seed(321)
-data <- cbind(rnorm(100), runif(100))
-\dontrun{plot(data, pch = 20))} 
+data <- cbind(rnorm(1000), rnorm(1000))
+\dontrun{plot(data, pch = 20)} 
 
 dataexp <- margtransf(data)
-\dontrun{plot(dataexp, pch = 20))} 
+\dontrun{plot(dataexp, pch = 20)} 
 
 }
 \references{

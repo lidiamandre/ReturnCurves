@@ -38,7 +38,7 @@
 #' 
 #' # Generating data for illustration purposes
 #' set.seed(321)
-#' data <- cbind(rnorm(100), runif(100))
+#' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
 #' dataexp <- margtransf(data)
 #' 
@@ -50,7 +50,7 @@
 #' \dontrun{
 #' plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")
 #' polygon(c(rev(gof$model), gof$model), c(rev(gof$lower), gof$upper), col = 'grey', border = NA)
-#' points(gof$model, gof$empirical, pch = 16, col = "black")
+#' points(gof$model, gof$empirical, pch = 20, col = "black")
 #' abline(0, 1, col = 2,lwd = 3) 
 #' }
 #' 

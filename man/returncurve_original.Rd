@@ -28,7 +28,7 @@ library(ReturnCurves)
 
 # Generating data for illustration purposes
 set.seed(321)
-data <- cbind(rnorm(100), runif(100))
+data <- cbind(rnorm(1000), rnorm(1000))
 
 dataexp <- margtransf(data)
 
@@ -39,8 +39,8 @@ rc <- rc_est(data = dataexp, p = prob, method = "hill")
 rc_orig <- curvetransf(curvedata = rc, data = data)
 
 \dontrun{
-plot(data, pch = 20, main = "Return Curve in original margins")
-lines(rc_origin, col = 2, lwd = 2)
+plot(data, pch = 20, main = "Return Curve on the original margins")
+lines(rc_orig, col = 2, lwd = 2)
 }
 
 }

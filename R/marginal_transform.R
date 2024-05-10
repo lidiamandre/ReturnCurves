@@ -5,8 +5,8 @@ empirical_cdf <- function(data, qmarg = 0.95){
   u <- c()
   thresh <- quantile(data, qmarg)
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
-  u[data <= thresh] <- ranktransform(data, thresh)
-  u[data > thresh] <- gpdtransform(data[data > thresh], thresh, par, qmarg)
+  u[data <= thresh] <- ranktransform(data = data, thresh = thresh)
+  u[data > thresh] <- gpdtransform(data = data[data > thresh], thresh = thresh, par = par, q = qmarg)
   return(u)
 } 
 
@@ -15,14 +15,18 @@ empirical_cdf <- function(data, qmarg = 0.95){
 #' @name margtransf
 #' 
 #' @description
-#' Marginal transformation of the random vector to standard exponential margins following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}. 
+#' Marginal transformation of a random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. 
 #' 
 #' @docType methods
 #' 
 #' @param data A matrix containing the data on the original margins.
-#' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.
+#' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is 0.95.
 #' 
 #' @return A matrix containing the data on standard exponential margins.
+#' 
+#' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
+#' \mjeqn{\boldsymbol{X}}{} is transformed by using the empirical cumulative distribution function 
+#' (cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.    
 #' 
 #' @rdname marginaltransformation
 #' 
@@ -35,11 +39,11 @@ empirical_cdf <- function(data, qmarg = 0.95){
 #' 
 #' # Generating data for illustration purposes
 #' set.seed(321)
-#' data <- cbind(rnorm(100), runif(100))
-#' \dontrun{plot(data, pch = 20))} 
+#' data <- cbind(rnorm(1000), rnorm(1000))
+#' \dontrun{plot(data, pch = 20)} 
 #' 
 #' dataexp <- margtransf(data)
-#' \dontrun{plot(dataexp, pch = 20))} 
+#' \dontrun{plot(dataexp, pch = 20)} 
 #' 
 #' @export
 #' 

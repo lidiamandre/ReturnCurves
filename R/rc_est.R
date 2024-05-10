@@ -35,16 +35,16 @@
 #' 
 #' # Generating data for illustration purposes
 #' set.seed(321)
-#' data <- cbind(rnorm(100), runif(100))
+#' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' prob <- 0.001
+#' prob <- 10/(dim(data)[1])
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
 #' 
 #' \dontrun{
-#' plot(dataexp, pch = 20, main = "Return Curve in exponential margins")
+#' plot(dataexp, pch = 20, main = "Return Curve on exponential margins")
 #' lines(rc, col = 2, lwd = 2)
 #' }
 #' 

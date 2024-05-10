@@ -37,11 +37,11 @@
 #' 
 #' # Generating data for illustration purposes
 #' set.seed(321)
-#' data <- cbind(rnorm(100), runif(100))
+#' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' prob <- 0.001
+#' prob <- 10/(dim(data)[1])
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
 #' 
@@ -51,7 +51,7 @@
 #' 
 #' \dontrun{
 #' ang <- 1:length(gof$median)
-#' plot(ang, gof$median, xlab = "Angle Index", ylab = "Probability")
+#' plot(ang, gof$median, xlab = "Angle Index", ylab = "Probability", type = "n", ylim = c(-0.001, range(gof$upper)[2] + 0.001))
 #' polygon(c(rev(ang), ang), c(rev(gof$lower), gof$upper), col = 'grey80', border = NA)
 #' lines(ang, gof$median, lwd = 2)
 #' lines(ang, gof$upper, lty = 'dashed', col = 'blue', lwd = 2)

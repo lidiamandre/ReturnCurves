@@ -47,7 +47,7 @@ library(ReturnCurves)
 
 # Generating data for illustration purposes
 set.seed(321)
-data <- cbind(rnorm(100), runif(100))
+data <- cbind(rnorm(1000), rnorm(1000))
 
 dataexp <- margtransf(data)
 

@@ -68,11 +68,11 @@ library(ReturnCurves)
 
 # Generating data for illustration purposes
 set.seed(321)
-data <- cbind(rnorm(100), runif(100))
+data <- cbind(rnorm(1000), rnorm(1000))
 
 dataexp <- margtransf(data)
 
-prob <- 0.001
+prob <- 10/(dim(data)[1])
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 
@@ -80,14 +80,13 @@ rc_orig <- curvetransf(curvedata = rc, data = data)
 
 unc <- rc_unc(data = data, p = prob, method = "hill")
 
-
 \dontrun{
-plot(data, xlab = "X", ylab = "Y", pch = 16)
+plot(data, xlab = "X", ylab = "Y", pch = 20, col = "grey")
 lines(rc_orig, lwd = 2, col = 2)
 lines(unc$median, lwd = 2, col = "orange") # to plot median estimates
 lines(unc$mean, lwd = 2, col = "orange") # to plot mean estimates
-lines(unc$upper, lty = 'dashed', col = 'blue', lwd = 2)
-lines(unc$lower, lty = 'dashed', col = 'blue', lwd = 2)
+lines(unc$upper, lty = 'dashed', lwd = 2)
+lines(unc$lower, lty = 'dashed', lwd = 2)
 }
 
 }
