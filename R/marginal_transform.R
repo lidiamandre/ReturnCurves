@@ -25,7 +25,7 @@ empirical_cdf <- function(data, qmarg = 0.95){
 #' @return A matrix containing the data on standard exponential margins.
 #' 
 #' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
-#' \mjeqn{\boldsymbol{X}}{} is transformed by using the empirical cumulative distribution function 
+#' is transformed by using the empirical cumulative distribution function 
 #' (cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.    
 #' 
 #' @rdname marginaltransformation

@@ -21,6 +21,9 @@
 #' obtained using Composite likelihood methods. Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
 #' For more details see \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 #' 
+#' @note \loadmathjax{} Due to its a pointwise nature, for a better estimation of \mjeqn{\lambda(\omega)}{} 
+#' it is recommended a finer grid for \mjeqn{\omega}{} (e.g. \code{w = seq(0, 1, by = 0.001)}) when \code{method = "hill"}.
+#' 
 #' @rdname adfestimation
 #' 
 #' @references \insertAllCited{}
@@ -41,7 +44,7 @@
 #' adf <- adf_est(data = dataexp, method = "hill")
 #'
 #' \dontrun{
-#' plot(w, pmax(w, 1-w), type = "l", lty = 2)
+#' plot(w, pmax(w, 1-w), type = "l", lty = 2, ylim = c(min(pmax(w, 1-w)), max(adf) + 0.1))
 #' lines(w, adf, col = 2, lwd = 2)
 #' }
 #'

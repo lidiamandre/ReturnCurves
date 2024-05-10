@@ -39,7 +39,7 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' prob <- 0.001
+#' prob <- 1/(dim(data)[1])
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
 #' 

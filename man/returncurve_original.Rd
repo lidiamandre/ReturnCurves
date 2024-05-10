@@ -32,7 +32,7 @@ data <- cbind(rnorm(1000), rnorm(1000))
 
 dataexp <- margtransf(data)
 
-prob <- 0.001
+prob <- 1/(dim(data)[1])
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 

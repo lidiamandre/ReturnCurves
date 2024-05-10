@@ -20,7 +20,7 @@ Marginal transformation of a random vector to standard exponential margins follo
 }
 \details{
 \loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
-\mjeqn{\boldsymbol{X}}{} is transformed by using the empirical cumulative distribution function 
+is transformed by using the empirical cumulative distribution function 
 (cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.
 }
 \examples{
