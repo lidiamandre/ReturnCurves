@@ -34,7 +34,7 @@ rc_est(
 
 \item{constrained}{Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
-\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.}
+\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 }
 \value{
 A matrix containing the estimates of the Return Curve on standard exponential margins.

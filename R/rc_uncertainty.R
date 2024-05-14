@@ -20,7 +20,7 @@
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
 #' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.
 #' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
-#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.
+#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
 #' 
 #' @return Returns a list containing: 
 #' \item{median}{A vector containing the median estimates of the return curve.} 

@@ -14,7 +14,7 @@
 #' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
-#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.
+#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
 #' 
 #' @return A vector containing the estimates of the angular dependence function.
 #' 

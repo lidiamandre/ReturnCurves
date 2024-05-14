@@ -49,7 +49,7 @@ rc_unc(
 
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
 
-\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.}
+\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 }
 \value{
 Returns a list containing: 
