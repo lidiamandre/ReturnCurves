@@ -1,4 +1,4 @@
-properties <- function(w = seq(0, 1, by = 0.01), lambda){
+properties <- function(w, lambda){
   idx <- w <= 0.5
   idxhalf <- which.min(idx)
   lower <- pmax(w, 1 - w)

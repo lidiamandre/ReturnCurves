@@ -63,6 +63,7 @@
 #'  
 rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin, 
                    blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+  n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
   data0 <- apply(data, 2, min)
@@ -79,7 +80,7 @@ rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin,
     angles_est[i, ] <- c(xhat, yhat)
   }
   for(i in 1:nboot){
-    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize)
+    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
     for(j in 1:nangles){
       emp_prob[[j]][i] <- mean(bootdata[, 1] > angles_est[j, 1] & bootdata[, 2] > angles_est[j, 2])
     }

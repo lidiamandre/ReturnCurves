@@ -1,12 +1,12 @@
 ranktransform <- function(data, thresh) rank(data)[data <= thresh]/(length(data) + 1) 
-gpdtransform <- function(data, thresh, par, q) 1 - (1 - q)*pgpd(data, loc = thresh, scale = par[1], shape = par[2], lower.tail = F)
+gpdtransform <- function(data, thresh, par, qmarg) 1 - (1 - qmarg)*pgpd(data, loc = thresh, scale = par[1], shape = par[2], lower.tail = F)
 
 empirical_cdf <- function(data, qmarg = 0.95){ 
   u <- c()
   thresh <- quantile(data, qmarg)
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
   u[data <= thresh] <- ranktransform(data = data, thresh = thresh)
-  u[data > thresh] <- gpdtransform(data = data[data > thresh], thresh = thresh, par = par, q = qmarg)
+  u[data > thresh] <- gpdtransform(data = data[data > thresh], thresh = thresh, par = par, qmarg = qmarg)
   return(u)
 } 
 

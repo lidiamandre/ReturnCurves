@@ -15,6 +15,7 @@
 #' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
+#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.
 #' 
 #' @return A matrix containing the estimates of the Return Curve on standard exponential margins.
 #' 
@@ -50,14 +51,14 @@
 #' 
 #' @export
 #' 
-rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE){
+rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
   n <- length(w)
   xp <- qexp(1 - p)
-  lambda <- adf_est(data = data, w = w, method = method, qhill = q, qalphas = qalphas, k = k, constrained = constrained)
-  thresh <- sapply(w, function(i) minproj_lambda(data, i, q = q)$thresh)
+  lambda <- adf_est(data = data, w = w, method = method, qhill = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
+  thresh <- sapply(w, function(i) minproj_lambda(data, i, q_minproj = q)$thresh)
   r <- sapply(1:n, function(i) thresh[i] - log(p/(1 - q))/lambda[i])
   x <- sapply(1:n, function(i) r[i] * w[i])
   y <- sapply(1:n, function(i) r[i] * (1 - w[i]))

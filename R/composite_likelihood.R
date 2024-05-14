@@ -1,16 +1,16 @@
-bbp <- function(w, k = 7, a = 0, b = 1){
+bbp <- function(w, k, a, b){
   if(a >= b) stop("The lower bound has to be smaller than the upper bound!")
-  q <- sum(w >= a & w <= b)
+  l <- sum(w >= a & w <= l)
   v <- seq(a, b, length.out = q)
   vnew <- (v - a)/(b - a)
-  basis <- array(0, dim = c(q, k+1))
+  basis <- array(0, dim = c(l, k+1))
   for(i in 0:k){
-    basis[, i + 1] <- (choose(k, i)) * vnew^i * (1 - vnew)^(k-i)
+    basis[, i + 1] <- (choose(k, i)) * vnew^i * (1 - vnew)^(k - i)
   }
   return(list("basis" = basis, "angles" = v)) 
 }
 
-est_beta <- function(par, basis, t, len_vec, w, lam_end = c(1, 1)){ 
+est_beta <- function(par, basis, t, len_vec, w, lam_end){ 
   if(any(lam_end > 1)) stop("Value of the ADF is not supported!") # future me: change text!
   beta <- c(lam_end[1], exp(par), lam_end[2])
   lam <- basis %*% beta
@@ -26,12 +26,12 @@ est_beta <- function(par, basis, t, len_vec, w, lam_end = c(1, 1)){
   }
 }
 
-minfunction_mle <- function(w, data, a = 0, b = 1, lam_end = c(1, 1), k = 7, q = 0.95, tol = 0.0001){
+minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol){
   polynomials <- bbp(w = w, k = k, a = a, b = b)
   basis <- polynomials$basis
   angles <- polynomials$angles
   par_init  <- rep(0, k-1)
-  min_proj <- sapply(angles, function(i) minproj_lambda(data = data, w = i, q = q))
+  min_proj <- sapply(angles, function(i) minproj_lambda(data = data, w = i, q_minproj = q_minproj))
   t <- c()
   len_vec <- c()
   for(i in 1:length(angles)){

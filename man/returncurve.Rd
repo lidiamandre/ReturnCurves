@@ -13,7 +13,8 @@ rc_est(
   q = 0.95,
   qalphas = 0.95,
   k = 7,
-  constrained = FALSE
+  constrained = FALSE,
+  tol = 0.001
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ rc_est(
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to 7.}
 
 \item{constrained}{Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
+
+\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.}
 }
 \value{
 A matrix containing the estimates of the Return Curve on standard exponential margins.

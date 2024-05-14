@@ -18,7 +18,8 @@ rc_unc(
   blocksize = 1,
   nboot = 250,
   nangles = 150,
-  alpha = 0.05
+  alpha = 0.05,
+  tol = 1e-04
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ rc_unc(
 \item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
 
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
+
+\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.}
 }
 \value{
 Returns a list containing: 

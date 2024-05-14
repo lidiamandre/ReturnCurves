@@ -20,6 +20,7 @@
 #' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
 #' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.
 #' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
+#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.
 #' 
 #' @return Returns a list containing: 
 #' \item{median}{A vector containing the median estimates of the return curve.} 
@@ -69,15 +70,16 @@
 #' 
 rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), qmarg = 0.95, q = 0.95, 
                    qalphas = 0.95, k = 7, constrained = FALSE, blocksize = 1, 
-                   nboot = 250, nangles = 150, alpha = 0.05){ 
+                   nboot = 250, nangles = 150, alpha = 0.05, tol = 0.0001){ 
+  n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
   data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
-    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize)
-    bootdata_exp <- margtransf(bootdata, q = qmarg)
-    rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained)
+    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
+    bootdata_exp <- margtransf(bootdata, qmarg = qmarg)
+    rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
     rc_orig <- curvetransf(rc, data = bootdata, qmarg = qmarg)
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))

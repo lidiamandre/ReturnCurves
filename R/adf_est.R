@@ -10,10 +10,11 @@
 #' @param data A matrix containing the data on standard exponential margins.
 #' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.
-#' @param qhill Marginal quantile used for the Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.
+#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.
 #' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to 7.
 #' @param constrained Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
+#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to 0.0001.
 #' 
 #' @return A vector containing the estimates of the angular dependence function.
 #' 
@@ -50,21 +51,24 @@
 #'
 #' @export
 #' 
-adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), qhill = 0.95, qalphas = 0.95, k = 7, constrained = FALSE){
+adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
   if(constrained == FALSE){
     if(method == "hill"){
-      lambda_hill <- sapply(w, function(i) minproj_lambda(data, w = i, q = qhill)$lambdahill)
-      lambda_hill <- properties(w, lambda_hill)
+      lambda_hill <- sapply(w, function(i) minproj_lambda(data, w = i, q_minproj = q)$lambdahill)
+      lambda_hill <- properties(w = w, lambda = lambda_hill)
       return(lambda_hill)
     }
     else{
-      basis <- bbp(w = w)$basis
-      betacl <- minfunction_mle(w = w, data = data)
+      a <- 0
+      b <- 1
+      lam_end <- c(1, 1)
+      basis <- bbp(w = w, k = k, a = a, b = b)$basis
+      betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol)
       lambda_cl <- basis %*% betacl
-      lambda_cl <- properties(w, as.vector(lambda_cl))
+      lambda_cl <- properties(w = w, lambda = as.vector(lambda_cl))
       return(lambda_cl)
     }
   }
@@ -80,8 +84,8 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), qh
         return(lambda_hill)
       }
       lambda_hill[indx] <- pmax(w, 1 - w)[indx]
-      lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i, q = qhill)$lambdahill)
-      lambda_hill <- properties(w, lambda_hill)
+      lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i, q_minproj = qhill)$lambdahill)
+      lambda_hill <- properties(w = w, lambda = lambda_hill)
       return(lambda_hill)
     }
     if(method == "cl"){
@@ -92,11 +96,11 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), qh
       }
       else{
         lambda_cl[indx] <- pmax(w, 1 - w)[indx]
-        basis <- bbp(w = w, a = a, b = b)$basis
+        basis <- bbp(w = w, k = k, a = a, b = b)$basis
         lam_end <- c(max(a, 1 - a), max(b, 1 - b))
-        betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end)
+        betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol)
         lambda_cl[!indx] <- basis %*% betacl
-        lambda_cl <- properties(w, as.vector(lambda_cl))
+        lambda_cl <- properties(w = w, lambda = as.vector(lambda_cl))
         return(lambda_cl)
       }
     }

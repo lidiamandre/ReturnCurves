@@ -1,9 +1,9 @@
-curve_inverse_transform <- function(curveunif, data, q = 0.95){
-  thresh <- quantile(data, q)
+curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
+  thresh <- quantile(data, qmarg)
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
   nvec <- c()
-  nvec[curveunif > q] <- qgpd((curveunif[curveunif > q] - q)/(1 - q), loc = thresh, scale = par[1], shape = par[2])
-  nvec[curveunif <= q] <- quantile(data, curveunif[curveunif <= q])
+  nvec[curveunif > qmarg] <- qgpd((curveunif[curveunif > qmarg] - qmarg)/(1 - qmarg), loc = thresh, scale = par[1], shape = par[2])
+  nvec[curveunif <= qmarg] <- quantile(data, curveunif[curveunif <= qmarg])
   return(nvec)
 }
 
@@ -53,7 +53,7 @@ curve_inverse_transform <- function(curveunif, data, q = 0.95){
 #' @export
 curvetransf <- function(curvedata, data, qmarg = 0.95){
   curveunif <- apply(curvedata, 2, pexp)
-  sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], q = qmarg))
+  sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
 }
 
 

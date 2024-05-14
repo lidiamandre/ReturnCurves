@@ -60,7 +60,8 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
                     blocksize = 1, nboot = 250, alpha = 0.05){
   if(w_ind > length(w)) stop("Angle not considered") # future me - change this
   if(length(lambda) != length(w)) stop("Number of angles and values estimated for the adf differ") # future me - change this
-  min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q = q)
+  n <- dim(data)[1]
+  min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
   excdata <- (min_proj$minproj - min_proj$thresh)[min_proj$minproj > min_proj$thresh]
   excdata <- lambda[w_ind] * excdata
   nexcdata <- length(excdata)
@@ -68,7 +69,7 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
   model_quantile <- qexp((1:nexcdata) / (nexcdata + 1), rate = 1)
   empirical_quantile_boot <- matrix(NA, nrow = nboot, ncol = length(empirical_quantile))
   for(i in 1:nboot){
-    bdata <- ReturnCurves:::block_bootstrap_function(data = excdata, k = blocksize)
+    bdata <- ReturnCurves:::block_bootstrap_function(data = excdata, k = blocksize, n = n)
     empirical_quantile_boot[i, ] <- sort(bdata)
   }
   ub <- apply(empirical_quantile_boot, 2, quantile, probs = 1 - alpha/2)

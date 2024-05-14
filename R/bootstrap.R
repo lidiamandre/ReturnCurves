@@ -1,4 +1,4 @@
-block_bootstrap_function <- function(data, k = 1, n = dim(data)[1]){ 
+block_bootstrap_function <- function(data, k, n){ 
   data <- as.matrix(data)
   no_blocks <- ceiling(n/k)
   n_new <- no_blocks*k
