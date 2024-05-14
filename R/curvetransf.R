@@ -18,7 +18,7 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' 
 #' @param curvedata A matrix containing an object of function \code{\link{rc_est}}.
 #' @param data A matrix containing the data on the original margins.
-#' @param qmarg Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.
+#' @param qmarg Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is \code{0.95}.
 #' 
 #' @return A matrix containing the estimates of the Return Curve on the original margins.
 #' 
@@ -37,9 +37,11 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' set.seed(321)
 #' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
+#' n <- dim(data)[1]
+#' 
 #' dataexp <- margtransf(data)
 #' 
-#' prob <- 1/(dim(data)[1])
+#' prob <- 1/n
 #' 
 #' rc <- rc_est(data = dataexp, p = prob, method = "hill")
 #' 

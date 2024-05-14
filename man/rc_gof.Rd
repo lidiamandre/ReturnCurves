@@ -18,17 +18,17 @@ rc_gof(
 \arguments{
 \item{data}{A matrix containing the data on the original margins.}
 
-\item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
 \item{rc_origin}{A matrix containing the estimates of the return curve, on the original margins. Should be an object of function \code{\link{curvetransform}}.}
 
-\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
-\item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
+\item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{nangles}{\loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
+\item{nangles}{\loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
 
-\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
+\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.}
 }
 \value{
 Returns a list containing:
@@ -40,7 +40,7 @@ Returns a list containing:
 Assessment of the goodness-of-fit of the return curve estimates following the approach of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying on a survival region is \mjeqn{p}{p}. 
+\loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying on a survival region is \mjeqn{p}{p}; \mjeqn{p}{p} should be within the range of the data and not too extreme.
 For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
 \mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. 
@@ -53,9 +53,11 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
+n <- dim(data)[1]
+
 dataexp <- margtransf(data)
 
-prob <- 10/(dim(data)[1])
+prob <- 10/n
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 

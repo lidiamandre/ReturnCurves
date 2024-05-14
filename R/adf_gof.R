@@ -9,12 +9,12 @@
 #' 
 #' @param data A matrix containing the data on standard exponential margins.
 #' @param w_ind Index of the ray to be considered on the goodness of fit assessment.
-#' @param w Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.
+#' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param lambda \loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.
-#' @param q \loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.
-#' @param blocksize Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.
-#' @param nboot Number of bootstrap samples to be taken. Default is 250 samples.
-#' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.
+#' @param q \loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is \code{0.95}.
+#' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
+#' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
+#' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.
 #' 
 #' 
 #' @return Returns a list containing:
@@ -60,7 +60,6 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
                     blocksize = 1, nboot = 250, alpha = 0.05){
   if(w_ind > length(w)) stop("Angle not considered") # future me - change this
   if(length(lambda) != length(w)) stop("Number of angles and values estimated for the adf differ") # future me - change this
-  n <- dim(data)[1]
   min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
   excdata <- (min_proj$minproj - min_proj$thresh)[min_proj$minproj > min_proj$thresh]
   excdata <- lambda[w_ind] * excdata
@@ -69,7 +68,7 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
   model_quantile <- qexp((1:nexcdata) / (nexcdata + 1), rate = 1)
   empirical_quantile_boot <- matrix(NA, nrow = nboot, ncol = length(empirical_quantile))
   for(i in 1:nboot){
-    bdata <- ReturnCurves:::block_bootstrap_function(data = excdata, k = blocksize, n = n)
+    bdata <- ReturnCurves:::block_bootstrap_function(data = excdata, k = blocksize, n = nexcdata)
     empirical_quantile_boot[i, ] <- sort(bdata)
   }
   ub <- apply(empirical_quantile_boot, 2, quantile, probs = 1 - alpha/2)

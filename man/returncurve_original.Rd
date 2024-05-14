@@ -12,7 +12,7 @@ curvetransf(curvedata, data, qmarg = 0.95)
 
 \item{data}{A matrix containing the data on the original margins.}
 
-\item{qmarg}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is 0.95.}
+\item{qmarg}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is \code{0.95}.}
 }
 \value{
 A matrix containing the estimates of the Return Curve on the original margins.
@@ -30,9 +30,11 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
+n <- dim(data)[1]
+
 dataexp <- margtransf(data)
 
-prob <- 1/(dim(data)[1])
+prob <- 1/n
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 

@@ -21,17 +21,17 @@ adf_gof(
 
 \item{w_ind}{Index of the ray to be considered on the goodness of fit assessment.}
 
-\item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
 \item{lambda}{\loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.}
 
-\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is \code{0.95}.}
 
-\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
-\item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
+\item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
+\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.}
 }
 \value{
 Returns a list containing:

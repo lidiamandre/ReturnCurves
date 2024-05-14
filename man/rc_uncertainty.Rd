@@ -25,29 +25,29 @@ rc_unc(
 \arguments{
 \item{data}{A matrix which contains the data on the original margins.}
 
-\item{w}{Sequence of angles between 0 and 1. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{p}{Curve survival probability.}
+\item{p}{Curve survival probability. Must be \mjeqn{p < 1-q_m}{p < 1-qmarg}, \mjeqn{p < 1-q}{p < 1-q}, and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.}
 
 \item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.}
 
-\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is 0.95.}
+\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution. Default is \code{0.95}.}
 
-\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is 0.95.}
+\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
 
-\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to 0.95.}
+\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to \code{0.95}.}
 
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to 7.}
 
-\item{constrained}{Logical. If FALSE (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
+\item{constrained}{Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
-\item{blocksize}{Size of the blocks for the block bootstrap procedure. If 1 (default), then a standard bootstrap approach is applied.}
+\item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
-\item{nboot}{Number of bootstrap samples to be taken. Default is 250 samples.}
+\item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is 150 angles.}
+\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
 
-\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is 0.05.}
+\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.}
 
 \item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 }
@@ -73,9 +73,11 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
+n <- dim(data)[1]
+
 dataexp <- margtransf(data)
 
-prob <- 10/(dim(data)[1])
+prob <- 10/n
 
 rc <- rc_est(data = dataexp, p = prob, method = "hill")
 

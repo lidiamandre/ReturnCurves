@@ -10,7 +10,7 @@ margtransf(data, qmarg = 0.95)
 \arguments{
 \item{data}{A matrix containing the data on the original margins.}
 
-\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is 0.95.}
+\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is \code{0.95}.}
 }
 \value{
 A matrix containing the data on standard exponential margins.
@@ -29,9 +29,11 @@ library(ReturnCurves)
 # Generating data for illustration purposes
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
+
 \dontrun{plot(data, pch = 20)} 
 
 dataexp <- margtransf(data)
+
 \dontrun{plot(dataexp, pch = 20)} 
 
 }
