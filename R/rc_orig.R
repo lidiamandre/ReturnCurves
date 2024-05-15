@@ -1,11 +1,11 @@
-rc_est <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q_minproj = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
+rc_est <- function(data, w, p, method, q_minproj, qalphas, k, constrained, tol){
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
   n <- length(w)
   xp <- qexp(1 - p)
   lambda <- adf_est(data = data, w = w, method = method, q = q_minproj, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
-  thresh <- sapply(w, function(i) minproj_lambda(data, i, q_minproj = q)$thresh)
+  thresh <- sapply(w, function(i) minproj_lambda(data, i, q_minproj = q_minproj)$thresh)
   r <- sapply(1:n, function(i) thresh[i] - log(p/(1 - q))/lambda[i])
   x <- sapply(1:n, function(i) r[i] * w[i])
   y <- sapply(1:n, function(i) r[i] * (1 - w[i]))

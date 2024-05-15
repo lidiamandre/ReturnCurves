@@ -49,13 +49,9 @@
 #' 
 #' n <- dim(data)[1]
 #' 
-#' dataexp <- margtransf(data)
-#' 
 #' prob <- 10/n
 #' 
-#' rc <- rc_est(data = dataexp, p = prob, method = "hill")
-#' 
-#' rc_orig <- curvetransf(curvedata = rc, data = data)
+#' rc_orig <- rc_o(data = data, p = prob, method = "hill")
 #' 
 #' unc <- rc_unc(data = data, p = prob, method = "hill")
 #' 
@@ -80,9 +76,10 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
-    bootdata_exp <- margtransf(bootdata, qmarg = qmarg)
-    rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
-    rc_orig <- curvetransf(rc, data = bootdata, qmarg = qmarg)
+    # bootdata_exp <- margtransf(bootdata, qmarg = qmarg)
+    # rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
+    # rc_orig <- curvetransf(rc, data = bootdata, qmarg = qmarg)
+    rc_orig <- rc_o(data = bootdata, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){
