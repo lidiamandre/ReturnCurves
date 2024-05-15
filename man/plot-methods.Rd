@@ -3,9 +3,7 @@
 \docType{methods}
 \name{plot}
 \alias{plot}
-\alias{plot,}
-\alias{adf_est.class,}
-\alias{ANY-method}
+\alias{plot.adf}
 \title{Visualisation of the ADF estimates}
 \usage{
 \S4method{plot}{adf_est.class}(x)

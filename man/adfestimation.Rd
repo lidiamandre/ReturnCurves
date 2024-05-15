@@ -66,11 +66,11 @@ dataexp <- margtransf(data)
 
 w <- seq(0, 1, by = 0.01)
 
-adf <- adf_est(data = dataexp, method = "hill")
+lambda <- adf_est(data = dataexp, method = "hill")
 
 \dontrun{
-plot(w, pmax(w, 1-w), type = "l", lty = 2, ylim = c(min(pmax(w, 1-w)), max(adf) + 0.1))
-lines(w, adf, col = 2, lwd = 2)
+plot(w, pmax(w, 1-w), type = "l", lty = 2, ylim = c(min(pmax(w, 1-w)), max(lambda) + 0.1))
+lines(w, lambda, col = 2, lwd = 2)
 }
 
 }

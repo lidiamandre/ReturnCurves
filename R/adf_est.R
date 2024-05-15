@@ -67,11 +67,11 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
 #'
 #' w <- seq(0, 1, by = 0.01)
 #'
-#' adf <- adf_est(data = dataexp, method = "hill")
+#' lambda <- adf_est(data = dataexp, method = "hill")
 #'
 #' \dontrun{
-#' plot(w, pmax(w, 1-w), type = "l", lty = 2, ylim = c(min(pmax(w, 1-w)), max(adf) + 0.1))
-#' lines(w, adf, col = 2, lwd = 2)
+#' plot(w, pmax(w, 1-w), type = "l", lty = 2, ylim = c(min(pmax(w, 1-w)), max(lambda) + 0.1))
+#' lines(w, lambda, col = 2, lwd = 2)
 #' }
 #'
 #' @export
@@ -160,7 +160,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
 #' 
 #' @rdname plot-methods
 #'
-#' @aliases plot, adf_est.class, ANY-method
+#' @aliases plot.adf
 #' 
 #' @examples
 #' library(ReturnCurves)
@@ -180,7 +180,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
 #' @export 
 setMethod("plot", signature = list("adf_est.class"), function(x){
   object <- x
-  df <- data.frame("w" = object@w, "lb" = pmax(object@w, 1-object@w), "object" = object@object)
+  df <- data.frame("w" = object@w, "lb" = pmax(object@w, 1-object@w), "adf" = object@adf)
   coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
   df %>% ggplot(aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
     geom_line(aes(x = w, y = adf, col = names(coloursl)[2])) +
