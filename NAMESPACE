@@ -1,5 +1,4 @@
-export("rc_est")
-export("curvetransf")
+export("rc_o")
 export("adf_est")
 export("margtransf")
 export("rc_unc")
