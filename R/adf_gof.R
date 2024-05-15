@@ -1,3 +1,25 @@
+.adf_gof.class <- setClass("adf_gof.class", representation(data = "array",
+                                                           w_ind = "numeric",
+                                                           w = "numeric",
+                                                           lambda = "numeric",
+                                                           q = "numeric",
+                                                           blocksize = "numeric",
+                                                           nboot = "numeric",
+                                                           alpha = "numeric",
+                                                           gof = "list"))
+
+adf_gof.class <- function(data, w_ind, w, lambda, q, blocksize, nboot, alpha, gof){
+  .adf_gof.class(data = data,
+                 w_ind = w_ind,
+                 w = w,
+                 lambda = lambda,
+                 q = q,
+                 blocksize = blocksize,
+                 nboot = nboot,
+                 alpha = alpha,
+                 gof = gof)
+}
+
 #' Goodness of fit of the Angular Dependence function estimates
 #' 
 #' @name adf_gof
@@ -16,8 +38,9 @@
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.
 #' 
+#' @return Returns an object of S4 class of type adf_gof.class. 
 #' 
-#' @return Returns a list containing:
+#' @slot gof A list containing
 #' \item{model}{A vector containing the model quantiles.} 
 #' \item{empirical}{A vector containing the empirical quantiles.}
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
@@ -60,6 +83,8 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
                     blocksize = 1, nboot = 250, alpha = 0.05){
   if(w_ind > length(w)) stop("Angle not considered") # future me - change this
   if(length(lambda) != length(w)) stop("Number of angles and values estimated for the adf differ") # future me - change this
+  result <- adf_gof.class(data = data, w_ind = w_ind, w = w, lambda = lambda, q = q, blocksize = blocksize,
+                          nboot = nboot, alpha = alpha, gof = list())
   min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
   excdata <- (min_proj$minproj - min_proj$thresh)[min_proj$minproj > min_proj$thresh]
   excdata <- lambda[w_ind] * excdata
@@ -73,7 +98,8 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
   }
   ub <- apply(empirical_quantile_boot, 2, quantile, probs = 1 - alpha/2)
   lb <- apply(empirical_quantile_boot, 2, quantile, probs = alpha/2)
-  return(list("model" = model_quantile, "empirical" = empirical_quantile, "lower" = lb, "upper" = ub))
+  result@gof <- list("model" = model_quantile, "empirical" = empirical_quantile, "lower" = lb, "upper" = ub)
+  return(result)
 }
 
 

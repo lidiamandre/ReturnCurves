@@ -39,7 +39,7 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
 #' 
-#' @return An object of S4 class of type \code{adf.class}.
+#' @return Returns an object of S4 class of type adf_est.class.
 #' 
 #' @slot adf A vector containing the estimates of the angular dependence function.
 #' 

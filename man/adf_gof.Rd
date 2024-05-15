@@ -34,11 +34,7 @@ adf_gof(
 \item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.}
 }
 \value{
-Returns a list containing:
-\item{model}{A vector containing the model quantiles.} 
-\item{empirical}{A vector containing the empirical quantiles.}
-\item{lower}{A vector containing the lower bound of the confidence interval.}
-\item{upper}{A vector containing the upper bound of the confidence interval.}
+Returns an object of S4 class of type adf_gof.class.
 }
 \description{
 \loadmathjax{}
@@ -49,6 +45,16 @@ Assessment of the goodness of fit of the angular dependence function estimates \
 variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
 A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
 }
+\section{Slots}{
+
+\describe{
+\item{\code{gof}}{A list containing
+\item{model}{A vector containing the model quantiles.} 
+\item{empirical}{A vector containing the empirical quantiles.}
+\item{lower}{A vector containing the lower bound of the confidence interval.}
+\item{upper}{A vector containing the upper bound of the confidence interval.}}
+}}
+
 \examples{
 library(ReturnCurves)
 

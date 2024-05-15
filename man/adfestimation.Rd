@@ -34,7 +34,7 @@ adf_est(
 \item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 }
 \value{
-An object of S4 class of type \code{adf.class}.
+Returns an object of S4 class of type adf_est.class.
 }
 \description{
 \loadmathjax{}
