@@ -1,4 +1,4 @@
-export("rc_o")
+export("rc_est")
 export("adf_est")
 export("margtransf")
 export("rc_unc")

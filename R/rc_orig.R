@@ -1,51 +1,3 @@
-rc_est <- function(data, w, p, method, q_minproj, qalphas, k, constrained, tol){
-  if(!method %in% c("hill", "cl")){
-    stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
-  }
-  n <- length(w)
-  xp <- qexp(1 - p)
-  lambda <- adf_est(data = data, w = w, method = method, q = q_minproj, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
-  thresh <- sapply(w, function(i) minproj_lambda(data, i, q_minproj = q_minproj)$thresh)
-  r <- sapply(1:n, function(i) thresh[i] - log(p/(1 - q_minproj))/lambda[i])
-  x <- sapply(1:n, function(i) r[i] * w[i])
-  y <- sapply(1:n, function(i) r[i] * (1 - w[i]))
-  for(i in 1:length(x)){
-    if(x[i] > xp){
-      x[i] <- xp
-    }
-    if(x[i] < 0){
-      x[i] <- 0
-    }
-    if(y[i] > xp){
-      y[i] <- xp
-    }
-    if(y[i] < 0){
-      y[i] <- 0
-    }
-  }
-  x[1] <- 0
-  y[1] <- xp
-  x[n] <- xp
-  y[n] <- 0
-  for(i in length(w[w < 0.5]):1){
-    if(x[i] > x[i + 1]){
-      x[i] <- x[i + 1]
-    }
-    if(y[i] < y[i + 1]){
-      y[i] <- y[i + 1]
-    }
-  }
-  for(i in length(w[w > 0.5]):(length(w))){
-    if(x[i] < x[i - 1]){
-      x[i] <- x[i - 1]
-    }
-    if(y[i] > y[i - 1]){
-      y[i] <- y[i - 1]
-    }
-  }
-  return(cbind(x, y))
-}
-
 curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
   thresh <- quantile(data, qmarg)
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
@@ -87,11 +39,11 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' 
 #' @note The parameter \code{qmarg} should be the same as the one used in \code{\link{margtransf}}.
 #' 
-#' @rdname returncurve_o
+#' @rdname returncurve
 #' 
 #' @references \insertAllCited{}
 #' 
-#' @aliases rc_o
+#' @aliases rc_est
 #' 
 #' @examples
 #' library(ReturnCurves)
@@ -104,7 +56,7 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' 
 #' prob <- 1/n
 #' 
-#' rc_orig <- rc_o(data = data, p = prob, method = "hill")
+#' rc_orig <- rc_est(data = data, p = prob, method = "hill")
 #' 
 #' \dontrun{
 #' plot(data, pch = 20, main = "Return Curve on the original margins")
@@ -112,9 +64,9 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' }
 #' 
 #' @export
-rc_o <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
+rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
   dataexp <- margtransf(data = data, qmarg = qmarg)
-  rc_data <- rc_est(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
+  rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
   curveunif <- apply(rc_data, 2, pexp)
   sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
 }
