@@ -75,13 +75,9 @@ data <- cbind(rnorm(1000), rnorm(1000))
 
 n <- dim(data)[1]
 
-dataexp <- margtransf(data)
-
 prob <- 10/n
 
-rc <- rc_est(data = dataexp, p = prob, method = "hill")
-
-rc_orig <- curvetransf(curvedata = rc, data = data)
+rc_orig <- rc_o(data = data, p = prob, method = "hill")
 
 unc <- rc_unc(data = data, p = prob, method = "hill")
 
