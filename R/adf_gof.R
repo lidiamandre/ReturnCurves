@@ -65,10 +65,10 @@ adf_gof.class <- function(data, w_ind, w, lambda, q, blocksize, nboot, alpha, go
 #' 
 #' dataexp <- margtransf(data)
 #' 
-#' adf <- adf_est(data = dataexp, method = "hill")
+#' lambda <- adf_est(data = dataexp, method = "hill")
 #' 
 #' w_ind <- 31
-#' gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = adf)
+#' gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = lambda@adf)
 #' 
 #' \dontrun{
 #' plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")

@@ -64,10 +64,10 @@ data <- cbind(rnorm(1000), rnorm(1000))
 
 dataexp <- margtransf(data)
 
-adf <- adf_est(data = dataexp, method = "hill")
+lambda <- adf_est(data = dataexp, method = "hill")
 
 w_ind <- 31
-gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = adf)
+gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = lambda@adf)
 
 \dontrun{
 plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")
