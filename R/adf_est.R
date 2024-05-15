@@ -143,5 +143,54 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   }
 }
 
+#' Visualisation of the ADF estimates
+#'
+#' @name plot
+#'
+#' @description 
+#' Plot method for an S4 object returned by \code{\link{adf_est}}.
+#' 
+#' @docType methods
+#'
+#' @param x An object of an adf_est S4 class produced by \code{\link{adf_est}}.
+#' 
+#' @return A ggplot object.
+#' 
+#' @details \loadmathjax{} The plot shows a comparison between the estimates \mjeqn{\hat{\lambda}(\omega)}{} of the ADF and its theoretical lower bound.
+#' 
+#' @rdname plot-methods
+#'
+#' @aliases plot, adf_est.class, ANY-method
+#' 
+#' @examples
+#' library(ReturnCurves)
+#'
+#' # Generating data for illustration purposes
+#' set.seed(321)
+#' data <- cbind(rnorm(1000), rnorm(1000))
+#' 
+#' dataexp <- margtransf(data)
+#'
+#' w <- seq(0, 1, by = 0.01)
+#'
+#' lambda <- adf_est(data = dataexp, method = "hill")
+#' 
+#' plot(lambda)
+#' 
+#' @export 
+setMethod("plot", signature = list("adf_est.class"), function(x){
+  object <- x
+  df <- data.frame("w" = object@w, "lb" = pmax(object@w, 1-object@w), "object" = object@object)
+  coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
+  df %>% ggplot(aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
+    geom_line(aes(x = w, y = adf, col = names(coloursl)[2])) +
+    labs(x = expression(omega), y = expression(lambda(omega))) + 
+    scale_color_manual(values = coloursl, 
+                       guide = guide_legend(override.aes = list(linetype = c("solid", "dashed")))) +
+    theme_bw() + theme(panel.grid.major = element_blank(),
+                       panel.grid.minor = element_blank(),
+                       legend.title = element_blank()) +
+    ggtitle(TeX("Estimation of $\\hat{\\lambda}(\\omega)$"))
+})
 
 

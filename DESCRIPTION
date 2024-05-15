@@ -7,6 +7,6 @@ Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
-Imports: evd,ismev, Rdpack, mathjaxr
+Imports: evd, ismev, Rdpack, mathjaxr, ggplot2, dplyr, latex2exp
 RoxygenNote: 7.3.1
 RdMacros: Rdpack, mathjaxr
