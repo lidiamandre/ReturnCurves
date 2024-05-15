@@ -1,3 +1,26 @@
+.adf_est.class <- setClass("adf_est.class", representation(data = "array",
+                                                           w = "numeric",
+                                                           method = "character",
+                                                           q = "numeric",
+                                                           qalphas = "numeric",
+                                                           k = "numeric",
+                                                           constrained = "logical",
+                                                           tol = "numeric",
+                                                           adf = "numeric"))
+
+adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf){
+  .adf_est.class(data = data,
+                 w = w,
+                 method = method,
+                 q = q,
+                 qalphas = qalphas,
+                 k = k,
+                 constrained = constrained,
+                 tol = tol,
+                 adf = adf)
+}
+
+
 #' Estimation of the Angular Dependence function (ADF)
 #' 
 #' @name adf_est
@@ -16,7 +39,9 @@
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
 #' 
-#' @return A vector containing the estimates of the angular dependence function.
+#' @return An object of S4 class of type \code{adf.class}.
+#' 
+#' @slot adf A vector containing the estimates of the angular dependence function.
 #' 
 #' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, 
 #' obtained using Composite likelihood methods. Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
@@ -55,11 +80,17 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   if(!method %in% c("hill", "cl")){
     stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
   }
+  
+  result <- adf_est.class(data = data, w = w, method = method, 
+                          q = q, qalphas = qalphas, k = k, 
+                          constrained = constrained, tol = tol, adf = double())
+  
   if(constrained == FALSE){
     if(method == "hill"){
       lambda_hill <- sapply(w, function(i) minproj_lambda(data, w = i, q_minproj = q)$lambdahill)
       lambda_hill <- properties(w = w, lambda = lambda_hill)
-      return(lambda_hill)
+      result@adf <- lambda_hill
+      return(result)
     }
     else{
       a <- 0
@@ -69,7 +100,8 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
       betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol)
       lambda_cl <- basis %*% betacl
       lambda_cl <- properties(w = w, lambda = as.vector(lambda_cl))
-      return(lambda_cl)
+      result@adf <- lambda_cl
+      return(result)
     }
   }
   else{
@@ -81,18 +113,21 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
       lambda_hill <- c()
       if(sum(!indx) < 2){
         lambda_hill <- pmax(w, 1 - w)
-        return(lambda_hill)
+        result@adf <- lambda_hill
+        return(result)
       }
       lambda_hill[indx] <- pmax(w, 1 - w)[indx]
       lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i, q_minproj = qhill)$lambdahill)
       lambda_hill <- properties(w = w, lambda = lambda_hill)
-      return(lambda_hill)
+      result@adf <- lambda_hill
+      return(result)
     }
     if(method == "cl"){
       lambda_cl <- c()
       if(sum(!indx) < 2){
         lambda_cl <- pmax(w, 1 - w)
-        return(lambda_cl)
+        result@adf <- lambda_cl
+        return(result)
       }
       else{
         lambda_cl[indx] <- pmax(w, 1 - w)[indx]
@@ -101,7 +136,8 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
         betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol)
         lambda_cl[!indx] <- basis %*% betacl
         lambda_cl <- properties(w = w, lambda = as.vector(lambda_cl))
-        return(lambda_cl)
+        result@adf <- lambda_cl
+        return(result)
       }
     }
   }
