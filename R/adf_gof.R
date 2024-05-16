@@ -58,6 +58,8 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' 
 #' @aliases adf_gof
 #' 
+#' @include adf_est.R
+#' 
 #' @examples
 #' library(ReturnCurves)
 #' 

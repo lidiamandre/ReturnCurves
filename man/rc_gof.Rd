@@ -5,10 +5,10 @@
 \alias{rc_gof}
 \title{Goodness of fit of the Return Curve estimates}
 \usage{
-rc_gof(rc, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
+rc_gof(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 }
 \arguments{
-\item{rc}{An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.}
+\item{retcurve}{An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
@@ -47,7 +47,7 @@ prob <- 10/n
 
 rc_orig <- rc_est(data = data, p = prob, method = "hill")
 
-gof <- rc_gof(rc = rc_orig)
+gof <- rc_gof(retcurve = rc_orig)
 
 plot(gof)
 

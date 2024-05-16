@@ -10,3 +10,16 @@ License: What license is it under?
 Imports: evd, ismev, Rdpack, mathjaxr, ggplot2, dplyr, latex2exp
 RoxygenNote: 7.3.1
 RdMacros: Rdpack, mathjaxr
+Collate: 
+    'adf_est.R'
+    'adf_gof.R'
+    'adf_properties.R'
+    'bootstrap.R'
+    'composite_likelihood.R'
+    'heffernantawn.R'
+    'marginal_transform.R'
+    'min_projection_hill.R'
+    'rc_exp.R'
+    'rc_orig.R'
+    'rc_gof.R'
+    'rc_uncertainty.R'

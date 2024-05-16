@@ -1,11 +1,11 @@
-.rc_gof.class <- setClass("rc_gof.class", representation(rc = "rc_est.class",
+.rc_gof.class <- setClass("rc_gof.class", representation(retcurve = "rc_est.class",
                                                          blocksize = "numeric",
                                                          nboot = "numeric",
                                                          alpha = "numeric",
                                                          gof = "list"))
 
-rc_gof.class <- function(rc, blocksize, nboot, alpha, gof){
-  .rc_gof.class(rc = rc,
+rc_gof.class <- function(retcurve, blocksize, nboot, alpha, gof){
+  .rc_gof.class(retcurve = retcurve,
                 blocksize = blocksize,
                 nboot = nboot,
                 alpha = alpha,
@@ -15,7 +15,7 @@ rc_gof.class <- function(rc, blocksize, nboot, alpha, gof){
 setMethod("plot", signature = list("rc_gof.class"), function(x){
   object <- x
   df <- data.frame("angles" = 1:length(x@gof$median), x@gof, "pX" = c(rev(1:length(x@gof$median)), 1:length(x@gof$median)),
-                   "pY" = c(rev(x@gof$lower), x@gof$upper), "prob" = rep(x@rc@p, length(x@gof$median)))
+                   "pY" = c(rev(x@gof$lower), x@gof$upper), "prob" = rep(x@retcurve@p, length(x@gof$median)))
   df %>% ggplot(aes(x = pX, y = pY)) + geom_polygon(fill = "grey80", col = NA) +
     geom_line(aes(x = angles, y = median)) +
     geom_line(aes(x = angles, y = upper), linetype = "dashed") +
@@ -36,8 +36,7 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' @docType methods
 #' 
-#' @param rc An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.
-#' @inheritParams rc_est
+#' @param retcurve An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param nangles \loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
@@ -60,6 +59,8 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' @aliases rc_gof
 #' 
+#' @include rc_orig.R
+#' 
 #' @examples
 #' library(ReturnCurves)
 #' 
@@ -73,18 +74,17 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' rc_orig <- rc_est(data = data, p = prob, method = "hill")
 #'
-#' gof <- rc_gof(rc = rc_orig)
+#' gof <- rc_gof(retcurve = rc_orig)
 #' 
 #' plot(gof)
 #' 
 #' @export
 #'  
-rc_gof <- function(rc,
-                   blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
-  result <- rc_gof.class(rc = rc, blocksize = blocksize, nboot = nboot, alpha = alpha, gof = list())
-  rc_origin <- result@rc@rc
-  data <- result@rc@data
-  w <- result@rc@w
+rc_gof <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+  result <- rc_gof.class(retcurve = retcurve, blocksize = blocksize, nboot = nboot, alpha = alpha, gof = list())
+  rc_origin <- result@retcurve@rc
+  data <- result@retcurve@data
+  w <- result@retcurve@w
   n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
