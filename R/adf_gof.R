@@ -15,7 +15,6 @@ adf_gof.class <- function(adf, w_ind, blocksize, nboot, alpha, gof){
 }
 
 setMethod("plot", signature = list("adf_gof.class"), function(x){
-  object <- x
   df <- as.data.frame(x@gof)
   ploygondf <- data.frame("X" = c(rev(x@gof$model), x@gof$model),
                           "Y" = c(rev(x@gof$lower), x@gof$upper))
@@ -57,8 +56,6 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' @references \insertAllCited{}
 #' 
 #' @aliases adf_gof
-#' 
-#' @include adf_est.R
 #' 
 #' @examples
 #' library(ReturnCurves)

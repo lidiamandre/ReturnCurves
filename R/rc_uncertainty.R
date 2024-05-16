@@ -1,3 +1,61 @@
+.rc_unc.class <- setClass("rc_unc.class", representation(data = "array",
+                                                         qmarg = "numeric",
+                                                         w = "numeric",
+                                                         p = "numeric",
+                                                         method = "character",
+                                                         q = "numeric",
+                                                         qalphas = "numeric",
+                                                         k = "numeric",
+                                                         constrained = "logical",
+                                                         tol = "numeric",
+                                                         blocksize = "numeric",
+                                                         nboot = "numeric",
+                                                         nangles = "numeric",
+                                                         alpha = "numeric",
+                                                         unc = "list"))
+
+rc_unc.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
+                         tol, blocksize, nboot, nangles, alpha, unc){
+  .rc_unc.class(data = data,
+                qmarg = qmarg,
+                w = w,
+                p = p,
+                method = method,
+                q = q,
+                qalphas = qalphas,
+                k = k,
+                constrained = constrained,
+                tol = tol,
+                blocksize = blocksize,
+                nboot = nboot,
+                nangles = nangles,
+                alpha = alpha,
+                unc = unc)
+}
+
+setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, y){
+  df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
+  rcdf <- data.frame("rcX" = y@rc[, 1], "rcY" = y@rc[, 2])
+  uncdf <- data.frame("medianX" = x@unc$median[, 1], "medianY" = x@unc$median[, 2], 
+                      "meanX" = x@unc$mean[, 1], "meanY" = x@unc$mean[, 2], 
+                      "lowerX" = x@unc$lower[, 1], "lowerY" = x@unc$lower[, 2], 
+                      "upperX" = x@unc$upper[, 1], "upperY" = x@unc$upper[, 2])
+  colours <- c("Estimated RC" = "red", "Median RC" = "orange", "Mean RC" = "brown", 
+               "Lower Bound" = 1, "Upper Bound" = 1)
+  df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
+    geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
+    geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
+    geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
+    geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+    scale_color_manual(values = colours, 
+                       guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "solid", 
+                                                                             "solid", "dashed"),
+                                                                linewidth = c(1, 0.5, 1, 1, 0.5)))) +
+    theme_minimal() + theme(legend.title = element_blank()) +
+    ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+})
+
 #' Uncertainty of the Return Curve estimates
 #' 
 #' @name rc_unc
@@ -7,22 +65,13 @@
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix which contains the data on the original margins.
-#' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}. 
-#' @param p Curve survival probability. Must be \mjeqn{p < 1-q_m}{p < 1-qmarg}, \mjeqn{p < 1-q}{p < 1-q}, and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
-#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite likelihood estimator approaches. More details can be found in \code{\link{adf_est}}.
-#' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution. Default is \code{0.95}.
-#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
-#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to \code{0.95}.
-#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function using the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to 7.
-#' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
+#' @inheritParams rc_est
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
-#' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.
-#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
+#' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
-#' @return Returns a list containing: 
+#' @return An object of S4 clas \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
 #' \item{median}{A vector containing the median estimates of the return curve.} 
 #' \item{mean}{A vector containing the mean estimates of the return curve.} 
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
@@ -31,8 +80,6 @@
 #' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace.}{}
 #' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{RC(p)}{} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
 #' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}
-#' 
-#' 
 #' 
 #' @rdname rc_uncertainty
 #' 
@@ -51,24 +98,21 @@
 #' 
 #' prob <- 10/n
 #' 
-#' rc_orig <- rc_o(data = data, p = prob, method = "hill")
+#' rc_orig <- rc_est(data = data, p = prob, method = "hill")
 #' 
 #' unc <- rc_unc(data = data, p = prob, method = "hill")
 #' 
-#' \dontrun{
-#' plot(data, xlab = "X", ylab = "Y", pch = 20, col = "grey")
-#' lines(rc_orig, lwd = 2, col = 2)
-#' lines(unc$median, lwd = 2, col = "orange") # to plot median estimates
-#' lines(unc$mean, lwd = 2, col = "orange") # to plot mean estimates
-#' lines(unc$upper, lty = 'dashed', lwd = 2)
-#' lines(unc$lower, lty = 'dashed', lwd = 2)
-#' }
+#' plot(unc, rc_orig)
 #' 
 #' @export
 #' 
 rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), qmarg = 0.95, q = 0.95, 
                    qalphas = 0.95, k = 7, constrained = FALSE, blocksize = 1, 
                    nboot = 250, nangles = 150, alpha = 0.05, tol = 0.0001){ 
+  result <- rc_unc.class(data = data, qmarg = qmarg, w = w, p = p, method = method, 
+                         q = q, qalphas = qalphas, k = k, constrained = constrained, 
+                         tol = tol, blocksize = blocksize, nboot = nboot, nangles = nangles, 
+                         alpha = alpha, unc = list())
   n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
@@ -76,10 +120,7 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
-    # bootdata_exp <- margtransf(bootdata, qmarg = qmarg)
-    # rc <- rc_est(data = bootdata_exp, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
-    # rc_orig <- curvetransf(rc, data = bootdata, qmarg = qmarg)
-    rc_orig <- rc_o(data = bootdata, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
+    rc_orig <- rc_est(data = bootdata, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){
@@ -100,7 +141,8 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   rc_median <- cbind(med/sqrt(1 + grad^2) + data0[1], grad * (med/sqrt(1 + grad^2)) + data0[2])
   rc_lb <- cbind(lb/sqrt(1 + grad^2) + data0[1], grad * (lb/sqrt(1 + grad^2)) + data0[2])
   rc_ub <- cbind(ub/sqrt(1 + grad^2) + data0[1], grad * (ub/sqrt(1 + grad^2)) + data0[2])
-  return(list("median" = rc_median, "mean" = rc_mean, "lower" = rc_lb, "upper" = rc_ub))
+  result@unc <- list("median" = rc_median, "mean" = rc_mean, "lower" = rc_lb, "upper" = rc_ub)
+  return(result)
 }
 
 

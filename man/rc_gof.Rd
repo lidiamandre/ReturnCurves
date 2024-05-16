@@ -14,12 +14,12 @@ rc_gof(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{nangles}{\loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
+\item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
 
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
-Returns a list containing:
+An object of S4 clas \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
 \item{median}{A vector containing the median of the empirical probability of lying in a survival region.} 
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
@@ -32,7 +32,7 @@ Assessment of the goodness-of-fit of the return curve estimates following the ap
 For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
 \mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. 
-The \mjeqn{(1-\alpha)}{} confidence region is obtained via a (block) bootstrapping procedure and ideally should contain the true probability \mjeqn{p}{p}.
+The \mjeqn{(1-\alpha)}{}\% confidence region is obtained via a (block) bootstrapping procedure and ideally should contain the true probability \mjeqn{p}{p}.
 }
 \examples{
 library(ReturnCurves)

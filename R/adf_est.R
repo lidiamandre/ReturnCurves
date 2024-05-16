@@ -21,8 +21,7 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
 }
 
 setMethod("plot", signature = list("adf_est.class"), function(x){
-  object <- x
-  df <- data.frame("w" = object@w, "lb" = pmax(object@w, 1-object@w), "adf" = object@adf)
+  df <- data.frame("w" = x@w, "lb" = pmax(x@w, 1-x@w), "adf" = x@adf)
   coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
   df %>% ggplot(aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
     geom_line(aes(x = w, y = adf, col = names(coloursl)[2])) +

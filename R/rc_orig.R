@@ -34,7 +34,6 @@ rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
 }
 
 setMethod("plot", signature = list("rc_est.class"), function(x){
-  object <- x
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
   rcdf <- data.frame("rcX" = x@rc[, 1], "rcY" = x@rc[, 2])
   df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
@@ -99,3 +98,6 @@ rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("
   result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
   return(result)
 }
+
+
+
