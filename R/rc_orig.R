@@ -7,6 +7,42 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
   return(nvec)
 }
 
+.rc_est.class <- setClass("rc_est.class", representation(data = "array",
+                                                         qmarg = "numeric",
+                                                         w = "numeric",
+                                                         p = "numeric",
+                                                         method = "character",
+                                                         q = "numeric",
+                                                         qalphas = "numeric",
+                                                         k = "numeric",
+                                                         constrained = "logical",
+                                                         tol = "numeric",
+                                                         rc = "array"))
+
+rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, rc){
+  .rc_est.class(data = data,
+                qmarg = qmarg,
+                w = w,
+                p = p,
+                method = method,
+                q = q,
+                qalphas = qalphas,
+                k = k,
+                constrained = constrained,
+                tol = tol,
+                rc = rc)
+}
+
+setMethod("plot", signature = list("rc_est.class"), function(x){
+  object <- x
+  df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
+  rcdf <- data.frame("rcX" = x@rc[, 1], "rcY" = x@rc[, 2])
+  df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    geom_line(data = rcdf, aes(x = rcX, y = rcY), col = "red", linewidth = 1) +
+    theme_minimal() +
+    ggtitle(TeX("Estimation of $\\hat{RC}(p)$"))
+})
+
 #' Return Curve estimation
 #' 
 #' @name rc_est
@@ -21,7 +57,7 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' @param p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
 #' @inheritParams adf_est
 #' 
-#' @return A matrix containing the estimates of the Return Curve.
+#' @return An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
 #' 
 #' @details \loadmathjax{} Let \mjeqn{X, Y\sim Exp(1)}{}. Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
 #' the \mjeqn{p}{p}-probability return curve is defined as 
@@ -52,15 +88,14 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' 
 #' rc_orig <- rc_est(data = data, p = prob, method = "hill")
 #' 
-#' \dontrun{
-#' plot(data, pch = 20, main = "Return Curve on the original margins")
-#' lines(rc_orig, col = 2, lwd = 2)
-#' }
+#' plot(rc_orig)
 #' 
 #' @export
 rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
   dataexp <- margtransf(data = data, qmarg = qmarg)
+  result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, rc = array())
   rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
   curveunif <- apply(rc_data, 2, pexp)
-  sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
+  result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
+  return(result)
 }

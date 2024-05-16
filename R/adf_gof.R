@@ -42,7 +42,7 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
-#' @return Returns an object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
+#' @return An object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
 #' \item{model}{A vector containing the model quantiles.} 
 #' \item{empirical}{A vector containing the empirical quantiles.}
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}

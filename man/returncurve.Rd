@@ -40,7 +40,7 @@ rc_est(
 \item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 }
 \value{
-A matrix containing the estimates of the Return Curve.
+An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
 }
 \description{
 \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
@@ -70,10 +70,7 @@ prob <- 1/n
 
 rc_orig <- rc_est(data = data, p = prob, method = "hill")
 
-\dontrun{
-plot(data, pch = 20, main = "Return Curve on the original margins")
-lines(rc_orig, col = 2, lwd = 2)
-}
+plot(rc_orig)
 
 }
 \references{

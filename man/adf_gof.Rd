@@ -19,7 +19,7 @@ adf_gof(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05)
 \item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
-Returns an object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
+An object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
 \item{model}{A vector containing the model quantiles.} 
 \item{empirical}{A vector containing the empirical quantiles.}
 \item{lower}{A vector containing the lower bound of the confidence interval.}

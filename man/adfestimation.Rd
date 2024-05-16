@@ -34,7 +34,7 @@ adf_est(
 \item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 }
 \value{
-Returns an object of S4 class \code{adf_est.class}. This object returns the arguments of the function and an extra slot \code{adf} containing the estimates of the angular dependence function.
+An object of S4 class \code{adf_est.class}. This object returns the arguments of the function and an extra slot \code{adf} containing the estimates of the angular dependence function.
 }
 \description{
 \loadmathjax{}
