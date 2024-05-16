@@ -1,3 +1,32 @@
+.rc_gof.class <- setClass("rc_gof.class", representation(rc = "rc_est.class",
+                                                         blocksize = "numeric",
+                                                         nboot = "numeric",
+                                                         alpha = "numeric",
+                                                         gof = "list"))
+
+rc_gof.class <- function(rc, blocksize, nboot, alpha, gof){
+  .rc_gof.class(rc = rc,
+                blocksize = blocksize,
+                nboot = nboot,
+                alpha = alpha,
+                gof = gof)
+}
+
+setMethod("plot", signature = list("rc_gof.class"), function(x){
+  object <- x
+  df <- data.frame("angles" = 1:length(x@gof$median), x@gof, "pX" = c(rev(1:length(x@gof$median)), 1:length(x@gof$median)),
+                   "pY" = c(rev(x@gof$lower), x@gof$upper), "prob" = rep(x@rc@p, length(x@gof$median)))
+  df %>% ggplot(aes(x = pX, y = pY)) + geom_polygon(fill = "grey80", col = NA) +
+    geom_line(aes(x = angles, y = median)) +
+    geom_line(aes(x = angles, y = upper), linetype = "dashed") +
+    geom_line(aes(x = angles, y = lower), linetype = "dashed") + 
+    geom_line(aes(x = angles, y = prob), linewidth = 1, col = 2) +
+    labs(x = "Angle Index", y = "Probability") +
+    ylim(c(-0.001, range(df$upper)[2] + 0.001)) + 
+    theme_minimal() +
+    ggtitle(TeX("Goodness of fit of $\\hat{RC}(p)$"))
+})
+
 #' Goodness of fit of the Return Curve estimates
 #' 
 #' @name rc_gof
@@ -7,13 +36,12 @@
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix containing the data on the original margins.
-#' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}. 
-#' @param rc_origin A matrix containing the estimates of the return curve, on the original margins. Should be an object of function \code{\link{curvetransform}}.
+#' @param rc An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.
+#' @inheritParams rc_est
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param nangles \loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
-#' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.
+#' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
 #' @return Returns a list containing:
 #' \item{median}{A vector containing the median of the empirical probability of lying in a survival region.} 
@@ -43,24 +71,20 @@
 #' 
 #' prob <- 10/n
 #' 
-#' rc_orig <- rc_o(data = data, p = prob, method = "hill")
+#' rc_orig <- rc_est(data = data, p = prob, method = "hill")
 #'
-#' gof <- rc_gof(data = data, rc_origin = rc_orig)
+#' gof <- rc_gof(rc = rc_orig)
 #' 
-#' \dontrun{
-#' ang <- 1:length(gof$median)
-#' plot(ang, gof$median, xlab = "Angle Index", ylab = "Probability", type = "n", ylim = c(-0.001, range(gof$upper)[2] + 0.001))
-#' polygon(c(rev(ang), ang), c(rev(gof$lower), gof$upper), col = 'grey80', border = NA)
-#' lines(ang, gof$median, lwd = 2)
-#' lines(ang, gof$upper, lty = 'dashed', col = 'blue', lwd = 2)
-#' lines(ang, gof$lower, lty = 'dashed', col = 'blue', lwd = 2)
-#' lines(ang, rep(prob, length(ang)), lwd = 3, col = 2)
-#' }
+#' plot(gof)
 #' 
 #' @export
 #'  
-rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin, 
+rc_gof <- function(rc,
                    blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+  result <- rc_gof.class(rc = rc, blocksize = blocksize, nboot = nboot, alpha = alpha, gof = list())
+  rc_origin <- result@rc@rc
+  data <- result@rc@data
+  w <- result@rc@w
   n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
@@ -86,7 +110,8 @@ rc_gof <- function(data, w = seq(0, 1, by = 0.01), rc_origin,
   lb <- sapply(1:nangles, function(i) quantile(emp_prob[[i]], alpha/2))
   ub <- sapply(1:nangles, function(i) quantile(emp_prob[[i]], 1 - alpha/2))
   med <- sapply(1:nangles, function(i) quantile(emp_prob[[i]], 0.5))
-  return(list("median" = med, "lower" = lb, "upper" = ub))
+  result@gof <- list("median" = med, "lower" = lb, "upper" = ub)
+  return(result)
 }
 
 

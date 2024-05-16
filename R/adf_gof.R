@@ -101,39 +101,3 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   result@gof <- list("model" = model_quantile, "empirical" = empirical_quantile, "lower" = lb, "upper" = ub)
   return(result)
 }
-
-#' Visualisation of goodness of fit of ADF estimates
-#'
-#' @name plot
-#'
-#' @description 
-#' Plot method for an S4 object returned by \code{\link{adf_est}}.
-#' 
-#' @docType methods
-#'
-#' @param x An object of an adf_est S4 class produced by \code{\link{adf_est}}.
-#' 
-#' @return A ggplot object.
-#' 
-#' @details \loadmathjax{} The plot shows a comparison between the estimates \mjeqn{\hat{\lambda}(\omega)}{} of the ADF and its theoretical lower bound.
-#' 
-#' @rdname plot-methods
-#'
-#' @aliases plot.adf
-#' 
-#' @examples
-#' library(ReturnCurves)
-#'
-#' # Generating data for illustration purposes
-#' set.seed(321)
-#' data <- cbind(rnorm(1000), rnorm(1000))
-#' 
-#' dataexp <- margtransf(data)
-#'
-#' w <- seq(0, 1, by = 0.01)
-#'
-#' lambda <- adf_est(data = dataexp, method = "hill")
-#' 
-#' plot(lambda)
-#' 
-#' @export

@@ -5,22 +5,10 @@
 \alias{rc_gof}
 \title{Goodness of fit of the Return Curve estimates}
 \usage{
-rc_gof(
-  data,
-  w = seq(0, 1, by = 0.01),
-  rc_origin,
-  blocksize = 1,
-  nboot = 250,
-  nangles = 150,
-  alpha = 0.05
-)
+rc_gof(rc, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 }
 \arguments{
-\item{data}{A matrix containing the data on the original margins.}
-
-\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
-
-\item{rc_origin}{A matrix containing the estimates of the return curve, on the original margins. Should be an object of function \code{\link{curvetransform}}.}
+\item{rc}{An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
@@ -28,7 +16,7 @@ rc_gof(
 
 \item{nangles}{\loadmathjax{} Number of angles in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
 
-\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.}
+\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
 Returns a list containing:
@@ -57,19 +45,11 @@ n <- dim(data)[1]
 
 prob <- 10/n
 
-rc_orig <- rc_o(data = data, p = prob, method = "hill")
+rc_orig <- rc_est(data = data, p = prob, method = "hill")
 
-gof <- rc_gof(data = data, rc_origin = rc_orig)
+gof <- rc_gof(rc = rc_orig)
 
-\dontrun{
-ang <- 1:length(gof$median)
-plot(ang, gof$median, xlab = "Angle Index", ylab = "Probability", type = "n", ylim = c(-0.001, range(gof$upper)[2] + 0.001))
-polygon(c(rev(ang), ang), c(rev(gof$lower), gof$upper), col = 'grey80', border = NA)
-lines(ang, gof$median, lwd = 2)
-lines(ang, gof$upper, lty = 'dashed', col = 'blue', lwd = 2)
-lines(ang, gof$lower, lty = 'dashed', col = 'blue', lwd = 2)
-lines(ang, rep(prob, length(ang)), lwd = 3, col = 2)
-}
+plot(gof)
 
 }
 \references{
