@@ -9,7 +9,7 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 
 #' Return Curve estimation
 #' 
-#' @name rc_o
+#' @name rc_est
 #' 
 #' @description
 #' \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
@@ -18,14 +18,8 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
 #' 
 #' @param data A matrix containing the data on the original margins.
 #' @param qmarg Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is \code{0.95}.
-#' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
-#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator. More details can be found in \code{\link{adf_est}}.
-#' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
-#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to \code{0.95}.
-#' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default set to \code{7}.
-#' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
-#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
+#' @inheritParams adf_est
 #' 
 #' @return A matrix containing the estimates of the Return Curve.
 #' 

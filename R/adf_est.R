@@ -20,6 +20,18 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
                  adf = adf)
 }
 
+setMethod("plot", signature = list("adf_est.class"), function(x){
+  object <- x
+  df <- data.frame("w" = object@w, "lb" = pmax(object@w, 1-object@w), "adf" = object@adf)
+  coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
+  df %>% ggplot(aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
+    geom_line(aes(x = w, y = adf, col = names(coloursl)[2])) +
+    labs(x = expression(omega), y = expression(lambda(omega))) + 
+    scale_color_manual(values = coloursl, 
+                       guide = guide_legend(override.aes = list(linetype = c("solid", "dashed")))) +
+    theme_minimal() + theme(legend.title = element_blank()) +
+    ggtitle(TeX("Estimation of $\\hat{\\lambda}(\\omega)$"))
+})
 
 #' Estimation of the Angular Dependence function (ADF)
 #' 
@@ -39,9 +51,7 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
 #' 
-#' @return Returns an object of S4 class of type adf_est.class.
-#' 
-#' @slot adf A vector containing the estimates of the angular dependence function.
+#' @return Returns an object of S4 class \code{adf_est.class}. This object returns the arguments of the function and an extra slot \code{adf} containing the estimates of the angular dependence function.
 #' 
 #' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, 
 #' obtained using Composite likelihood methods. Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
@@ -69,10 +79,7 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
 #'
 #' lambda <- adf_est(data = dataexp, method = "hill")
 #'
-#' \dontrun{
-#' plot(w, pmax(w, 1-w), type = "l", lty = 2, ylim = c(min(pmax(w, 1-w)), max(lambda) + 0.1))
-#' lines(w, lambda, col = 2, lwd = 2)
-#' }
+#' plot(lambda)
 #'
 #' @export
 #' 
@@ -143,54 +150,6 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   }
 }
 
-#' Visualisation of the ADF estimates
-#'
-#' @name plot
-#'
-#' @description 
-#' Plot method for an S4 object returned by \code{\link{adf_est}}.
-#' 
-#' @docType methods
-#'
-#' @param x An object of an adf_est S4 class produced by \code{\link{adf_est}}.
-#' 
-#' @return A ggplot object.
-#' 
-#' @details \loadmathjax{} The plot shows a comparison between the estimates \mjeqn{\hat{\lambda}(\omega)}{} of the ADF and its theoretical lower bound.
-#' 
-#' @rdname plot-methods
-#'
-#' @aliases plot.adf
-#' 
-#' @examples
-#' library(ReturnCurves)
-#'
-#' # Generating data for illustration purposes
-#' set.seed(321)
-#' data <- cbind(rnorm(1000), rnorm(1000))
-#' 
-#' dataexp <- margtransf(data)
-#'
-#' w <- seq(0, 1, by = 0.01)
-#'
-#' lambda <- adf_est(data = dataexp, method = "hill")
-#' 
-#' plot(lambda)
-#' 
-#' @export 
-setMethod("plot", signature = list("adf_est.class"), function(x){
-  object <- x
-  df <- data.frame("w" = object@w, "lb" = pmax(object@w, 1-object@w), "adf" = object@adf)
-  coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
-  df %>% ggplot(aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
-    geom_line(aes(x = w, y = adf, col = names(coloursl)[2])) +
-    labs(x = expression(omega), y = expression(lambda(omega))) + 
-    scale_color_manual(values = coloursl, 
-                       guide = guide_legend(override.aes = list(linetype = c("solid", "dashed")))) +
-    theme_bw() + theme(panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       legend.title = element_blank()) +
-    ggtitle(TeX("Estimation of $\\hat{\\lambda}(\\omega)$"))
-})
+
 
 

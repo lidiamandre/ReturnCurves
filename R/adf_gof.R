@@ -1,24 +1,31 @@
-.adf_gof.class <- setClass("adf_gof.class", representation(data = "array",
+.adf_gof.class <- setClass("adf_gof.class", representation(adf = "adf_est.class",
                                                            w_ind = "numeric",
-                                                           w = "numeric",
-                                                           lambda = "numeric",
-                                                           q = "numeric",
                                                            blocksize = "numeric",
                                                            nboot = "numeric",
                                                            alpha = "numeric",
                                                            gof = "list"))
 
-adf_gof.class <- function(data, w_ind, w, lambda, q, blocksize, nboot, alpha, gof){
-  .adf_gof.class(data = data,
+adf_gof.class <- function(adf, w_ind, blocksize, nboot, alpha, gof){
+  .adf_gof.class(adf = adf,
                  w_ind = w_ind,
-                 w = w,
-                 lambda = lambda,
-                 q = q,
                  blocksize = blocksize,
                  nboot = nboot,
                  alpha = alpha,
                  gof = gof)
 }
+
+setMethod("plot", signature = list("adf_gof.class"), function(x){
+  object <- x
+  df <- as.data.frame(x@gof)
+  ploygondf <- data.frame("X" = c(rev(x@gof$model), x@gof$model),
+                          "Y" = c(rev(x@gof$lower), x@gof$upper))
+  ploygondf %>% ggplot(aes(x = X, y = Y)) + geom_polygon(fill = "grey80", col = NA) +
+    geom_point(data = df, mapping = aes(x = model, y = empirical)) + 
+    geom_abline(col = 2, linewidth = 1) + 
+    labs(x = "Model quantiles", y = "Empirical quantiles") +
+    theme_minimal() +
+    ggtitle(TeX("Goodness of fit of $\\hat{\\lambda}(\\omega)$"))
+})
 
 #' Goodness of fit of the Angular Dependence function estimates
 #' 
@@ -29,18 +36,13 @@ adf_gof.class <- function(data, w_ind, w, lambda, q, blocksize, nboot, alpha, go
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix containing the data on standard exponential margins.
+#' @param adf An S4 object of class \code{adf_est.class}. See \code{\link{adf_est}} for more details.
 #' @param w_ind Index of the ray to be considered on the goodness of fit assessment.
-#' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
-#' @param lambda \loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.
-#' @param q \loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is \code{0.95}.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
-#' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.
+#' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
-#' @return Returns an object of S4 class of type adf_gof.class. 
-#' 
-#' @slot gof A list containing
+#' @return Returns an object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
 #' \item{model}{A vector containing the model quantiles.} 
 #' \item{empirical}{A vector containing the empirical quantiles.}
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
@@ -68,22 +70,20 @@ adf_gof.class <- function(data, w_ind, w, lambda, q, blocksize, nboot, alpha, go
 #' lambda <- adf_est(data = dataexp, method = "hill")
 #' 
 #' w_ind <- 31
-#' gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = lambda@adf)
+#' gof <- adf_gof(adf = lambda, w_ind = w_ind)
 #' 
-#' \dontrun{
-#' plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")
-#' polygon(c(rev(gof$model), gof$model), c(rev(gof$lower), gof$upper), col = 'grey', border = NA)
-#' points(gof$model, gof$empirical, pch = 20, col = "black")
-#' abline(0, 1, col = 2,lwd = 3) 
-#' }
+#' plot(gof)
 #' 
 #' @export
 #'  
-adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
-                    blocksize = 1, nboot = 250, alpha = 0.05){
+adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
+  w <- adf@w
+  data <- adf@data
+  lambda <- adf@adf
+  q <- adf@q
   if(w_ind > length(w)) stop("Angle not considered") # future me - change this
   if(length(lambda) != length(w)) stop("Number of angles and values estimated for the adf differ") # future me - change this
-  result <- adf_gof.class(data = data, w_ind = w_ind, w = w, lambda = lambda, q = q, blocksize = blocksize,
+  result <- adf_gof.class(adf = adf, w_ind = w_ind, blocksize = blocksize,
                           nboot = nboot, alpha = alpha, gof = list())
   min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
   excdata <- (min_proj$minproj - min_proj$thresh)[min_proj$minproj > min_proj$thresh]
@@ -102,4 +102,38 @@ adf_gof <- function(data, w_ind, w = seq(0, 1, by = 0.01), lambda, q = 0.95,
   return(result)
 }
 
-
+#' Visualisation of goodness of fit of ADF estimates
+#'
+#' @name plot
+#'
+#' @description 
+#' Plot method for an S4 object returned by \code{\link{adf_est}}.
+#' 
+#' @docType methods
+#'
+#' @param x An object of an adf_est S4 class produced by \code{\link{adf_est}}.
+#' 
+#' @return A ggplot object.
+#' 
+#' @details \loadmathjax{} The plot shows a comparison between the estimates \mjeqn{\hat{\lambda}(\omega)}{} of the ADF and its theoretical lower bound.
+#' 
+#' @rdname plot-methods
+#'
+#' @aliases plot.adf
+#' 
+#' @examples
+#' library(ReturnCurves)
+#'
+#' # Generating data for illustration purposes
+#' set.seed(321)
+#' data <- cbind(rnorm(1000), rnorm(1000))
+#' 
+#' dataexp <- margtransf(data)
+#'
+#' w <- seq(0, 1, by = 0.01)
+#'
+#' lambda <- adf_est(data = dataexp, method = "hill")
+#' 
+#' plot(lambda)
+#' 
+#' @export

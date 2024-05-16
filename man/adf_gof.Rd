@@ -5,36 +5,25 @@
 \alias{adf_gof}
 \title{Goodness of fit of the Angular Dependence function estimates}
 \usage{
-adf_gof(
-  data,
-  w_ind,
-  w = seq(0, 1, by = 0.01),
-  lambda,
-  q = 0.95,
-  blocksize = 1,
-  nboot = 250,
-  alpha = 0.05
-)
+adf_gof(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05)
 }
 \arguments{
-\item{data}{A matrix containing the data on standard exponential margins.}
+\item{adf}{An S4 object of class \code{adf_est.class}. See \code{\link{adf_est}} for more details.}
 
 \item{w_ind}{Index of the ray to be considered on the goodness of fit assessment.}
-
-\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
-
-\item{lambda}{\loadmathjax{} Vector containing the estimates of the angular dependence function \mjeqn{\lambda(\omega)}{}.}
-
-\item{q}{\loadmathjax{} Marginal quantile to be used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} (see \strong{Details}). Default is \code{0.95}.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{} confidence intervals. Default is \code{0.05}.}
+\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
-Returns an object of S4 class of type adf_gof.class.
+Returns an object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
+\item{model}{A vector containing the model quantiles.} 
+\item{empirical}{A vector containing the empirical quantiles.}
+\item{lower}{A vector containing the lower bound of the confidence interval.}
+\item{upper}{A vector containing the upper bound of the confidence interval.}
 }
 \description{
 \loadmathjax{}
@@ -45,16 +34,6 @@ Assessment of the goodness of fit of the angular dependence function estimates \
 variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
 A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
 }
-\section{Slots}{
-
-\describe{
-\item{\code{gof}}{A list containing
-\item{model}{A vector containing the model quantiles.} 
-\item{empirical}{A vector containing the empirical quantiles.}
-\item{lower}{A vector containing the lower bound of the confidence interval.}
-\item{upper}{A vector containing the upper bound of the confidence interval.}}
-}}
-
 \examples{
 library(ReturnCurves)
 
@@ -67,14 +46,9 @@ dataexp <- margtransf(data)
 lambda <- adf_est(data = dataexp, method = "hill")
 
 w_ind <- 31
-gof <- adf_gof(data = dataexp, w_ind = w_ind, lambda = lambda@adf)
+gof <- adf_gof(adf = lambda, w_ind = w_ind)
 
-\dontrun{
-plot(gof$model, gof$empirical, ylab = "Empirical", xlab = "Model")
-polygon(c(rev(gof$model), gof$model), c(rev(gof$lower), gof$upper), col = 'grey', border = NA)
-points(gof$model, gof$empirical, pch = 20, col = "black")
-abline(0, 1, col = 2,lwd = 3) 
-}
+plot(gof)
 
 }
 \references{
