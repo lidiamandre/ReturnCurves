@@ -84,7 +84,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' 
 adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001){
   if(dim(data)[2] > 2){
-    warning("Estimation of the ADF is only implemented for a bivariate setting.")
+    stop("Estimation of the ADF is only implemented for a bivariate setting.")
   }
   if(q < 0 | q > 1 | qalphas < 0 | qalphas > 1){
     stop("Marginal quantiles need to be in [0, 1].")
@@ -98,9 +98,9 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   if(k < 1 | k %% 1 != 0){
     stop("The Bernstein-Bezier polynomial degree has to be a positive integer.")
   }
-  if(!is.logical(constrained) == T){
-    stop("Argument constrained needs to be logical.")
-  }
+  # if(!is.logical(constrained) == T){
+  #   stop("Argument constrained needs to be logical.")
+  # }
   result <- adf_est.class(data = data, w = w, method = method, 
                           q = q, qalphas = qalphas, k = k, 
                           constrained = constrained, tol = tol, adf = double())

@@ -101,7 +101,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' @export
 rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
   if(dim(data)[2] > 2){
-    warning("Estimation of the Return Curve is only implemented for a bivariate setting.")
+    stop("Estimation of the Return Curve is only implemented for a bivariate setting.")
   }
   if(qmarg < 0 | qmarg > 1){
     stop("Marginal quantiles need to be in [0, 1].")

@@ -2,8 +2,8 @@ bbp <- function(w, k, a, b){
   if(a >= b){
     stop("[0, a] need to be disjoint from [b, 1].")
   } 
-  l <- sum(w >= a & w <= l)
-  v <- seq(a, b, length.out = q)
+  l <- sum(w >= a & w <= b)
+  v <- seq(a, b, length.out = l)
   vnew <- (v - a)/(b - a)
   basis <- array(0, dim = c(l, k+1))
   for(i in 0:k){
