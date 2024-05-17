@@ -4,7 +4,16 @@ gpdtransform <- function(data, thresh, par, qmarg) 1 - (1 - qmarg)*pgpd(data, lo
 empirical_cdf <- function(data, qmarg = 0.95){ 
   u <- c()
   thresh <- quantile(data, qmarg)
+  if(qmarg == 1){
+    stop("Threshold u too high, leading to no exceedances to fit the GPD.")
+  }
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
+  if(par[2] <= -1){
+    warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
+  }
+  if(par[2] < -0.5 && par[2] > -1){
+    warning("MLE for the shape parameter of the GPD is in (-1, -0.5). \n Non-regular MLE and a very short marginal tail is estimated.")
+  }
   u[data <= thresh] <- ranktransform(data = data, thresh = thresh)
   u[data > thresh] <- gpdtransform(data = data[data > thresh], thresh = thresh, par = par, qmarg = qmarg)
   return(u)
@@ -50,9 +59,13 @@ empirical_cdf <- function(data, qmarg = 0.95){
 #' @export
 #' 
 margtransf <- function(data, qmarg = 0.95){
+  if(qmarg < 0 | qmarg > 1){
+    stop("Marginal quantile needs to be in [0, 1].")
+  }
   dataunif <- apply(data, 2, empirical_cdf, qmarg = qmarg)
   apply(dataunif, 2, qexp)
 }  
+
 
 
 
