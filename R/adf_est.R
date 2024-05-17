@@ -83,10 +83,27 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @export
 #' 
 adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001){
-  if(!method %in% c("hill", "cl")){
-    stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
+  if(dim(data)[2] > 2){
+    warning("Estimation of the ADF is only implemented for a bivariate setting.")
   }
-  
+  if(q < 0 | q > 1 | qalphas < 0 | qalphas > 1){
+    stop("Marginal quantiles need to be in [0, 1].")
+  }
+  if(any(w < 0) | any(w > 1)){
+    stop("Angles need to be in [0, 1].")
+  }
+  if(!method %in% c("hill", "cl")){
+    stop("ADF needs to be estimated either through the Hill estimator or Composite likelihood estimator.")
+  }
+  if(k < 1 | k %% 1 != 0){
+    stop("The Bernstein-Bezier polynomial degree has to be a positive integer.")
+  }
+  if(!is.logical(constrained) == T){
+    stop("Argument constrained needs to be logical.")
+  }
+  if(tol < 0){
+    stop("Convergence tolerance needs to be positive.")
+  }
   result <- adf_est.class(data = data, w = w, method = method, 
                           q = q, qalphas = qalphas, k = k, 
                           constrained = constrained, tol = tol, adf = double())
@@ -148,7 +165,6 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
     }
   }
 }
-
 
 
 
