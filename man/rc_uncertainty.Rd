@@ -81,7 +81,17 @@ rc_orig <- rc_est(data = data, p = prob, method = "hill")
 
 unc <- rc_unc(data = data, p = prob, method = "hill")
 
-plot(unc, rc_orig)
+# Plots the estimated Return Curve, the median Return Curve and the mean Return Curve 
+plot(unc, rc_orig) 
+
+# Plots the estimated Return Curve and the median Return Curve
+plot(unc, rc_orig, mean = F) 
+
+# Plots the estimated Return Curve and the mean Return Curve 
+plot(unc, rc_orig, median = F) 
+
+# Plots the estimated Return Curve 
+plot(unc, rc_orig, median = F, mean = F) 
 
 }
 \references{

@@ -33,7 +33,8 @@ rc_unc.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained,
                 unc = unc)
 }
 
-setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, y){
+setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, y, median = T, mean = T){
+  object <- x
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
   rcdf <- data.frame("rcX" = y@rc[, 1], "rcY" = y@rc[, 2])
   uncdf <- data.frame("medianX" = x@unc$median[, 1], "medianY" = x@unc$median[, 2], 
@@ -42,18 +43,57 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
                       "upperX" = x@unc$upper[, 1], "upperY" = x@unc$upper[, 2])
   colours <- c("Estimated RC" = "red", "Median RC" = "orange", "Mean RC" = "brown", 
                "Lower Bound" = 1, "Upper Bound" = 1)
-  df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
-    geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
-    geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
-    geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
-    geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
-    geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
-    scale_color_manual(values = colours, 
-                       guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "solid", 
-                                                                             "solid", "dashed"),
-                                                                linewidth = c(1, 0.5, 1, 1, 0.5)))) +
-    theme_minimal() + theme(legend.title = element_blank()) +
-    ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+  if(median == T && mean == T){
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+      geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      scale_color_manual(values = colours, 
+                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "solid", 
+                                                                               "solid", "dashed"),
+                                                                  linewidth = c(1, 0.5, 1, 1, 0.5)))) +
+      theme_minimal() + theme(legend.title = element_blank()) +
+      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+  }
+  else if(median == T && mean == F){
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+      geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      scale_color_manual(values = colours, 
+                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", 
+                                                                               "solid", "dashed"),
+                                                                  linewidth = c(1, 0.5, 1, 0.5)))) +
+      theme_minimal() + theme(legend.title = element_blank()) +
+      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+  }
+  else if(median == F && mean == T){
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+      geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      scale_color_manual(values = colours, 
+                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", 
+                                                                               "solid", "dashed"),
+                                                                  linewidth = c(1, 0.5, 1, 0.5)))) +
+      theme_minimal() + theme(legend.title = element_blank()) +
+      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+  }
+  else if(median == F && mean == F){
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+      geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      scale_color_manual(values = colours, 
+                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "dashed"),
+                                                                  linewidth = c(1, 0.5, 0.5)))) +
+      theme_minimal() + theme(legend.title = element_blank()) +
+      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+  } 
 })
 
 #' Uncertainty of the Return Curve estimates
@@ -76,7 +116,7 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
 #' \item{mean}{A vector containing the mean estimates of the return curve.} 
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
-#'
+#' 
 #' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace.}{}
 #' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{RC(p)}{} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
 #' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}
@@ -102,7 +142,17 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
 #' 
 #' unc <- rc_unc(data = data, p = prob, method = "hill")
 #' 
-#' plot(unc, rc_orig)
+#' # Plots the estimated Return Curve, the median Return Curve and the mean Return Curve 
+#' plot(unc, rc_orig) 
+#' 
+#' # Plots the estimated Return Curve and the median Return Curve
+#' plot(unc, rc_orig, mean = F) 
+#' 
+#' # Plots the estimated Return Curve and the mean Return Curve 
+#' plot(unc, rc_orig, median = F) 
+#' 
+#' # Plots the estimated Return Curve 
+#' plot(unc, rc_orig, median = F, mean = F) 
 #' 
 #' @export
 #' 
