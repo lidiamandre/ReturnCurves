@@ -1,7 +1,4 @@
 rc_exp <- function(data, w, p, method, q_minproj, qalphas, k, constrained, tol){
-  if(!method %in% c("hill", "cl")){
-    stop("ADF should be estimated through the Hill estimator or Composite likelihood MLE") # write a better message here!
-  }
   n <- length(w)
   xp <- qexp(1 - p)
   lambda <- adf_est(data = data, w = w, method = method, q = q_minproj, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@adf

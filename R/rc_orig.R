@@ -1,6 +1,15 @@
 curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
   thresh <- quantile(data, qmarg)
+  if(qmarg == 1){
+    stop("Threshold u too high, leading to no exceedances to fit the GPD.")
+  }
   par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
+  if(par[2] <= -1){
+    warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
+  }
+  if(par[2] < -0.5 && par[2] > -1){
+    warning("MLE for the shape parameter of the GPD is in (-1, -0.5). \n Non-regular MLE and a very short marginal tail is estimated.")
+  }
   nvec <- c()
   nvec[curveunif > qmarg] <- qgpd((curveunif[curveunif > qmarg] - qmarg)/(1 - qmarg), loc = thresh, scale = par[1], shape = par[2])
   nvec[curveunif <= qmarg] <- quantile(data, curveunif[curveunif <= qmarg])
@@ -91,6 +100,18 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' @export
 rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
+  if(dim(data)[2] > 2){
+    warning("Estimation of the Return Curve is only implemented for a bivariate setting.")
+  }
+  if(qmarg < 0 | qmarg > 1){
+    stop("Marginal quantiles need to be in [0, 1].")
+  }
+  if(p < 0 | p > 1){
+    stop("Probability needs to be in [0, 1].")
+  }
+  if(p > 1 - qmarg | p > 1 - q | p > 1 - qalphas){
+    warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
+  }
   dataexp <- margtransf(data = data, qmarg = qmarg)
   result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, rc = array())
   rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
@@ -98,6 +119,7 @@ rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("
   result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
   return(result)
 }
+
 
 
 
