@@ -80,8 +80,19 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   data <- adf@data
   lambda <- adf@adf
   q <- adf@q
-  if(w_ind > length(w)) stop("Angle not considered") # future me - change this
-  if(length(lambda) != length(w)) stop("Number of angles and values estimated for the adf differ") # future me - change this
+  if(w_ind < 1 | w_ind > length(w)){
+    stop("The angle is not considered.")
+  }
+  if(nboot < 1 | nboot %% 1 != 0){
+    stop("The number of bootstrap samples needs to be a positive integer.")
+  }
+  if(alpha < 0 | alpha > 1){
+    stop("The significance level needs to be in [0, 1].")
+  }
+  if(alpha > 0.5){
+    warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
+  }
+
   result <- adf_gof.class(adf = adf, w_ind = w_ind, blocksize = blocksize,
                           nboot = nboot, alpha = alpha, gof = list())
   min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
