@@ -1,4 +1,7 @@
 block_bootstrap_function <- function(data, k, n){ 
+  if(k < 1 | k %% 1 != 0){
+    stop("The size of the blocks for the block bootstrap procedure needs to be a positive integer.")
+  }
   data <- as.matrix(data)
   no_blocks <- ceiling(n/k)
   n_new <- no_blocks*k

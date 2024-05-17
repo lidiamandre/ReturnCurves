@@ -101,9 +101,6 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   if(!is.logical(constrained) == T){
     stop("Argument constrained needs to be logical.")
   }
-  if(tol < 0){
-    stop("Convergence tolerance needs to be positive.")
-  }
   result <- adf_est.class(data = data, w = w, method = method, 
                           q = q, qalphas = qalphas, k = k, 
                           constrained = constrained, tol = tol, adf = double())

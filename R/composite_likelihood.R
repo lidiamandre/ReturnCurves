@@ -1,5 +1,7 @@
 bbp <- function(w, k, a, b){
-  if(a >= b) stop("The lower bound has to be smaller than the upper bound!")
+  if(a >= b){
+    stop("[0, a] need to be disjoint from [b, 1].")
+  } 
   l <- sum(w >= a & w <= l)
   v <- seq(a, b, length.out = q)
   vnew <- (v - a)/(b - a)
@@ -11,7 +13,9 @@ bbp <- function(w, k, a, b){
 }
 
 est_beta <- function(par, basis, t, len_vec, w, lam_end){ 
-  if(any(lam_end > 1)) stop("Value of the ADF is not supported!") # future me: change text!
+  if(any(lam_end > 1)){
+    stop("Value of the ADF at the endpoints not supported.")
+  }
   beta <- c(lam_end[1], exp(par), lam_end[2])
   lam <- basis %*% beta
   if(sum(is.infinite(beta)) > 0 | sum(is.na(beta)) > 0){
@@ -27,6 +31,9 @@ est_beta <- function(par, basis, t, len_vec, w, lam_end){
 }
 
 minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol){
+  if(tol < 0){
+    stop("Convergence tolerance needs to be positive.")
+  }
   polynomials <- bbp(w = w, k = k, a = a, b = b)
   basis <- polynomials$basis
   angles <- polynomials$angles
