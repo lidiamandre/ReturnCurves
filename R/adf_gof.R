@@ -92,7 +92,6 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   if(alpha > 0.5){
     warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
   }
-
   result <- adf_gof.class(adf = adf, w_ind = w_ind, blocksize = blocksize,
                           nboot = nboot, alpha = alpha, gof = list())
   min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)

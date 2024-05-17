@@ -75,6 +75,18 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' @export
 #'  
 rc_gof <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+  if(nboot < 1 | nboot %% 1 != 0){
+    stop("The number of bootstrap samples needs to be a positive integer.")
+  }
+  if(nangles < 1 | nangles %% 1 != 0){
+    stop("The number of angles needs to be a positive integer.")
+  }
+  if(alpha < 0 | alpha > 1){
+    stop("The significance level needs to be in [0, 1].")
+  }
+  if(alpha > 0.5){
+    warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
+  }
   result <- rc_gof.class(retcurve = retcurve, blocksize = blocksize, nboot = nboot, alpha = alpha, gof = list())
   rc_origin <- result@retcurve@rc
   data <- result@retcurve@data

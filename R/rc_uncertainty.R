@@ -159,6 +159,18 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
 rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), qmarg = 0.95, q = 0.95, 
                    qalphas = 0.95, k = 7, constrained = FALSE, blocksize = 1, 
                    nboot = 250, nangles = 150, alpha = 0.05, tol = 0.0001){ 
+  if(nboot < 1 | nboot %% 1 != 0){
+    stop("The number of bootstrap samples needs to be a positive integer.")
+  }
+  if(nangles < 1 | nangles %% 1 != 0){
+    stop("The number of angles needs to be a positive integer.")
+  }
+  if(alpha < 0 | alpha > 1){
+    stop("The significance level needs to be in [0, 1].")
+  }
+  if(alpha > 0.5){
+    warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
+  }
   result <- rc_unc.class(data = data, qmarg = qmarg, w = w, p = p, method = method, 
                          q = q, qalphas = qalphas, k = k, constrained = constrained, 
                          tol = tol, blocksize = blocksize, nboot = nboot, nangles = nangles, 
