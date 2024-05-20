@@ -112,7 +112,7 @@ rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("
   if(p > 1 - qmarg | p > 1 - q | p > 1 - qalphas){
     warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
   }
-  dataexp <- margtransf(data = data, qmarg = qmarg)
+  dataexp <- margtransf(data = data, qmarg = qmarg)@dataexp
   result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, rc = array())
   rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
   curveunif <- apply(rc_data, 2, pexp)

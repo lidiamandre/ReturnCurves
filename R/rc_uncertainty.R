@@ -111,9 +111,9 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
 #' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
 #' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
-#' @return An object of S4 clas \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
-#' \item{median}{A vector containing the median estimates of the return curve.} 
-#' \item{mean}{A vector containing the mean estimates of the return curve.} 
+#' @return An object of S4 class \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
+#' \item{median}{A vector containing the median estimates of the return curve. Set \code{median = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
+#' \item{mean}{A vector containing the mean estimates of the return curve. Set \code{mean = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' 

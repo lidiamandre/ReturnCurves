@@ -13,7 +13,7 @@ margtransf(data, qmarg = 0.95)
 \item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is \code{0.95}.}
 }
 \value{
-A matrix containing the data on standard exponential margins.
+An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard margins. To visualise the joint distribution, set \code{joint = T} in the \code{plot} environment. If \code{joint = F} (default), \code{plot} returns the marginal distribution of each variable.
 }
 \description{
 Marginal transformation of a random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}.
@@ -30,11 +30,13 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
-\dontrun{plot(data, pch = 20)} 
-
 dataexp <- margtransf(data)
 
-\dontrun{plot(dataexp, pch = 20)} 
+# Plots the marginal distributions of X and Y on original vs standard exponential margins
+plot(dataexp) 
+
+# Plots the joint distribution of X and Y on original vs standard exponential margins
+plot(dataexp, joint = T) 
 
 }
 \references{

@@ -56,7 +56,7 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
-dataexp <- margtransf(data)
+dataexp <- margtransf(data)@dataexp
 
 w <- seq(0, 1, by = 0.01)
 
