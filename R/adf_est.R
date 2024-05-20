@@ -142,7 +142,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
         return(result)
       }
       lambda_hill[indx] <- pmax(w, 1 - w)[indx]
-      lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i, q_minproj = qhill)$lambdahill)
+      lambda_hill[!indx] <- sapply(w[!indx], function(i) minproj_lambda(data, w = i, q_minproj = q)$lambdahill)
       lambda_hill <- properties(w = w, lambda = lambda_hill)
       result@adf <- lambda_hill
       return(result)
