@@ -53,7 +53,7 @@ setMethod("plot", signature = list("margtransf.class"), function(x, joint = F){
     origjoint <- df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
       theme_minimal() +
       ggtitle("Original margins")
-    expjoint <- df %>% ggplot(aes(x = Xexp, y = Yexp)) + geom_point() +
+    expjoint <- df %>% ggplot(aes(x = Xexp, y = Yexp)) + geom_point(na.rm = T) +
       theme_minimal() + labs(x = expression(X[exp]), y = expression(Y[exp])) +
       ggtitle("Standard exponential margins")
     plot_grid(origjoint, expjoint)
