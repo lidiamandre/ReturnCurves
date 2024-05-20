@@ -50,7 +50,7 @@ setMethod("plot", signature = list("margtransf.class"), function(x, joint = F){
     plot_grid(origX, expX, origY, expY, nrow = 2)
   }
   else{
-    origjoint <- df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    origjoint <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T) +
       theme_minimal() +
       ggtitle("Original margins")
     expjoint <- df %>% ggplot(aes(x = Xexp, y = Yexp)) + geom_point(na.rm = T) +
