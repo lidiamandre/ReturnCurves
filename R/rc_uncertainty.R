@@ -44,7 +44,7 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
   colours <- c("Estimated RC" = "red", "Median RC" = "orange", "Mean RC" = "brown", 
                "Lower Bound" = 1, "Upper Bound" = 1)
   if(median == T && mean == T){
-    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
@@ -58,7 +58,7 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
       ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
   }
   else if(median == T && mean == F){
-    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
@@ -71,7 +71,7 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
       ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
   }
   else if(median == F && mean == T){
-    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
@@ -84,7 +84,7 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
       ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
   }
   else if(median == F && mean == F){
-    df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+    df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
       geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
