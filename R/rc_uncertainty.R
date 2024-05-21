@@ -178,7 +178,7 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
-  data0 <- apply(data, 2, min)
+  data0 <- apply(data[complete.cases(data), ], 2, min)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
