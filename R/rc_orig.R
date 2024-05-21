@@ -1,10 +1,10 @@
 curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
-  compldata <- data[complete.cases(data)]
-  thresh <- quantile(compldata, qmarg)
+  # compldata <- data[complete.cases(data)]
+  thresh <- quantile(data, qmarg)
   if(qmarg == 1){
     stop("Threshold u too high, leading to no exceedances to fit the GPD.")
   }
-  par <- gpd.fit(compldata, threshold = thresh, show = FALSE)$mle
+  par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
   if(par[2] <= -1){
     warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
   }
@@ -13,7 +13,7 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
   }
   nvec <- c()
   nvec[curveunif > qmarg] <- qgpd((curveunif[curveunif > qmarg] - qmarg)/(1 - qmarg), loc = thresh, scale = par[1], shape = par[2])
-  nvec[curveunif <= qmarg] <- quantile(compldata, curveunif[curveunif <= qmarg])
+  nvec[curveunif <= qmarg] <- quantile(data, curveunif[curveunif <= qmarg])
   return(nvec)
 }
 
@@ -46,7 +46,7 @@ rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
 setMethod("plot", signature = list("rc_est.class"), function(x){
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
   rcdf <- data.frame("rcX" = x@rc[, 1], "rcY" = x@rc[, 2])
-  df %>% ggplot(aes(x = X, y = Y)) + geom_point() +
+  df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T) +
     geom_line(data = rcdf, aes(x = rcX, y = rcY), col = "red", linewidth = 1) +
     theme_minimal() +
     ggtitle(TeX("Estimation of $\\hat{RC}(p)$"))
@@ -117,6 +117,8 @@ rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("
   result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, rc = array())
   rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
   curveunif <- apply(rc_data, 2, pexp)
+  data <- data[complete.cases(data), ]
+  result@data <- data
   result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
   return(result)
 }
