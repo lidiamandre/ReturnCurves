@@ -1,9 +1,10 @@
 curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
-  thresh <- quantile(data, qmarg)
+  compldata <- data[complete.cases(data)]
+  thresh <- quantile(compldata, qmarg)
   if(qmarg == 1){
     stop("Threshold u too high, leading to no exceedances to fit the GPD.")
   }
-  par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
+  par <- gpd.fit(compldata, threshold = thresh, show = FALSE)$mle
   if(par[2] <= -1){
     warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
   }
@@ -12,7 +13,7 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
   }
   nvec <- c()
   nvec[curveunif > qmarg] <- qgpd((curveunif[curveunif > qmarg] - qmarg)/(1 - qmarg), loc = thresh, scale = par[1], shape = par[2])
-  nvec[curveunif <= qmarg] <- quantile(data, curveunif[curveunif <= qmarg])
+  nvec[curveunif <= qmarg] <- quantile(compldata, curveunif[curveunif <= qmarg])
   return(nvec)
 }
 
