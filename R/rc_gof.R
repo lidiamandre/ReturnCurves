@@ -15,15 +15,23 @@ rc_gof.class <- function(retcurve, blocksize, nboot, alpha, gof){
 setMethod("plot", signature = list("rc_gof.class"), function(x){
   df <- data.frame("angles" = 1:length(x@gof$median), x@gof, "pX" = c(rev(1:length(x@gof$median)), 1:length(x@gof$median)),
                    "pY" = c(rev(x@gof$lower), x@gof$upper), "prob" = rep(x@retcurve@p, length(x@gof$median)))
+  coloursl <- c("Confidence interval" = 1, "Median estimate" = 1, "True probability" = 2)
   df %>% ggplot(aes(x = pX, y = pY)) + geom_polygon(fill = "grey80", col = NA) +
-    geom_line(aes(x = angles, y = median)) +
-    geom_line(aes(x = angles, y = upper), linetype = "dashed") +
-    geom_line(aes(x = angles, y = lower), linetype = "dashed") + 
-    geom_line(aes(x = angles, y = prob), linewidth = 1, col = 2) +
+    geom_line(aes(x = angles, y = median, col = names(coloursl)[2])) +
+    geom_line(aes(x = angles, y = upper, col = names(coloursl)[1]), linetype = "dashed") +
+    geom_line(aes(x = angles, y = lower, col = names(coloursl)[1]), linetype = "dashed") + 
+    geom_line(aes(x = angles, y = prob, col = names(coloursl)[3])) +
     labs(x = "Angle Index", y = "Probability") +
+    scale_color_manual(values = coloursl,
+                       guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "solid"))))  +
     ylim(c(-0.001, range(df$upper)[2] + 0.001)) + 
     theme_minimal() +
+    theme(legend.position = c(0.2, 0.9), 
+          legend.title = element_blank(),
+          legend.background = element_rect(fill = "white", color = "black"),
+          legend.box.background = element_rect(color = "black")) +
     ggtitle(TeX("Goodness of fit of $\\hat{RC}(p)$"))
+  
 })
 
 #' Goodness of fit of the Return Curve estimates
@@ -38,7 +46,7 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' @param retcurve An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.
 #' @inheritParams rc_unc
 #'  
-#' @return An object of S4 clas \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
+#' @return An object of S4 class \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
 #' \item{median}{A vector containing the median of the empirical probability of lying in a survival region.} 
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
@@ -71,6 +79,14 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' gof <- rc_gof(retcurve = rc_orig)
 #' 
 #' plot(gof)
+#' 
+#' \dontrun{
+#' # To see the the S4 object's slots
+#' str(gof)
+#' 
+#' # To access the list of vectors
+#' gof@@gof
+#' }
 #' 
 #' @export
 #'  

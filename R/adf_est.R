@@ -6,9 +6,10 @@
                                                            k = "numeric",
                                                            constrained = "logical",
                                                            tol = "numeric",
+                                                           par_init = "numeric",
                                                            adf = "numeric"))
 
-adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf){
+adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, par_init, adf){
   .adf_est.class(data = data,
                  w = w,
                  method = method,
@@ -17,6 +18,7 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, adf)
                  k = k,
                  constrained = constrained,
                  tol = tol,
+                 par_init = par_init,
                  adf = adf)
 }
 
@@ -49,11 +51,14 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
+#' @param par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.
 #' 
 #' @return An object of S4 class \code{adf_est.class}. This object returns the arguments of the function and an extra slot \code{adf} containing the estimates of the angular dependence function.
 #' 
 #' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, 
-#' obtained using Composite likelihood methods. Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
+#' obtained using Composite likelihood methods. 
+#' 
+#' Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
 #' For more details see \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 #' 
 #' @note \loadmathjax{} Due to its a pointwise nature, for a better estimation of \mjeqn{\lambda(\omega)}{} 
@@ -79,11 +84,19 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' lambda <- adf_est(data = dataexp, method = "hill")
 #'
 #' plot(lambda)
+#' 
+#' \dontrun{
+#' # To see the the S4 object's slots
+#' str(lambda)
+#' 
+#' # To access the estimates of the ADF
+#' lambda@@adf
+#' }
 #'
 #' @export
 #' 
-adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001){
-  if(dim(data)[2] > 2){
+adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
+  if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the ADF is only implemented for a bivariate setting.")
   }
   if(q < 0 | q > 1 | qalphas < 0 | qalphas > 1){
@@ -95,9 +108,6 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   if(!method %in% c("hill", "cl")){
     stop("ADF needs to be estimated either through the Hill estimator or Composite likelihood estimator.")
   }
-  if(k < 1 | k %% 1 != 0){
-    stop("The Bernstein-Bezier polynomial degree has to be a positive integer.")
-  }
   # if(!is.logical(constrained) == T){
   #   stop("Argument constrained needs to be logical.")
   # }
@@ -108,7 +118,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   data <- data[complete.cases(data), ]
   result <- adf_est.class(data = data, w = w, method = method, 
                           q = q, qalphas = qalphas, k = k, 
-                          constrained = constrained, tol = tol, adf = double())
+                          constrained = constrained, tol = tol, par_init = par_init, adf = double())
   
   if(constrained == FALSE){
     if(method == "hill"){
@@ -118,11 +128,17 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
       return(result)
     }
     else{
+      if(k < 1 | k %% 1 != 0){
+        stop("The Bernstein-Bezier polynomial degree has to be a positive integer.")
+      }
+      if(length(par_init) != k - 1){
+        stop(paste0("For Composite Likelihood estimation, the number of initial parameters should be equal to ", k - 1))
+      }
       a <- 0
       b <- 1
       lam_end <- c(1, 1)
       basis <- bbp(w = w, k = k, a = a, b = b)$basis
-      betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol)
+      betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol, par_init = par_init)
       lambda_cl <- basis %*% betacl
       lambda_cl <- properties(w = w, lambda = as.vector(lambda_cl))
       result@adf <- lambda_cl
@@ -148,6 +164,12 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
       return(result)
     }
     if(method == "cl"){
+      if(k < 1 | k %% 1 != 0){
+        stop("The Bernstein-Bezier polynomial degree has to be a positive integer.")
+      }
+      if(length(par_init) != k - 1){
+        stop(paste0("For Composite Likelihood estimation, the number of initial parameters should be equal to ", k - 1))
+      }
       lambda_cl <- c()
       if(sum(!indx) < 2){
         lambda_cl <- pmax(w, 1 - w)
@@ -158,7 +180,7 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
         lambda_cl[indx] <- pmax(w, 1 - w)[indx]
         basis <- bbp(w = w, k = k, a = a, b = b)$basis
         lam_end <- c(max(a, 1 - a), max(b, 1 - b))
-        betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol)
+        betacl <- minfunction_mle(w = w, data = data, a = a, b = b, lam_end = lam_end, k = k, q_minproj = q, tol = tol, par_init = par_init)
         lambda_cl[!indx] <- basis %*% betacl
         lambda_cl <- properties(w = w, lambda = as.vector(lambda_cl))
         result@adf <- lambda_cl

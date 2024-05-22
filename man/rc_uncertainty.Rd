@@ -24,6 +24,12 @@ An object of S4 class \code{rc_unc.class}. This object returns the arguments of 
 \item{mean}{A vector containing the mean estimates of the return curve. Set \code{mean = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
+
+The \code{plot} function takes an object of S4 class \code{rc_unc.class}, and a \code{which} argument specifying the type of plot desired (see \strong{Examples}):
+\item{\code{"rc"}}{Plots the estimated Return Curve and its uncertainty (default).}
+\item{\code{"median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
+\item{\code{"mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
+\item{\code{"all"}}{Plots all the above mentioned plots.}
 }
 \description{
 Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
@@ -48,17 +54,25 @@ rc_orig <- rc_est(data = data, p = prob, method = "hill")
 
 unc <- rc_unc(rc_orig)
 
-# Plots the estimated Return Curve, the median Return Curve and the mean Return Curve 
-plot(unc) 
-
-# Plots the estimated Return Curve and the median Return Curve
-plot(unc, mean = F) 
-
-# Plots the estimated Return Curve and the mean Return Curve 
-plot(unc, median = F) 
-
 # Plots the estimated Return Curve 
-plot(unc, median = F, mean = F) 
+plot(unc, which = "rc") 
+
+# Plots the median estimates of the Return Curve
+plot(unc, which = "median") 
+
+# Plots the mean estimates of the Return Curve
+plot(unc, which = "mean") 
+
+# Plots the estimated Return Curve and its the median and mean estimates
+plot(unc, which = "all") 
+
+\dontrun{
+# To see the the S4 object's slots
+str(unc)
+
+# To access the list of vectors
+unc@unc
+}
 
 }
 \references{

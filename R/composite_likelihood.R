@@ -30,14 +30,13 @@ est_beta <- function(par, basis, t, len_vec, w, lam_end){
   }
 }
 
-minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol){
+minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol, par_init){
   if(tol < 0){
     stop("Convergence tolerance needs to be positive.")
   }
   polynomials <- bbp(w = w, k = k, a = a, b = b)
   basis <- polynomials$basis
   angles <- polynomials$angles
-  par_init  <- rep(0, k-1)
   min_proj <- sapply(angles, function(i) minproj_lambda(data = data, w = i, q_minproj = q_minproj))
   t <- c()
   len_vec <- c()

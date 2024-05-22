@@ -19,7 +19,7 @@ rc_gof(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 \item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
-An object of S4 clas \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
+An object of S4 class \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
 \item{median}{A vector containing the median of the empirical probability of lying in a survival region.} 
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
@@ -50,6 +50,14 @@ rc_orig <- rc_est(data = data, p = prob, method = "hill")
 gof <- rc_gof(retcurve = rc_orig)
 
 plot(gof)
+
+\dontrun{
+# To see the the S4 object's slots
+str(gof)
+
+# To access the list of vectors
+gof@gof
+}
 
 }
 \references{

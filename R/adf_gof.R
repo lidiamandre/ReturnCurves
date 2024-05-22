@@ -51,6 +51,8 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
 #' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
 #' 
+#' @note \loadmathjax{} It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for a few values of \mjeqn{\omega}{w}.
+#' 
 #' @rdname adf_gof
 #' 
 #' @references \insertAllCited{}
@@ -64,7 +66,7 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' set.seed(321)
 #' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
-#' dataexp <- margtransf(data)
+#' dataexp <- margtransf(data)@@dataexp
 #' 
 #' lambda <- adf_est(data = dataexp, method = "hill")
 #' 
@@ -72,6 +74,14 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' gof <- adf_gof(adf = lambda, w_ind = w_ind)
 #' 
 #' plot(gof)
+#' 
+#' \dontrun{
+#' # To see the the S4 object's slots
+#' str(gof)
+#' 
+#' # To access the list of vectors
+#' gof@@gof
+#' }
 #' 
 #' @export
 #'  

@@ -27,9 +27,10 @@ curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
                                                          k = "numeric",
                                                          constrained = "logical",
                                                          tol = "numeric",
+                                                         par_init = "numeric",
                                                          rc = "array"))
 
-rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, rc){
+rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, par_init, rc){
   .rc_est.class(data = data,
                 qmarg = qmarg,
                 w = w,
@@ -40,6 +41,7 @@ rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
                 k = k,
                 constrained = constrained,
                 tol = tol,
+                par_init = par_init,
                 rc = rc)
 }
 
@@ -99,9 +101,17 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' plot(rc_orig)
 #' 
+#' \dontrun{
+#' # To see the the S4 object's slots
+#' str(rc_orig)
+#' 
+#' # To access the matrix with the data on standard exponential margins
+#' rc_orig@@rc
+#' }
+#' 
 #' @export
-rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001){
-  if(dim(data)[2] > 2){
+rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
+  if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the Return Curve is only implemented for a bivariate setting.")
   }
   if(qmarg < 0 | qmarg > 1){
@@ -114,8 +124,8 @@ rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("
     warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
   }
   dataexp <- margtransf(data = data, qmarg = qmarg)@dataexp
-  result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, rc = array())
-  rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)
+  result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, rc = array())
+  rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
   curveunif <- apply(rc_data, 2, pexp)
   data <- data[complete.cases(data), ]
   result@data <- data

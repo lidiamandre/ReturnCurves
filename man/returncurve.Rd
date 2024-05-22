@@ -15,7 +15,8 @@ rc_est(
   qalphas = 0.95,
   k = 7,
   constrained = FALSE,
-  tol = 0.001
+  tol = 0.001,
+  par_init = rep(0, k - 1)
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ rc_est(
 \item{constrained}{Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
 \item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
+
+\item{par_init}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.}
 }
 \value{
 An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
@@ -71,6 +74,14 @@ prob <- 1/n
 rc_orig <- rc_est(data = data, p = prob, method = "hill")
 
 plot(rc_orig)
+
+\dontrun{
+# To see the the S4 object's slots
+str(rc_orig)
+
+# To access the matrix with the data on standard exponential margins
+rc_orig@rc
+}
 
 }
 \references{
