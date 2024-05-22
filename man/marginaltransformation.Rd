@@ -13,7 +13,13 @@ margtransf(data, qmarg = 0.95)
 \item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is \code{0.95}.}
 }
 \value{
-An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard margins. To visualise the joint distribution, set \code{joint = T} in the \code{plot} environment. If \code{joint = F} (default), \code{plot} returns the marginal distribution of each variable.
+An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
+
+The \code{plot} function, takes an object of S4 class \code{margtransf.class}, and a \code{which} argument specifying the type of plot desired (see \strong{Examples}):
+\item{\code{"hist"}}{Plots the marginal distributions of the two variables on original and standard exponential margins.}
+\item{\code{"ts"}}{Plots the time series of the two variables on original and standard exponential margins.}
+\item{\code{"joint"}}{Plots the joint distribution of the two variables on original and standard exponential margins..}
+\item{\code{"all"}}{Plots all the above mentioned plots.}
 }
 \description{
 Marginal transformation of a random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}.
@@ -30,13 +36,25 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
-dataexp <- margtransf(data)
+margdata <- margtransf(data)
+
+# To see the the S4 object's slots
+str(margdata)
+
+# To assess the matrix with the data on standard exponential margins
+dataexp <- margdata@dataexp
 
 # Plots the marginal distributions of X and Y on original vs standard exponential margins
-plot(dataexp) 
+plot(margdata, which = "hist") 
+
+# Plots the time series of X and Y on original vs standard exponential margins
+plot(margdata, which = "ts") 
 
 # Plots the joint distribution of X and Y on original vs standard exponential margins
-plot(dataexp, joint = T) 
+plot(margdata, which = "joint") 
+
+# Plots all the available plots
+plot(margdata, which = "all") 
 
 }
 \references{

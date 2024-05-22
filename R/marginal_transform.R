@@ -31,34 +31,54 @@ margtransf.class <- function(data, qmarg, dataexp){
                     dataexp = dataexp)
 }
 
-setMethod("plot", signature = list("margtransf.class"), function(x, joint = F){
+setMethod("plot", signature = list("margtransf.class"), function(x, which = c("hist", "ts","joint", "all")){
+  if(!which %in% c("all", "hist", "ts", "joint")){
+    stop("Plot type not implemented.\n 'which' should be 'hist' to plot the histograms of the data;\n 'ts' to plot the time series of each variable;\n 'joint' to plot the joint distribution;\n or 'all' for all available plots.")
+  }
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2], "Xexp" = x@dataexp[, 1], "Yexp" = x@dataexp[, 2])
-  if(joint == F){
+  plots <- list()
+  if ("all" %in% which || "hist" %in% which) {
     origX <- df %>% ggplot(aes(x = X)) + geom_histogram(col = "darkred", fill = "red", alpha = 0.3, 
-                                                        na.rm = T, show.legend = F) +
+                                                        na.rm = TRUE, show.legend = FALSE) +
       theme_minimal() + labs(x = "X", y = "Frequency") + ggtitle(TeX("Original margin of $X$"))
     expX <- df %>% ggplot(aes(x = Xexp)) + geom_histogram(col = "darkred", fill = "red", alpha = 0.3, 
-                                                          na.rm = T, show.legend = F) +
+                                                          na.rm = TRUE, show.legend = FALSE) +
       theme_minimal() + labs(x = expression(X[exp]), y = "Frequency") + ggtitle(TeX("Marginal transformation of $X$"))
     origY <- df %>% ggplot(aes(x = Y)) + geom_histogram(col = "darkblue", fill = "blue", alpha = 0.3, 
-                                                        na.rm = T, show.legend = F) +
+                                                        na.rm = TRUE, show.legend = FALSE) +
       theme_minimal() + labs(x = "Y", y = "Frequency") + ggtitle(TeX("Original margin of $Y$"))
     expY <- df %>% ggplot(aes(x = Yexp)) + geom_histogram(col = "darkblue", fill = "blue", alpha = 0.3, 
-                                                          na.rm = T, show.legend = F) +
+                                                          na.rm = TRUE, show.legend = FALSE) +
       theme_minimal() + labs(x = expression(Y[exp]), y = "Frequency") + ggtitle(TeX("Marginal transformation of $Y$"))
-    
-    plot_grid(origX, expX, origY, expY, nrow = 2)
+    plots <- c(plots, list(origX, expX, origY, expY))
   }
-  else{
-    origjoint <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T) +
+  if ("all" %in% which || "ts" %in% which) {
+    tsorigX <- df %>% ggplot(aes(x = 1:length(X), y = X)) + geom_line() +
+      theme_minimal() + labs(x = "Index", y = "X") + 
+      ggtitle(TeX("Time series of $X$"))
+    tsexpX <- df %>% ggplot(aes(x = 1:length(Xexp), y = Xexp)) + geom_line() +
+      theme_minimal() + labs(x = "Index", y = expression(X[exp])) + 
+      ggtitle(TeX("Time series of $X_{exp}$"))
+    tsorigY <- df %>% ggplot(aes(x = 1:length(Y), y = Y)) + geom_line() +
+      theme_minimal() + labs(x = "Index", y = "Y") + 
+      ggtitle(TeX("Time series of $Y$"))
+    tsexpY <- df %>% ggplot(aes(x = 1:length(Yexp), y = Yexp)) + geom_line() +
+      theme_minimal() + labs(x = "Index", y = expression(Y[exp])) + 
+      ggtitle(TeX("Time series of $Y_{exp}$"))
+    plots <- c(plots, list(tsorigX, tsexpX, tsorigY, tsexpY))
+  }
+  if ("all" %in% which || "joint" %in% which) {
+    origjoint <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = TRUE) +
       theme_minimal() +
       ggtitle("Original margins")
-    expjoint <- df %>% ggplot(aes(x = Xexp, y = Yexp)) + geom_point(na.rm = T) +
+    expjoint <- df %>% ggplot(aes(x = Xexp, y = Yexp)) + geom_point(na.rm = TRUE) +
       theme_minimal() + labs(x = expression(X[exp]), y = expression(Y[exp])) +
       ggtitle("Standard exponential margins")
-    plot_grid(origjoint, expjoint)
+    plots <- c(plots, list(origjoint, expjoint))
   }
+  plot_grid(plotlist = plots, ncol = 2)
 })
+
 
 #' Marginal Transformation
 #' 
@@ -72,7 +92,13 @@ setMethod("plot", signature = list("margtransf.class"), function(x, joint = F){
 #' @param data A matrix containing the data on the original margins.
 #' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is \code{0.95}.
 #' 
-#' @return An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard margins. To visualise the joint distribution, set \code{joint = T} in the \code{plot} environment. If \code{joint = F} (default), \code{plot} returns the marginal distribution of each variable.
+#' @return An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
+#' 
+#' The \code{plot} function, takes an object of S4 class \code{margtransf.class}, and a \code{which} argument specifying the type of plot desired (see \strong{Examples}):
+#' \item{\code{"hist"}}{Plots the marginal distributions of the two variables on original and standard exponential margins.}
+#' \item{\code{"ts"}}{Plots the time series of the two variables on original and standard exponential margins.}
+#' \item{\code{"joint"}}{Plots the joint distribution of the two variables on original and standard exponential margins..}
+#' \item{\code{"all"}}{Plots all the above mentioned plots.}
 #' 
 #' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
 #' is transformed by using the empirical cumulative distribution function 
@@ -91,28 +117,54 @@ setMethod("plot", signature = list("margtransf.class"), function(x, joint = F){
 #' set.seed(321)
 #' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
-#' dataexp <- margtransf(data)
+#' margdata <- margtransf(data)
+#' 
+#' # To see the the S4 object's slots
+#' str(margdata)
+#' 
+#' # To assess the matrix with the data on standard exponential margins
+#' dataexp <- margdata@@dataexp
 #' 
 #' # Plots the marginal distributions of X and Y on original vs standard exponential margins
-#' plot(dataexp) 
+#' plot(margdata, which = "hist") 
+#' 
+#' # Plots the time series of X and Y on original vs standard exponential margins
+#' plot(margdata, which = "ts") 
 #' 
 #' # Plots the joint distribution of X and Y on original vs standard exponential margins
-#' plot(dataexp, joint = T) 
+#' plot(margdata, which = "joint") 
+#' 
+#' # Plots all the available plots
+#' plot(margdata, which = "all") 
 #' 
 #' @export
 #' 
 margtransf <- function(data, qmarg = 0.95){
+  if(dim(data)[2] > 2){
+    warnings("Estimation of the Return Curves and/or ADF are only implemented for a bivariate setting.")
+  }
   if(qmarg < 0 | qmarg > 1){
     stop("Marginal quantile needs to be in [0, 1].")
   }
   result <- margtransf.class(data = data, qmarg = qmarg, dataexp = array())
   nas <- colSums(is.na(data))
+  # if(any(nas > 0)){
+  #   invisible(sapply(1:length(nas[nas > 0]), function(i){
+  #     warning(paste0("There are ", nas[i], " missing values in margin X", i, ".\n These were removed."))
+  #   }))
+  # }
   if(any(nas > 0)){
-    invisible(sapply(1:length(nas[nas > 0]), function(i){
-      warning(paste0("There are ", nas[i], " missing values in margin X", i, ".\n These were removed."))
-    }))
+    for(i in 1:length(nas[nas > 0])){
+      if(nas[i] > 0){
+        warning(paste0("There are ", nas[i], " missing values in margin X", i, ".\n These were removed."))
+      }
+    }
   }
-  dataunif <- apply(data, 2, empirical_cdf, qmarg = qmarg)
+  # dataunif <- apply(data, 2, empirical_cdf, qmarg = qmarg)
+  dataunif <- matrix(NA, ncol = 2, nrow = dim(data)[1])
+  for(i in 1:2){
+    dataunif[, i] <- empirical_cdf(data[, i], qmarg = qmarg)
+  }
   result@dataexp <- apply(dataunif, 2, qexp)
   return(result)
 }  
