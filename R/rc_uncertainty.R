@@ -1,31 +1,12 @@
-.rc_unc.class <- setClass("rc_unc.class", representation(data = "array",
-                                                         qmarg = "numeric",
-                                                         w = "numeric",
-                                                         p = "numeric",
-                                                         method = "character",
-                                                         q = "numeric",
-                                                         qalphas = "numeric",
-                                                         k = "numeric",
-                                                         constrained = "logical",
-                                                         tol = "numeric",
+.rc_unc.class <- setClass("rc_unc.class", representation(retcurve = "rc_est.class",
                                                          blocksize = "numeric",
                                                          nboot = "numeric",
                                                          nangles = "numeric",
                                                          alpha = "numeric",
                                                          unc = "list"))
 
-rc_unc.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
-                         tol, blocksize, nboot, nangles, alpha, unc){
-  .rc_unc.class(data = data,
-                qmarg = qmarg,
-                w = w,
-                p = p,
-                method = method,
-                q = q,
-                qalphas = qalphas,
-                k = k,
-                constrained = constrained,
-                tol = tol,
+rc_unc.class <- function(retcurve, blocksize, nboot, nangles, alpha, unc){
+  .rc_unc.class(retcurve = retcurve,
                 blocksize = blocksize,
                 nboot = nboot,
                 nangles = nangles,
@@ -33,10 +14,10 @@ rc_unc.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained,
                 unc = unc)
 }
 
-setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, y, median = T, mean = T){
+setMethod("plot", signature = list("rc_unc.class"), function(x, median = T, mean = T){
   object <- x
-  df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
-  rcdf <- data.frame("rcX" = y@rc[, 1], "rcY" = y@rc[, 2])
+  df <- data.frame("X" = x@retcurve@data[, 1], "Y" = x@retcurve@data[, 2])
+  rcdf <- data.frame("rcX" = x@retcurve@rc[, 1], "rcY" = x@retcurve@rc[, 2])
   uncdf <- data.frame("medianX" = x@unc$median[, 1], "medianY" = x@unc$median[, 2], 
                       "meanX" = x@unc$mean[, 1], "meanY" = x@unc$mean[, 2], 
                       "lowerX" = x@unc$lower[, 1], "lowerY" = x@unc$lower[, 2], 
@@ -105,7 +86,7 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
 #' 
 #' @docType methods
 #' 
-#' @inheritParams rc_est
+#' @param retcurve An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
@@ -140,25 +121,23 @@ setMethod("plot", signature = list("rc_unc.class", "rc_est.class"), function(x, 
 #' 
 #' rc_orig <- rc_est(data = data, p = prob, method = "hill")
 #' 
-#' unc <- rc_unc(data = data, p = prob, method = "hill")
+#' unc <- rc_unc(rc_orig)
 #' 
 #' # Plots the estimated Return Curve, the median Return Curve and the mean Return Curve 
-#' plot(unc, rc_orig) 
+#' plot(unc) 
 #' 
 #' # Plots the estimated Return Curve and the median Return Curve
-#' plot(unc, rc_orig, mean = F) 
+#' plot(unc, mean = F) 
 #' 
 #' # Plots the estimated Return Curve and the mean Return Curve 
-#' plot(unc, rc_orig, median = F) 
+#' plot(unc, median = F) 
 #' 
 #' # Plots the estimated Return Curve 
-#' plot(unc, rc_orig, median = F, mean = F) 
+#' plot(unc, median = F, mean = F) 
 #' 
 #' @export
 #' 
-rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), qmarg = 0.95, q = 0.95, 
-                   qalphas = 0.95, k = 7, constrained = FALSE, blocksize = 1, 
-                   nboot = 250, nangles = 150, alpha = 0.05, tol = 0.0001){ 
+rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
   if(nboot < 1 | nboot %% 1 != 0){
     stop("The number of bootstrap samples needs to be a positive integer.")
   }
@@ -171,14 +150,23 @@ rc_unc <- function(data, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), 
   if(alpha > 0.5){
     warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
   }
-  result <- rc_unc.class(data = data, qmarg = qmarg, w = w, p = p, method = method, 
-                         q = q, qalphas = qalphas, k = k, constrained = constrained, 
-                         tol = tol, blocksize = blocksize, nboot = nboot, nangles = nangles, 
+  result <- rc_unc.class(retcurve = retcurve, blocksize = blocksize, nboot = nboot, nangles = nangles, 
                          alpha = alpha, unc = list())
+  rc_origin <- result@retcurve@rc
+  data <- result@retcurve@data
+  w <- result@retcurve@w
+  qmarg <- result@retcurve@qmarg
+  p <- result@retcurve@p
+  method <- result@retcurve@method
+  q <- result@retcurve@q
+  qalphas <- result@retcurve@qalphas
+  k <- result@retcurve@k
+  constrained <- result@retcurve@constrained
+  tol <- result@retcurve@tol
   n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
-  data0 <- apply(data[complete.cases(data), ], 2, min)
+  data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
