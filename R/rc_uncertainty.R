@@ -46,9 +46,8 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
       geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
       scale_color_manual(values = colours, 
-                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", 
-                                                                               "solid", "dashed"),
-                                                                  linewidth = c(1, 0.5, 1, 0.5)))) +
+                         guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "dashed"),
+                                                                  linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
     plots <- c(plots, list(median))
@@ -59,9 +58,8 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
       geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
       scale_color_manual(values = colours, 
-                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", 
-                                                                               "solid", "dashed"),
-                                                                  linewidth = c(1, 0.5, 1, 0.5)))) +
+                         guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "dashed"),
+                                                                  linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
     plots <- c(plots, list(mean))
