@@ -26,10 +26,8 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
                        guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "solid"))))  +
     ylim(c(-0.001, range(df$upper)[2] + 0.001)) + 
     theme_minimal() +
-    theme(legend.position = c(0.2, 0.9), 
-          legend.title = element_blank(),
-          legend.background = element_rect(fill = "white", color = "black"),
-          legend.box.background = element_rect(color = "black")) +
+    theme(legend.title = element_blank(),
+          legend.position = "bottom") +
     ggtitle(TeX("Goodness of fit of $\\hat{RC}(p)$"))
   
 })
