@@ -96,6 +96,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @export
 #' 
 adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
+  data <- as.matrix(data)
   if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the ADF is only implemented for a bivariate setting.")
   }

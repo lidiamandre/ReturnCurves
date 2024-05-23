@@ -143,6 +143,7 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' @export
 #' 
 margtransf <- function(data, qmarg = 0.95){
+  data <- as.matrix(data)
   if(is.null(dim(data)) || dim(data)[2] > 2){
     warnings("Estimation of the Return Curves and/or ADF are only implemented for a bivariate setting.")
   }
