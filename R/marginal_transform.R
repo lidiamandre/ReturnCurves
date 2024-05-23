@@ -54,16 +54,16 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
     plots <- c(plots, list(origX, expX, origY, expY))
   }
   if ("all" %in% which || "ts" %in% which) {
-    tsorigX <- df %>% ggplot(aes(x = 1:length(X), y = X)) + geom_line() +
+    tsorigX <- df %>% ggplot(aes(x = 1:length(X), y = X)) + geom_line(na.rm = FALSE) +
       theme_minimal() + labs(x = "Index", y = "X") + 
       ggtitle(TeX("Time series of $X$"))
-    tsexpX <- df %>% ggplot(aes(x = 1:length(Xexp), y = Xexp)) + geom_line() +
+    tsexpX <- df %>% ggplot(aes(x = 1:length(Xexp), y = Xexp)) + geom_line(na.rm = FALSE) +
       theme_minimal() + labs(x = "Index", y = expression(X[exp])) + 
       ggtitle(TeX("Time series of $X_{exp}$"))
-    tsorigY <- df %>% ggplot(aes(x = 1:length(Y), y = Y)) + geom_line() +
+    tsorigY <- df %>% ggplot(aes(x = 1:length(Y), y = Y)) + geom_line(na.rm = FALSE) +
       theme_minimal() + labs(x = "Index", y = "Y") + 
       ggtitle(TeX("Time series of $Y$"))
-    tsexpY <- df %>% ggplot(aes(x = 1:length(Yexp), y = Yexp)) + geom_line() +
+    tsexpY <- df %>% ggplot(aes(x = 1:length(Yexp), y = Yexp)) + geom_line(na.rm = FALSE) +
       theme_minimal() + labs(x = "Index", y = expression(Y[exp])) + 
       ggtitle(TeX("Time series of $Y_{exp}$"))
     plots <- c(plots, list(tsorigX, tsexpX, tsorigY, tsexpY))
