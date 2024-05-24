@@ -50,6 +50,14 @@ minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol, par_init)
   if(is.list(results)){optim_output <- results}
   else{
     optim_output <- optim(par = par_init, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000))
+    # optim_output <- tryCatch(optim(par = par_init, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000)),
+    #                          error = function(e) e)
+    # if(is.element("error", class(optim_output))){
+    #   par_init <- c(-1, rep(0, k - 2))
+    #   print(par_init)
+    #   optim_output <- optim(par = par_init, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000))
+    # }
+    
   }
   results <- tryCatch(optim(par = optim_output$par, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000)),
                       error = function(e){1})
