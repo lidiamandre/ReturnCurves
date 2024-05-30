@@ -5,12 +5,12 @@
 \alias{margtransf}
 \title{Marginal Transformation}
 \usage{
-margtransf(data, qmarg = 0.95)
+margtransf(data, qmarg = rep(0.95, 2))
 }
 \arguments{
 \item{data}{A matrix containing the data on the original margins.}
 
-\item{qmarg}{Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is \code{0.95}.}
+\item{qmarg}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
 }
 \value{
 An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
@@ -22,10 +22,10 @@ The \code{plot} function takes an object of S4 class \code{margtransf.class}, an
 \item{\code{"all"}}{Plots all the above mentioned plots (default).}
 }
 \description{
-Marginal transformation of a random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}.
+Marginal transformation of a  bivariate random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
+\loadmathjax{} Given a threshold value \mjeqn{u}{u}, each stationary random vector 
 is transformed by using the empirical cumulative distribution function 
 (cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.
 }

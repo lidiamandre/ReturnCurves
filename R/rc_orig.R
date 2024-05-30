@@ -1,4 +1,4 @@
-curve_inverse_transform <- function(curveunif, data, qmarg = 0.95){
+curve_inverse_transform <- function(curveunif, data, qmarg){
   # compldata <- data[complete.cases(data)]
   thresh <- quantile(data, qmarg)
   if(qmarg == 1){
@@ -63,8 +63,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #'  
 #' @docType methods
 #' 
-#' @param data A matrix containing the data on the original margins.
-#' @param qmarg Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is \code{0.95}.
+#' @inheritParams margtransf
 #' @param p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
 #' @inheritParams adf_est
 #' 
@@ -110,18 +109,18 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' }
 #' 
 #' @export
-rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
+rc_est <- function(data, qmarg = rep(0.95, 2), w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
   data <- as.matrix(data)
   if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the Return Curve is only implemented for a bivariate setting.")
   }
-  if(qmarg < 0 | qmarg > 1){
+  if(any(qmarg < 0) | any(qmarg > 1)){
     stop("Marginal quantiles need to be in [0, 1].")
   }
   if(p < 0 | p > 1){
     stop("Probability needs to be in [0, 1].")
   }
-  if(p > 1 - qmarg | p > 1 - q | p > 1 - qalphas){
+  if(p > 1 - qmarg[1] | p > 1 - qmarg[2] | p > 1 - q | p > 1 - qalphas){
     warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
   }
   dataexp <- margtransf(data = data, qmarg = qmarg)@dataexp
@@ -130,7 +129,7 @@ rc_est <- function(data, qmarg = 0.95, w = seq(0, 1, by = 0.01), p, method = c("
   curveunif <- apply(rc_data, 2, pexp)
   data <- data[complete.cases(data), ]
   result@data <- data
-  result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg))
+  result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg[i]))
   return(result)
 }
 

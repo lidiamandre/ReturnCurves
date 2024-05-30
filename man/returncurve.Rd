@@ -7,7 +7,7 @@
 \usage{
 rc_est(
   data,
-  qmarg = 0.95,
+  qmarg = rep(0.95, 2),
   w = seq(0, 1, by = 0.01),
   p,
   method = c("hill", "cl"),
@@ -22,7 +22,7 @@ rc_est(
 \arguments{
 \item{data}{A matrix containing the data on the original margins.}
 
-\item{qmarg}{Marginal quantile to be used for the fit of the Generalised Pareto Distribution. Default is \code{0.95}.}
+\item{qmarg}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
 
 \item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 

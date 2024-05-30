@@ -1,7 +1,7 @@
 ranktransform <- function(data, thresh) rank(data)[data <= thresh]/(length(data) + 1) 
 gpdtransform <- function(data, thresh, par, qmarg) 1 - (1 - qmarg)*pgpd(data, loc = thresh, scale = par[1], shape = par[2], lower.tail = F)
 
-empirical_cdf <- function(data, qmarg = 0.95) { 
+empirical_cdf <- function(data, qmarg) { 
   compldata <- data[complete.cases(data)]
   u <- c()
   thresh <- quantile(compldata, qmarg)
@@ -40,16 +40,16 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
   plots <- list()
   if ("all" %in% which || "hist" %in% which) {
     origX <- df %>% ggplot(aes(x = X)) + geom_histogram(col = "darkred", fill = "red", alpha = 0.3, 
-                                                        na.rm = TRUE, show.legend = FALSE, binwidth = 0.3) +
+                                                        na.rm = TRUE, show.legend = FALSE, bins = 30) +
       theme_minimal() + labs(x = "X", y = "Frequency") + ggtitle(TeX("Original margin of $X$"))
     expX <- df %>% ggplot(aes(x = Xexp)) + geom_histogram(col = "darkred", fill = "red", alpha = 0.3, 
-                                                          na.rm = TRUE, show.legend = FALSE, binwidth = 0.3) +
+                                                          na.rm = TRUE, show.legend = FALSE, bins = 30) +
       theme_minimal() + labs(x = expression(X[exp]), y = "Frequency") + ggtitle(TeX("Marginal transformation of $X$"))
     origY <- df %>% ggplot(aes(x = Y)) + geom_histogram(col = "darkblue", fill = "blue", alpha = 0.3, 
-                                                        na.rm = TRUE, show.legend = FALSE, binwidth = 0.3) +
+                                                        na.rm = TRUE, show.legend = FALSE, bins = 30) +
       theme_minimal() + labs(x = "Y", y = "Frequency") + ggtitle(TeX("Original margin of $Y$"))
     expY <- df %>% ggplot(aes(x = Yexp)) + geom_histogram(col = "darkblue", fill = "blue", alpha = 0.3, 
-                                                          na.rm = TRUE, show.legend = FALSE, binwidth = 0.3) +
+                                                          na.rm = TRUE, show.legend = FALSE, bins = 30) +
       theme_minimal() + labs(x = expression(Y[exp]), y = "Frequency") + ggtitle(TeX("Marginal transformation of $Y$"))
     plots <- c(plots, list(origX, expX, origY, expY))
   }
@@ -86,12 +86,12 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' @name margtransf
 #' 
 #' @description
-#' Marginal transformation of a random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. 
+#' Marginal transformation of a  bivariate random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. 
 #' 
 #' @docType methods
 #' 
 #' @param data A matrix containing the data on the original margins.
-#' @param qmarg Marginal quantile used to fit the Generalised Pareto Distribution (GPD). Default is \code{0.95}.
+#' @param qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
 #' 
 #' @return An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
 #' 
@@ -101,7 +101,7 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' \item{\code{"joint"}}{Plots the joint distribution of the two variables on original and standard exponential margins.}
 #' \item{\code{"all"}}{Plots all the above mentioned plots (default).}
 #' 
-#' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, a stationary random vector 
+#' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, each stationary random vector 
 #' is transformed by using the empirical cumulative distribution function 
 #' (cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.    
 #' 
@@ -142,12 +142,12 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' 
 #' @export
 #' 
-margtransf <- function(data, qmarg = 0.95){
+margtransf <- function(data, qmarg = rep(0.95, 2)){
   data <- as.matrix(data)
   if(is.null(dim(data)) || dim(data)[2] > 2){
     warnings("Estimation of the Return Curves and/or ADF are only implemented for a bivariate setting.")
   }
-  if(qmarg < 0 | qmarg > 1){
+  if(any(qmarg < 0) | any(qmarg > 1)){
     stop("Marginal quantile needs to be in [0, 1].")
   }
   result <- margtransf.class(data = data, qmarg = qmarg, dataexp = array())
@@ -166,7 +166,7 @@ margtransf <- function(data, qmarg = 0.95){
   # dataunif <- apply(data, 2, empirical_cdf, qmarg = qmarg)
   dataunif <- matrix(NA, ncol = 2, nrow = dim(data)[1])
   for(i in 1:2){
-    dataunif[, i] <- empirical_cdf(data[, i], qmarg = qmarg)
+    dataunif[, i] <- empirical_cdf(data[, i], qmarg = qmarg[i])
   }
   result@dataexp <- apply(dataunif, 2, qexp)
   return(result)
