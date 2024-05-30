@@ -127,6 +127,9 @@ rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl
   if(p > 1 - qmarg[1] | p > 1 - qmarg[2] | p > 1 - q | p > 1 - qalphas){
     warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
   }
+  if(q < max(qmarg) | qalphas < max(qmarg)){
+    stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
+  }
   result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, rc = array())
   rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
   curveunif <- apply(rc_data, 2, pexp)

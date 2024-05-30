@@ -66,9 +66,9 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' set.seed(321)
 #' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
-#' dataexp <- margtransf(data)@@dataexp
+#' margdata <- margtransf(data)
 #' 
-#' lambda <- adf_est(data = dataexp, method = "hill")
+#' lambda <- adf_est(margdata = margdata, method = "hill")
 #' 
 #' w_ind <- 31
 #' gof <- adf_gof(adf = lambda, w_ind = w_ind)

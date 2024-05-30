@@ -6,7 +6,7 @@
 \title{Estimation of the Angular Dependence function (ADF)}
 \usage{
 adf_est(
-  data,
+  margdata,
   w = seq(0, 1, by = 0.01),
   method = c("hill", "cl"),
   q = 0.95,
@@ -18,7 +18,7 @@ adf_est(
 )
 }
 \arguments{
-\item{data}{A matrix containing the data on standard exponential margins.}
+\item{margdata}{An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details.}
 
 \item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
@@ -61,11 +61,11 @@ library(ReturnCurves)
 set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
-dataexp <- margtransf(data)@dataexp
+margdata <- margtransf(data)
 
 w <- seq(0, 1, by = 0.01)
 
-lambda <- adf_est(data = dataexp, method = "hill")
+lambda <- adf_est(margdata = margdata, method = "hill")
 
 plot(lambda)
 

@@ -43,7 +43,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' 
 #' @docType methods
 #' 
-#' @param data A matrix containing the data on standard exponential margins.
+#' @inheritParams rc_est
 #' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.
 #' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
@@ -77,11 +77,11 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' set.seed(321)
 #' data <- cbind(rnorm(1000), rnorm(1000))
 #' 
-#' dataexp <- margtransf(data)@@dataexp
+#' margdata <- margtransf(data)
 #'
 #' w <- seq(0, 1, by = 0.01)
 #'
-#' lambda <- adf_est(data = dataexp, method = "hill")
+#' lambda <- adf_est(margdata = margdata, method = "hill")
 #'
 #' plot(lambda)
 #' 
@@ -95,8 +95,9 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #'
 #' @export
 #' 
-adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
-  data <- as.matrix(data)
+adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
+  data <- margdata@dataexp
+  qmarg <- margdata@qmarg
   if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the ADF is only implemented for a bivariate setting.")
   }
@@ -108,6 +109,9 @@ adf_est <- function(data, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q 
   }
   if(!method %in% c("hill", "cl")){
     stop("ADF needs to be estimated either through the Hill estimator or Composite likelihood estimator.")
+  }
+  if(q < max(qmarg) | qalphas < max(qmarg)){
+    stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
   }
   # if(!is.logical(constrained) == T){
   #   stop("Argument constrained needs to be logical.")

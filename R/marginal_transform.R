@@ -144,25 +144,22 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 margtransf <- function(data, qmarg = rep(0.95, 2)){
   data <- as.matrix(data)
   if(is.null(dim(data)) || dim(data)[2] > 2){
-    warnings("Estimation of the Return Curves and/or ADF are only implemented for a bivariate setting.")
+    warning("Estimation of the Return Curves and/or ADF are only implemented for a bivariate setting.")
+  }
+  if(dim(data)[1] < 500){
+    warning("Sample size less than 500 data points. Small sample size is subject to higher variability and subsequent errors in modelling.")
   }
   if(any(qmarg < 0) | any(qmarg > 1)){
     stop("Marginal quantile needs to be in [0, 1].")
   }
   result <- margtransf.class(data = data, qmarg = qmarg, dataexp = array())
   nas <- colSums(is.na(data))
-  # if(any(nas > 0)){
-  #   invisible(sapply(1:length(nas[nas > 0]), function(i){
-  #     warning(paste0("There are ", nas[i], " missing values in margin X", i, ".\n These were removed."))
-  #   }))
-  # }
   if(any(nas > 0)){
     indnas <- which(nas > 0)
     for(i in indnas){
       warning(paste0("There are ", nas[i], " missing values in margin X", i, ".\n These were removed."))
     }
   }
-  # dataunif <- apply(data, 2, empirical_cdf, qmarg = qmarg)
   dataunif <- matrix(NA, ncol = 2, nrow = dim(data)[1])
   for(i in 1:2){
     dataunif[, i] <- empirical_cdf(data[, i], qmarg = qmarg[i])
