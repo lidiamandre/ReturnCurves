@@ -25,13 +25,13 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, par_
 setMethod("plot", signature = list("adf_est.class"), function(x){
   df <- data.frame("w" = x@w, "lb" = pmax(x@w, 1-x@w), "adf" = x@adf)
   coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
-  df %>% ggplot(aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
+  ggplot(data = df, aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
     geom_line(aes(x = w, y = adf, col = names(coloursl)[2])) +
     labs(x = expression(omega), y = expression(lambda(omega))) + 
     scale_color_manual(values = coloursl, 
                        guide = guide_legend(override.aes = list(linetype = c("solid", "dashed")))) +
     theme_minimal() + theme(legend.title = element_blank()) +
-    ggtitle(TeX("Estimation of $\\hat{\\lambda}(\\omega)$"))
+    ggtitle(expression("Estimation of" ~ hat(lambda)(omega)))
 })
 
 #' Estimation of the Angular Dependence function (ADF)

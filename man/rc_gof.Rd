@@ -45,7 +45,9 @@ n <- dim(data)[1]
 
 prob <- 10/n
 
-rc_orig <- rc_est(data = data, p = prob, method = "hill")
+margdata <- margtransf(data)
+
+rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 
 gof <- rc_gof(retcurve = rc_orig)
 

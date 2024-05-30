@@ -39,47 +39,46 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2], "Xexp" = x@dataexp[, 1], "Yexp" = x@dataexp[, 2])
   plots <- list()
   if ("all" %in% which || "hist" %in% which) {
-    origX <- df %>% ggplot(aes(x = X)) + geom_histogram(col = "darkred", fill = "red", alpha = 0.3, 
-                                                        na.rm = TRUE, show.legend = FALSE, bins = 30) +
-      theme_minimal() + labs(x = "X", y = "Frequency") + ggtitle(TeX("Original margin of $X$"))
-    expX <- df %>% ggplot(aes(x = Xexp)) + geom_histogram(col = "darkred", fill = "red", alpha = 0.3, 
-                                                          na.rm = TRUE, show.legend = FALSE, bins = 30) +
-      theme_minimal() + labs(x = expression(X[exp]), y = "Frequency") + ggtitle(TeX("Marginal transformation of $X$"))
-    origY <- df %>% ggplot(aes(x = Y)) + geom_histogram(col = "darkblue", fill = "blue", alpha = 0.3, 
-                                                        na.rm = TRUE, show.legend = FALSE, bins = 30) +
-      theme_minimal() + labs(x = "Y", y = "Frequency") + ggtitle(TeX("Original margin of $Y$"))
-    expY <- df %>% ggplot(aes(x = Yexp)) + geom_histogram(col = "darkblue", fill = "blue", alpha = 0.3, 
-                                                          na.rm = TRUE, show.legend = FALSE, bins = 30) +
-      theme_minimal() + labs(x = expression(Y[exp]), y = "Frequency") + ggtitle(TeX("Marginal transformation of $Y$"))
+    origX <- ggplot(data = df, aes(x = X)) + geom_histogram(aes(y = after_stat(density)), col = "darkred", fill = "red", alpha = 0.3, 
+                                                        na.rm = TRUE, show.legend = FALSE, bins = 30, boundary = 0) +
+      theme_minimal() + labs(x = "X", y = "Frequency") + ggtitle("Original margin of X")
+    expX <- ggplot(data = df, aes(x = Xexp)) + geom_histogram(aes(y = after_stat(density)), col = "darkred", fill = "red", alpha = 0.3, 
+                                                          na.rm = TRUE, show.legend = FALSE, bins = 30, boundary = 0) +
+      theme_minimal() + labs(x = expression(X[exp]), y = "Frequency") + ggtitle("Marginal transformation of X")
+    origY <- ggplot(data = df, aes(x = Y)) + geom_histogram(aes(y = after_stat(density)), col = "darkblue", fill = "blue", alpha = 0.3, 
+                                                        na.rm = TRUE, show.legend = FALSE, bins = 30, boundary = 0) +
+      theme_minimal() + labs(x = "Y", y = "Frequency") + ggtitle("Original margin of Y")
+    expY <- ggplot(data = df, aes(x = Yexp)) + geom_histogram(aes(y = after_stat(density)), col = "darkblue", fill = "blue", alpha = 0.3, 
+                                                          na.rm = TRUE, show.legend = FALSE, bins = 30, boundary = 0) +
+      theme_minimal() + labs(x = expression(Y[exp]), y = "Frequency") + ggtitle("Marginal transformation of Y")
     plots <- c(plots, list(origX, expX, origY, expY))
   }
   if ("all" %in% which || "ts" %in% which) {
-    tsorigX <- df %>% ggplot(aes(x = 1:length(X), y = X)) + geom_line(na.rm = T) +
+    tsorigX <- ggplot(data = df, aes(x = 1:length(X), y = X)) + geom_line(na.rm = T) +
       theme_minimal() + labs(x = "Index", y = "X") + 
-      ggtitle(TeX("Time series of $X$"))
-    tsexpX <- df %>% ggplot(aes(x = 1:length(Xexp), y = Xexp)) + geom_line(na.rm = T) +
+      ggtitle("Time series of X")
+    tsexpX <- ggplot(data = df, aes(x = 1:length(Xexp), y = Xexp)) + geom_line(na.rm = T) +
       theme_minimal() + labs(x = "Index", y = expression(X[exp])) + 
-      ggtitle(TeX("Time series of $X_{exp}$"))
-    tsorigY <- df %>% ggplot(aes(x = 1:length(Y), y = Y)) + geom_line(na.rm = T) +
+      ggtitle(expression("Times series of" ~ X[exp]))
+    tsorigY <- ggplot(data = df, aes(x = 1:length(Y), y = Y)) + geom_line(na.rm = T) +
       theme_minimal() + labs(x = "Index", y = "Y") + 
-      ggtitle(TeX("Time series of $Y$"))
-    tsexpY <- df %>% ggplot(aes(x = 1:length(Yexp), y = Yexp)) + geom_line(na.rm = T) +
+      ggtitle("Time series of Y")
+    tsexpY <- ggplot(data = df, aes(x = 1:length(Yexp), y = Yexp)) + geom_line(na.rm = T) +
       theme_minimal() + labs(x = "Index", y = expression(Y[exp])) + 
-      ggtitle(TeX("Time series of $Y_{exp}$"))
+      ggtitle(expression("Times series of" ~ Y[exp]))
     plots <- c(plots, list(tsorigX, tsexpX, tsorigY, tsexpY))
   }
   if ("all" %in% which || "joint" %in% which) {
-    origjoint <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = TRUE) +
+    origjoint <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = TRUE) +
       theme_minimal() +
       ggtitle("Original margins")
-    expjoint <- df %>% ggplot(aes(x = Xexp, y = Yexp)) + geom_point(na.rm = TRUE) +
+    expjoint <- ggplot(data = df, aes(x = Xexp, y = Yexp)) + geom_point(na.rm = TRUE) +
       theme_minimal() + labs(x = expression(X[exp]), y = expression(Y[exp])) +
       ggtitle("Standard exponential margins")
     plots <- c(plots, list(origjoint, expjoint))
   }
-  plot_grid(plotlist = plots, ncol = 2)
+  grid.arrange(grobs = plots, ncol = 2)
 })
-
 
 #' Marginal Transformation
 #' 

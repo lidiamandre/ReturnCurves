@@ -48,10 +48,10 @@ rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
 setMethod("plot", signature = list("rc_est.class"), function(x){
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
   rcdf <- data.frame("rcX" = x@rc[, 1], "rcY" = x@rc[, 2])
-  df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T) +
+  ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T) +
     geom_line(data = rcdf, aes(x = rcX, y = rcY), col = "red", linewidth = 1) +
     theme_minimal() +
-    ggtitle(TeX("Estimation of $\\hat{RC}(p)$"))
+    ggtitle(expression("Estimation of" ~ hat(RC)(p)))
 })
 
 #' Return Curve estimation
@@ -63,7 +63,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #'  
 #' @docType methods
 #' 
-#' @inheritParams margtransf
+#' @param margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
 #' @param p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
 #' @inheritParams adf_est
 #' 
@@ -96,7 +96,9 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' prob <- 1/n
 #' 
-#' rc_orig <- rc_est(data = data, p = prob, method = "hill")
+#' margdata <- margtransf(data)
+#' 
+#' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
 #' plot(rc_orig)
 #' 
@@ -109,8 +111,10 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' }
 #' 
 #' @export
-rc_est <- function(data, qmarg = rep(0.95, 2), w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
-  data <- as.matrix(data)
+rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
+  data <- margdata@data
+  qmarg <- margdata@qmarg
+  dataexp <- margdata@dataexp
   if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the Return Curve is only implemented for a bivariate setting.")
   }
@@ -123,7 +127,6 @@ rc_est <- function(data, qmarg = rep(0.95, 2), w = seq(0, 1, by = 0.01), p, meth
   if(p > 1 - qmarg[1] | p > 1 - qmarg[2] | p > 1 - q | p > 1 - qalphas){
     warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
   }
-  dataexp <- margtransf(data = data, qmarg = qmarg)@dataexp
   result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, rc = array())
   rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
   curveunif <- apply(rc_data, 2, pexp)

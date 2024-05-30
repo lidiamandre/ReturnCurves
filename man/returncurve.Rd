@@ -6,8 +6,7 @@
 \title{Return Curve estimation}
 \usage{
 rc_est(
-  data,
-  qmarg = rep(0.95, 2),
+  margdata,
   w = seq(0, 1, by = 0.01),
   p,
   method = c("hill", "cl"),
@@ -20,9 +19,7 @@ rc_est(
 )
 }
 \arguments{
-\item{data}{A matrix containing the data on the original margins.}
-
-\item{qmarg}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
+\item{margdata}{An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details.}
 
 \item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
@@ -71,7 +68,9 @@ n <- dim(data)[1]
 
 prob <- 1/n
 
-rc_orig <- rc_est(data = data, p = prob, method = "hill")
+margdata <- margtransf(data)
+
+rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 
 plot(rc_orig)
 

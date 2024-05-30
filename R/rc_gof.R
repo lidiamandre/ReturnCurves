@@ -16,7 +16,7 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
   df <- data.frame("angles" = 1:length(x@gof$median), x@gof, "pX" = c(rev(1:length(x@gof$median)), 1:length(x@gof$median)),
                    "pY" = c(rev(x@gof$lower), x@gof$upper), "prob" = rep(x@retcurve@p, length(x@gof$median)))
   coloursl <- c("Confidence interval" = 1, "Median estimate" = 1, "True probability" = 2)
-  df %>% ggplot(aes(x = pX, y = pY)) + geom_polygon(fill = "grey80", col = NA) +
+  ggplot(data = df, aes(x = pX, y = pY)) + geom_polygon(fill = "grey80", col = NA) +
     geom_line(aes(x = angles, y = median, col = names(coloursl)[2])) +
     geom_line(aes(x = angles, y = upper, col = names(coloursl)[1]), linetype = "dashed") +
     geom_line(aes(x = angles, y = lower, col = names(coloursl)[1]), linetype = "dashed") + 
@@ -28,7 +28,7 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
     theme_minimal() +
     theme(legend.title = element_blank(),
           legend.position = "bottom") +
-    ggtitle(TeX("Goodness of fit of $\\hat{RC}(p)$"))
+    ggtitle(expression("Goodness of fit of" ~ hat(RC)(p)))
   
 })
 
@@ -72,7 +72,9 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' prob <- 10/n
 #' 
-#' rc_orig <- rc_est(data = data, p = prob, method = "hill")
+#' margdata <- margtransf(data)
+#' 
+#' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #'
 #' gof <- rc_gof(retcurve = rc_orig)
 #' 

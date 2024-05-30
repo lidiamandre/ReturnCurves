@@ -29,7 +29,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                "Lower Bound" = 1, "Upper Bound" = 1)
   plots <- list()
   if("rc" %in% which){
-    rc <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
+    rc <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
       geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
@@ -37,11 +37,11 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                          guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "dashed"),
                                                                   linewidth = c(1, 0.5, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
-      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+      ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
     plots <- c(plots, list(rc))
   }
   if("median" %in% which){
-    median <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
+    median <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
       geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
@@ -49,11 +49,11 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                          guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "dashed"),
                                                                   linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
-      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+      ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
     plots <- c(plots, list(median))
   }
   if("mean" %in% which){
-    mean <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
+    mean <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
       geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
@@ -61,11 +61,11 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                          guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "dashed"),
                                                                   linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
-      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+      ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
     plots <- c(plots, list(mean))
   }
   if("all" %in% which){
-    all <- df %>% ggplot(aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
+    all <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
@@ -76,10 +76,10 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                                                                                "solid", "dashed"),
                                                                   linewidth = c(1, 0.5, 1, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
-      ggtitle(TeX("Uncertainty of $\\hat{RC}(p)$"))
+      ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
     plots <- c(plots, list(all))
   }
-  plot_grid(plotlist = plots, ncol = 1)
+  grid.arrange(grobs = plots, ncol = 1)
 })
 
 #' Uncertainty of the Return Curve estimates
@@ -130,7 +130,9 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' prob <- 10/n
 #' 
-#' rc_orig <- rc_est(data = data, p = prob, method = "hill")
+#' margdata <- margtransf(data)
+#' 
+#' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
 #' unc <- rc_unc(rc_orig)
 #' 
@@ -189,7 +191,8 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
     bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
-    rc_orig <- rc_est(data = bootdata, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
+    margdataboot <- margtransf(data = bootdata, qmarg = qmarg)
+    rc_orig <- rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){

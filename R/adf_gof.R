@@ -18,12 +18,12 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
   df <- as.data.frame(x@gof)
   ploygondf <- data.frame("X" = c(rev(x@gof$model), x@gof$model),
                           "Y" = c(rev(x@gof$lower), x@gof$upper))
-  ploygondf %>% ggplot(aes(x = X, y = Y)) + geom_polygon(fill = "grey80", col = NA) +
+  ggplot(data = ploygondf, aes(x = X, y = Y)) + geom_polygon(fill = "grey80", col = NA) +
     geom_point(data = df, mapping = aes(x = model, y = empirical)) + 
     geom_abline(col = 2, linewidth = 1) + 
     labs(x = "Model quantiles", y = "Empirical quantiles") +
     theme_minimal() +
-    ggtitle(TeX("Goodness of fit of $\\hat{\\lambda}(\\omega)$"))
+    ggtitle(expression("Goodness of fit of" ~ hat(lambda)(omega)))
 })
 
 #' Goodness of fit of the Angular Dependence function estimates
