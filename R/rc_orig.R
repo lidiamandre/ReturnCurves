@@ -111,7 +111,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' }
 #' 
 #' @export
-rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
+rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
   data <- margdata@data
   qmarg <- margdata@qmarg
   dataexp <- margdata@dataexp
@@ -124,14 +124,14 @@ rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl
   if(p < 0 | p > 1){
     stop("Probability needs to be in [0, 1].")
   }
-  if(p > 1 - qmarg[1] | p > 1 - qmarg[2] | p > 1 - q | p > 1 - qalphas){
+  if(p > 1 - qmarg[1] | p > 1 - qmarg[2] | p > 1 - q | p > 1 - qalphas[1] | p > 1 - qalphas[2]){
     warning("The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles.")
   }
-  if(q < max(qmarg) | qalphas < max(qmarg)){
+  if(q < max(qmarg) | any(qalphas < max(qmarg))){
     stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
   }
   result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, rc = array())
-  rc_data <- rc_exp(data = dataexp, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
+  rc_data <- rc_exp(margdata = margdata, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
   curveunif <- apply(rc_data, 2, pexp)
   data <- data[complete.cases(data), ]
   result@data <- data

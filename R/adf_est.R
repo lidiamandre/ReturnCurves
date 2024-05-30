@@ -47,7 +47,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.
 #' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
-#' @param qalphas Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to \code{0.95}.
+#' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable. Default set to \code{rep(0.95, 2)}.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
@@ -95,13 +95,13 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #'
 #' @export
 #' 
-adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = 0.95, k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
+adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
   data <- margdata@dataexp
   qmarg <- margdata@qmarg
   if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the ADF is only implemented for a bivariate setting.")
   }
-  if(q < 0 | q > 1 | qalphas < 0 | qalphas > 1){
+  if(q < 0 | q > 1 | any(qalphas < 0) | any(qalphas > 1)){
     stop("Marginal quantiles need to be in [0, 1].")
   }
   if(any(w < 0) | any(w > 1)){
@@ -110,7 +110,7 @@ adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl")
   if(!method %in% c("hill", "cl")){
     stop("ADF needs to be estimated either through the Hill estimator or Composite likelihood estimator.")
   }
-  if(q < max(qmarg) | qalphas < max(qmarg)){
+  if(q < max(qmarg) | any(qalphas < max(qmarg))){
     stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
   }
   # if(!is.logical(constrained) == T){

@@ -16,10 +16,10 @@ HeffTawnNegLL <- function(X, Y, par){
 }
 
 heff_tawn_alphas <- function(data, q){
-  if(q < 0 | q > 1){
+  if(any(q < 0) | any(q > 1)){
     stop("Marginal quantile needs to be in [0, 1].")
   }
-  u <- apply(data, 2, quantile, probs = q)
+  u <- sapply(1:dim(data)[2], function(i) quantile(data[, i], probs = q[i]))
   excdata <- sapply(1:dim(data)[2], function(i) data[data[, i] > u[i], ], simplify = F)
   par <- rep(1/2, 4)
   Yopt <- optim(fn = HeffTawnNegLL, X = excdata[[2]][, 2], Y = excdata[[2]][, 1], par = par, control = list(maxit = 100000)) 

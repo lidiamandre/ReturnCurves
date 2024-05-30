@@ -10,7 +10,7 @@ adf_est(
   w = seq(0, 1, by = 0.01),
   method = c("hill", "cl"),
   q = 0.95,
-  qalphas = 0.95,
+  qalphas = rep(0.95, 2),
   k = 7,
   constrained = FALSE,
   tol = 1e-04,
@@ -26,7 +26,7 @@ adf_est(
 
 \item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
 
-\item{qalphas}{Marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves}. Default set to \code{0.95}.}
+\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable. Default set to \code{rep(0.95, 2)}.}
 
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.}
 
