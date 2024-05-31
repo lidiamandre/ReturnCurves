@@ -25,7 +25,7 @@ est_beta <- function(par, basis, t, len_vec, w, lam_end){
     for(i in 1:length(len_vec)){
       lam2[(length(lam2) + 1):(length(lam2) + len_vec[i])] <- rep(lam[i], len_vec[i])
     }
-    loglike <- sum(log(lam2)) - sum(lam2 * t)   
+    loglike <- sum(log(lam2)) - sum(lam2 * t) 
     return(-loglike)
   }
 }
@@ -50,14 +50,6 @@ minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol, par_init)
   if(is.list(results)){optim_output <- results}
   else{
     optim_output <- optim(par = par_init, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000))
-    # optim_output <- tryCatch(optim(par = par_init, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000)),
-    #                          error = function(e) e)
-    # if(is.element("error", class(optim_output))){
-    #   par_init <- c(-1, rep(0, k - 2))
-    #   print(par_init)
-    #   optim_output <- optim(par = par_init, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000))
-    # }
-    
   }
   results <- tryCatch(optim(par = optim_output$par, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000)),
                       error = function(e){1})
@@ -65,7 +57,7 @@ minfunction_mle <- function(w, data, a, b, lam_end, k, q_minproj, tol, par_init)
   else{
     optim_output2 <- optim(par = optim_output$par, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000))
   }
-  
+
   while(abs(optim_output2$val - optim_output$val) >= tol){
     optim_output <- optim_output2
     results <- tryCatch(optim(par = optim_output$par, fn = est_beta, basis = basis, t = t, len_vec = len_vec, w = angles, lam_end = lam_end, control = list(maxit = 100000)),
