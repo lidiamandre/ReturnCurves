@@ -77,8 +77,6 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' The return curve estimation \mjeqn{\hat{RC}(p)}{} is done in standard exponential margins and then back transformed onto the original margins.
 #' 
-#' @note The parameter \code{qmarg} should be the same as the one used in \code{\link{margtransf}}.
-#' 
 #' @rdname returncurve
 #' 
 #' @references \insertAllCited{}
@@ -106,7 +104,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' # To see the the S4 object's slots
 #' str(rc_orig)
 #' 
-#' # To access the matrix with the data on standard exponential margins
+#' # To access the return curve estimation
 #' rc_orig@@rc
 #' }
 #' 

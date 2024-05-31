@@ -54,9 +54,6 @@ the \mjeqn{p}{p}-probability return curve is defined as
 
 The return curve estimation \mjeqn{\hat{RC}(p)}{} is done in standard exponential margins and then back transformed onto the original margins.
 }
-\note{
-The parameter \code{qmarg} should be the same as the one used in \code{\link{margtransf}}.
-}
 \examples{
 library(ReturnCurves)
 
@@ -78,7 +75,7 @@ plot(rc_orig)
 # To see the the S4 object's slots
 str(rc_orig)
 
-# To access the matrix with the data on standard exponential margins
+# To access the return curve estimation
 rc_orig@rc
 }
 

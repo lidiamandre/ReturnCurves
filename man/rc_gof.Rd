@@ -28,10 +28,11 @@ An object of S4 class \code{rc_gof.class}. This object returns the arguments of 
 Assessment of the goodness-of-fit of the return curve estimates following the approach of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying on a survival region is \mjeqn{p}{p}; \mjeqn{p}{p} should be within the range of the data and not too extreme.
+\loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
 For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
-\mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. 
+\mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. Due to the use of empirical probabilities, the value of \mjeqn{p}{p} should be within the range of the data and not too extreme. 
+
 The \mjeqn{(1-\alpha)}{}\% confidence region is obtained via a (block) bootstrapping procedure and ideally should contain the true probability \mjeqn{p}{p}.
 }
 \examples{
