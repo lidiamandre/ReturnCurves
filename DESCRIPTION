@@ -7,7 +7,7 @@ Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
-Imports: evd, ismev, Rdpack, mathjaxr, ggplot2, gridExtra
+Imports: evd, ismev, Rdpack, mathjaxr, ggplot2, gridExtra, methods, stats
 Encoding: UTF-8
 RoxygenNote: 7.3.1
 RdMacros: Rdpack, mathjaxr
@@ -24,3 +24,4 @@ Collate:
     'rc_orig.R'
     'rc_gof.R'
     'rc_uncertainty.R'
+    'ReturnCurves-package.R'

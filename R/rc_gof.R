@@ -4,6 +4,17 @@
                                                          alpha = "numeric",
                                                          gof = "list"))
 
+
+#' An S4 class to represent the Goodness-of-Fit of the Return Curve estimates
+#'
+#' @slot retcurve An S4 object of class \code{rc_est.class}.
+#' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
+#' @slot nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
+#' @slot nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
+#' @slot alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
+#' @slot gof A list containing the median of the empirical probability and the lower and upper bound of the confidence interval.
+#' 
+#' @keywords internal
 rc_gof.class <- function(retcurve, blocksize, nboot, alpha, gof){
   .rc_gof.class(retcurve = retcurve,
                 blocksize = blocksize,
@@ -12,7 +23,23 @@ rc_gof.class <- function(retcurve, blocksize, nboot, alpha, gof){
                 gof = gof)
 }
 
+#' Visualisation of the Goodness-of-Fit of the Return Curve estimates
+#'
+#' @description Plot method for an S4 object returned by \code{\link{rc_gof}}. 
+#'
+#' @docType methods
+#'
+#' @param x An instance of an S4 class produced by \code{\link{rc_gof}}.
+#' 
+#' @return \loadmathjax{} A ggplot object comparing the true and median estimates of the empirical probability of lying in a survival region.
+#'
+#' @rdname plotrcgof
+#'
+#' @aliases plot,rc_gof.class
+#' 
+#' @keywords internal
 setMethod("plot", signature = list("rc_gof.class"), function(x){
+  angles <- pX <- pY <- prob <- upper <- lower <- NULL # NULL them out to satisfy CRAN checks
   df <- data.frame("angles" = 1:length(x@gof$median), x@gof, "pX" = c(rev(1:length(x@gof$median)), 1:length(x@gof$median)),
                    "pY" = c(rev(x@gof$lower), x@gof$upper), "prob" = rep(x@retcurve@p, length(x@gof$median)))
   coloursl <- c("Confidence interval" = 1, "Median estimate" = 1, "True probability" = 2)
@@ -41,7 +68,6 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' @docType methods
 #' 
-#' @param retcurve An S4 object of class \code{rc_est.class}. See \code{\link{rc_est}} for more details.
 #' @inheritParams rc_unc
 #'  
 #' @return An object of S4 class \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
@@ -92,6 +118,9 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' @export
 #'  
 rc_gof <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+  if(!inherits(retcurve, "rc_est.class")){
+    stop("The retcurve argument needs to be an object of class rc_est.class.")
+  }
   if(nboot < 1 | nboot %% 1 != 0){
     stop("The number of bootstrap samples needs to be a positive integer.")
   }
@@ -125,7 +154,7 @@ rc_gof <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
     angles_est[i, ] <- c(xhat, yhat)
   }
   for(i in 1:nboot){
-    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
+    bootdata <- block_bootstrap_function(data = data, k = blocksize, n = n)
     for(j in 1:nangles){
       emp_prob[[j]][i] <- mean(bootdata[, 1] > angles_est[j, 1] & bootdata[, 2] > angles_est[j, 2])
     }

@@ -3,7 +3,7 @@
 \docType{methods}
 \name{adf_est}
 \alias{adf_est}
-\title{Estimation of the Angular Dependence function (ADF)}
+\title{Estimation of the Angular Dependence Function (ADF)}
 \usage{
 adf_est(
   margdata,
@@ -22,11 +22,11 @@ adf_est(
 
 \item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
-\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.}
+\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.}
 
 \item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
 
-\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable. Default set to \code{rep(0.95, 2)}.}
+\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default set to \code{rep(0.95, 2)}.}
 
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.}
 
@@ -44,10 +44,9 @@ An object of S4 class \code{adf_est.class}. This object returns the arguments of
 Estimation of the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, 
-obtained using Composite likelihood methods. 
+\loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, obtained using Bernstein-Bezier polynomials and estimated via composite likelihood methods. 
 
-Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
+Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{constrained = TRUE}.
 For more details see \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 }
 \note{
@@ -62,8 +61,6 @@ set.seed(321)
 data <- cbind(rnorm(1000), rnorm(1000))
 
 margdata <- margtransf(data)
-
-w <- seq(0, 1, by = 0.01)
 
 lambda <- adf_est(margdata = margdata, method = "hill")
 

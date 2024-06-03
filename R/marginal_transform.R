@@ -25,13 +25,41 @@ empirical_cdf <- function(data, qmarg) {
                                                                  qmarg = "numeric",
                                                                  dataexp = "array"))
 
+#' An S4 class to represent the Marginal Transformation
+#'
+#' @slot data A matrix containing the data on the original margins.
+#' @slot qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
+#' @slot dataexp A matrix containing the data on standard exponential margins.
+#' 
+#' @keywords internal
 margtransf.class <- function(data, qmarg, dataexp){
   .margtransf.class(data = data,
                     qmarg = qmarg,
                     dataexp = dataexp)
 }
 
+#' Visualisation of the Marginal Transformation
+#'
+#' @description Plot method for an S4 object returned by \code{\link{margtransf}}. 
+#'
+#' @docType methods
+#'
+#' @param x An instance of an S4 class produced by \code{\link{margtransf}}.
+#' @param which String that indicates which type of plot to show. Must either be \code{"all"} (Default), \code{"hist"}, \code{"ts"} or \code{"joint"}.
+#' 
+#' @return \loadmathjax{} A ggplot object showing:
+#' \item{\code{which = "hist"}}{histograms of each variable on original and standard exponential margins.}
+#' \item{\code{which = "ts"}}{time series of each variable on original and standard exponential margins.}
+#' \item{\code{which = "joint"}}{joint distribution on original and standard exponential margins.}
+#' \item{\code{which = "all"}}{all the available plots.}
+#'
+#' @rdname plotmargtransf
+#'
+#' @aliases plot,margtransf.class
+#' 
+#' @keywords internal
 setMethod("plot", signature = list("margtransf.class"), function(x, which = c("all", "hist", "ts", "joint")){
+  X <- Y <- Xexp <- Yexp <- NULL # NULL them out to satisfy CRAN checks
   which <- match.arg(which)
   if(!which %in% c("all", "hist", "ts", "joint")){
     stop("Plot type not implemented.\n 'which' should be 'hist' to plot the histograms of the data;\n 'ts' to plot the time series of each variable;\n 'joint' to plot the joint distribution;\n or 'all' for all available plots.")
@@ -102,7 +130,7 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' 
 #' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, each stationary random vector 
 #' is transformed by using the empirical cumulative distribution function 
-#' (cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.    
+#' (cdf) below \mjeqn{u}{u}, and a Generalise Pareto Distribution (GPD) fit above \mjeqn{u}{u}.    
 #' 
 #' @rdname marginaltransformation
 #' 

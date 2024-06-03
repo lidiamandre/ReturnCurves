@@ -5,6 +5,16 @@
                                                            alpha = "numeric",
                                                            gof = "list"))
 
+#' An S4 class to represent the Goodness-of-Fit of the Angular Dependence Function estimates
+#'
+#' @slot adf An S4 object of class \code{adf_est.class}.
+#' @slot w_ind Index of the ray to be considered on the goodness of fit assessment.
+#' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
+#' @slot nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
+#' @slot alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
+#' @slot gof A list containing the model and empirical exponential quantiles, and the lower and upper bound of the confidence interval.
+#' 
+#' @keywords internal
 adf_gof.class <- function(adf, w_ind, blocksize, nboot, alpha, gof){
   .adf_gof.class(adf = adf,
                  w_ind = w_ind,
@@ -14,7 +24,23 @@ adf_gof.class <- function(adf, w_ind, blocksize, nboot, alpha, gof){
                  gof = gof)
 }
 
+#' Visualisation of the Goodness-of-Fit of the Angular Dependence Function estimates
+#'
+#' @description Plot method for an S4 object returned by \code{\link{adf_gof}}. 
+#'
+#' @docType methods
+#'
+#' @param x An instance of an S4 class produced by \code{\link{adf_gof}}.
+#' 
+#' @return \loadmathjax{} A ggplot object showing the QQ-plot between the model and empirical exponential quantiles.
+#'
+#' @rdname plotadfgof
+#'
+#' @aliases plot,adf_gof.class
+#' 
+#' @keywords internal
 setMethod("plot", signature = list("adf_gof.class"), function(x){
+  X <- Y <- model <- empirical <- NULL # NULL them out to satisfy CRAN checks
   df <- as.data.frame(x@gof)
   ploygondf <- data.frame("X" = c(rev(x@gof$model), x@gof$model),
                           "Y" = c(rev(x@gof$lower), x@gof$upper))
@@ -86,6 +112,9 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' @export
 #'  
 adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
+  if(!inherits(adf, "adf_est.class")){
+    stop("The adf argument needs to be an object of class adf_est.class.")
+  }
   w <- adf@w
   data <- adf@data
   lambda <- adf@adf
@@ -104,7 +133,7 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   }
   result <- adf_gof.class(adf = adf, w_ind = w_ind, blocksize = blocksize,
                           nboot = nboot, alpha = alpha, gof = list())
-  min_proj <- ReturnCurves:::minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
+  min_proj <- minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
   excdata <- (min_proj$minproj - min_proj$thresh)[min_proj$minproj > min_proj$thresh]
   excdata <- lambda[w_ind] * excdata
   nexcdata <- length(excdata)
@@ -112,7 +141,7 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   model_quantile <- qexp((1:nexcdata) / (nexcdata + 1), rate = 1)
   empirical_quantile_boot <- matrix(NA, nrow = nboot, ncol = length(empirical_quantile))
   for(i in 1:nboot){
-    bdata <- ReturnCurves:::block_bootstrap_function(data = excdata, k = blocksize, n = nexcdata)
+    bdata <- block_bootstrap_function(data = excdata, k = blocksize, n = nexcdata)
     empirical_quantile_boot[i, ] <- sort(bdata)
   }
   ub <- apply(empirical_quantile_boot, 2, quantile, probs = 1 - alpha/2)

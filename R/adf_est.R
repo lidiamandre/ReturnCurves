@@ -1,3 +1,4 @@
+
 .adf_est.class <- setClass("adf_est.class", representation(data = "array",
                                                            w = "numeric",
                                                            method = "character",
@@ -9,6 +10,22 @@
                                                            par_init = "numeric",
                                                            adf = "numeric"))
 
+#' An S4 class to represent the estimation of the Angular Dependence Function
+#'
+#' @slot data A matrix containing the data on the original margins.
+#' @slot w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
+#' @slot method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
+#' @slot q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
+#' @slot qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default set to \code{rep(0.95, 2)}.
+#' @slot k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.
+#' @slot constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
+#' @slot tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
+#' @slot par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.
+#' @slot adf A vector containing the estimates of the angular dependence function.
+#' 
+#' @references \insertAllCited{}
+#' 
+#' @keywords internal
 adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, par_init, adf){
   .adf_est.class(data = data,
                  w = w,
@@ -22,7 +39,23 @@ adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, par_
                  adf = adf)
 }
 
+#' Visualisation of the Angular Dependence Function estimates
+#'
+#' @description Plot method for an S4 object returned by \code{\link{adf_est}}. 
+#'
+#' @docType methods
+#'
+#' @param x An instance of an S4 class produced by \code{\link{adf_est}}.
+#' 
+#' @return \loadmathjax{} A ggplot object showing a comparison between the Angular Dependence Function (ADF) estimates and the lower bound max\mjeqn{\lbrace \omega, 1-\omega\rbrace}{}.
+#'
+#' @rdname plotadfest
+#'
+#' @aliases plot,adf_est.class
+#' 
+#' @keywords internal
 setMethod("plot", signature = list("adf_est.class"), function(x){
+  w <- lb <- adf <- NULL # NULL them out to satisfy CRAN checks
   df <- data.frame("w" = x@w, "lb" = pmax(x@w, 1-x@w), "adf" = x@adf)
   coloursl <- c("Lower bound" = 1, "ADF estimates" = 2)
   ggplot(data = df, aes(x = w, y = lb, col = names(coloursl)[1])) + geom_line(linetype = "dashed") +
@@ -34,7 +67,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
     ggtitle(expression("Estimation of" ~ hat(lambda)(omega)))
 })
 
-#' Estimation of the Angular Dependence function (ADF)
+#' Estimation of the Angular Dependence Function (ADF)
 #' 
 #' @name adf_est
 #' 
@@ -43,11 +76,11 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' 
 #' @docType methods
 #' 
-#' @inheritParams rc_est
+#' @param margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
 #' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
-#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.
+#' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
 #' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
-#' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable. Default set to \code{rep(0.95, 2)}.
+#' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default set to \code{rep(0.95, 2)}.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
@@ -55,10 +88,9 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' 
 #' @return An object of S4 class \code{adf_est.class}. This object returns the arguments of the function and an extra slot \code{adf} containing the estimates of the angular dependence function.
 #' 
-#' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, 
-#' obtained using Composite likelihood methods. 
+#' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, obtained using Bernstein-Bezier polynomials and estimated via composite likelihood methods. 
 #' 
-#' Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{"constrained"} to \code{TRUE}.
+#' Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{constrained = TRUE}.
 #' For more details see \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 #' 
 #' @note \loadmathjax{} Due to its a pointwise nature, for a better estimation of \mjeqn{\lambda(\omega)}{} 
@@ -79,8 +111,6 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' 
 #' margdata <- margtransf(data)
 #'
-#' w <- seq(0, 1, by = 0.01)
-#'
 #' lambda <- adf_est(margdata = margdata, method = "hill")
 #'
 #' plot(lambda)
@@ -96,6 +126,9 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @export
 #' 
 adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.0001, par_init = rep(0, k-1)){
+  if(!inherits(margdata, "margtransf.class")){
+    stop("The margdata argument needs to be an object of class margtransf.class.")
+  }
   data <- margdata@dataexp
   qmarg <- margdata@qmarg
   if(is.null(dim(data)) || dim(data)[2] > 2){
@@ -113,9 +146,6 @@ adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl")
   if(q < max(qmarg) | any(qalphas < max(qmarg))){
     stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
   }
-  # if(!is.logical(constrained) == T){
-  #   stop("Argument constrained needs to be logical.")
-  # }
   nas <- sum(is.na(data))
   if(nas > 0){
     warning(paste0("There are ", nas, " missing values in the data.\n These were removed."))

@@ -25,11 +25,11 @@ rc_est(
 
 \item{p}{\loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.}
 
-\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the composite maximum likelihood estimator.}
+\item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.}
 
 \item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
 
-\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable. Default set to \code{rep(0.95, 2)}.}
+\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default set to \code{rep(0.95, 2)}.}
 
 \item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.}
 
@@ -46,7 +46,7 @@ An object of S4 class \code{rc_est.class}. This object returns the arguments of 
 \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Let \mjeqn{X, Y\sim Exp(1)}{}. Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
+\loadmathjax{} Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
 the \mjeqn{p}{p}-probability return curve is defined as 
 \mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
 
@@ -67,16 +67,16 @@ prob <- 1/n
 
 margdata <- margtransf(data)
 
-rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
+retcurve <- rc_est(margdata = margdata, p = prob, method = "hill")
 
-plot(rc_orig)
+plot(retcurve)
 
 \dontrun{
 # To see the the S4 object's slots
-str(rc_orig)
+str(retcurve)
 
 # To access the return curve estimation
-rc_orig@rc
+retcurve@rc
 }
 
 }

@@ -30,6 +30,21 @@ curve_inverse_transform <- function(curveunif, data, qmarg){
                                                          par_init = "numeric",
                                                          rc = "array"))
 
+#' An S4 class to represent the estimation of the Return Curve
+#'
+#' @slot data A matrix containing the data on the original margins.
+#' @slot w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
+#' @slot method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
+#' @slot p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
+#' @slot q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
+#' @slot qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default set to \code{rep(0.95, 2)}.
+#' @slot k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.
+#' @slot constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
+#' @slot tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
+#' @slot par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.
+#' @slot rc A matrix containing the estimates of the Return Curve.
+#' 
+#' @keywords internal
 rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, par_init, rc){
   .rc_est.class(data = data,
                 qmarg = qmarg,
@@ -45,7 +60,23 @@ rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
                 rc = rc)
 }
 
+#' Visualisation of the Return Curve estimates
+#'
+#' @description Plot method for an S4 object returned by \code{\link{rc_est}}. 
+#'
+#' @docType methods
+#'
+#' @param x An instance of an S4 class produced by \code{\link{rc_est}}.
+#' 
+#' @return \loadmathjax{} A ggplot object showing the original data with the estimated Return Curve.
+#'
+#' @rdname plotrcest
+#'
+#' @aliases plot,rc_est.class
+#' 
+#' @keywords internal
 setMethod("plot", signature = list("rc_est.class"), function(x){
+  X <- Y <- rcX <- rcY <- NULL # NULL them out to satisfy CRAN checks
   df <- data.frame("X" = x@data[, 1], "Y" = x@data[, 2])
   rcdf <- data.frame("rcX" = x@rc[, 1], "rcY" = x@rc[, 2])
   ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T) +
@@ -63,13 +94,12 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #'  
 #' @docType methods
 #' 
-#' @param margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
 #' @param p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
 #' @inheritParams adf_est
 #' 
 #' @return An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
 #' 
-#' @details \loadmathjax{} Let \mjeqn{X, Y\sim Exp(1)}{}. Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
+#' @details \loadmathjax{} Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
 #' the \mjeqn{p}{p}-probability return curve is defined as 
 #' \mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
 #' 
@@ -96,20 +126,23 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' margdata <- margtransf(data)
 #' 
-#' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
+#' retcurve <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
-#' plot(rc_orig)
+#' plot(retcurve)
 #' 
 #' \dontrun{
 #' # To see the the S4 object's slots
-#' str(rc_orig)
+#' str(retcurve)
 #' 
 #' # To access the return curve estimation
-#' rc_orig@@rc
+#' retcurve@@rc
 #' }
 #' 
 #' @export
 rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
+  if(!inherits(margdata, "margtransf.class")){
+    stop("The margdata argument needs to be an object of class margtransf.class.")
+  }
   data <- margdata@data
   qmarg <- margdata@qmarg
   dataexp <- margdata@dataexp

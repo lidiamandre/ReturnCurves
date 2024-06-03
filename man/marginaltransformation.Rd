@@ -27,7 +27,7 @@ Marginal transformation of a  bivariate random vector to standard exponential ma
 \details{
 \loadmathjax{} Given a threshold value \mjeqn{u}{u}, each stationary random vector 
 is transformed by using the empirical cumulative distribution function 
-(cdf) below \mjeqn{u}{u}, and a GPD fit above \mjeqn{u}{u}.
+(cdf) below \mjeqn{u}{u}, and a Generalise Pareto Distribution (GPD) fit above \mjeqn{u}{u}.
 }
 \examples{
 library(ReturnCurves)

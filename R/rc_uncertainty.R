@@ -5,6 +5,16 @@
                                                          alpha = "numeric",
                                                          unc = "list"))
 
+#' An S4 class to represent the Uncertainty of the Return Curve estimates
+#'
+#' @slot retcurve An S4 object of class \code{rc_est.class}.
+#' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
+#' @slot nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
+#' @slot nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
+#' @slot alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
+#' @slot unc A list containing the median and mean estimates of the Return Curve, and the lower and upper bound of the confidence interval.
+#' 
+#' @keywords internal
 rc_unc.class <- function(retcurve, blocksize, nboot, nangles, alpha, unc){
   .rc_unc.class(retcurve = retcurve,
                 blocksize = blocksize,
@@ -14,7 +24,28 @@ rc_unc.class <- function(retcurve, blocksize, nboot, nangles, alpha, unc){
                 unc = unc)
 }
 
+#' Visualisation of the Uncertainty of the Return Curve estimates
+#'
+#' @description Plot method for an S4 object returned by \code{\link{rc_unc}}. 
+#'
+#' @docType methods
+#'
+#' @param x An instance of an S4 class produced by \code{\link{rc_unc}}.
+#' @param which String that indicates which return curve estimates to show. Must either be \code{"rc"} (Default), \code{"median"}, \code{"mean"} or \code{"all"}.
+#' 
+#' @return \loadmathjax{} A ggplot object showing:
+#' \item{\code{which = "rc"}}{Plots the estimated Return Curve and its uncertainty.}
+#' \item{\code{which = "median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
+#' \item{\code{which = "mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
+#' \item{\code{which = "all"}}{Plots all the estimated Return Curve, the median and mean estimates of the Return Curve, and its uncertainty.}
+#' 
+#' @rdname plotrcunc
+#'
+#' @aliases plot,rc_unc.class
+#' 
+#' @keywords internal
 setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", "median", "mean", "all")){
+  X <- Y <- rcX <- rcY <- medianX <- medianY <- meanX <- meanY <- lowerX <- lowerY <- upperX <- upperY <- NULL # NULL them out to satisfy CRAN checks
   which <- match.arg(which)
   if(!which %in% c("rc", "median", "mean", "all")){
     stop("Plot type not implemented.\n 'which' should be 'rc' to plot the estimated return curve;\n 'median' to plot the median estimates of the return curve;\n 'mean' to plot the mean estimates of the return curve;\n or 'all' for all available plots.")
@@ -98,8 +129,8 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
 #' @return An object of S4 class \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
-#' \item{median}{A vector containing the median estimates of the return curve. Set \code{median = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
-#' \item{mean}{A vector containing the mean estimates of the return curve. Set \code{mean = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
+#' \item{median}{A vector containing the median estimates of the return curve.} 
+#' \item{mean}{A vector containing the mean estimates of the return curve.} 
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' 
@@ -107,7 +138,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' \item{\code{"rc"}}{Plots the estimated Return Curve and its uncertainty (default).}
 #' \item{\code{"median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
 #' \item{\code{"mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
-#' \item{\code{"all"}}{Plots all the above mentioned plots.}
+#' \item{\code{"all"}}{Plots all the estimated Return Curve, the median and mean estimates of the Return Curve, and its uncertainty.}
 #' 
 #' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace.}{}
 #' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{RC(p)}{} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
@@ -134,7 +165,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
-#' unc <- rc_unc(rc_orig)
+#' unc <- rc_unc(rc_orig, nboot = 100) 
 #' 
 #' # Plots the estimated Return Curve 
 #' plot(unc, which = "rc") 
@@ -159,6 +190,9 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' @export
 #' 
 rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05){ 
+  if(!inherits(retcurve, "rc_est.class")){
+    stop("The retcurve argument needs to be an object of class rc_est.class.")
+  }
   if(nboot < 1 | nboot %% 1 != 0){
     stop("The number of bootstrap samples needs to be a positive integer.")
   }
@@ -190,7 +224,7 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
   for(i in 1:nboot){
-    bootdata <- ReturnCurves:::block_bootstrap_function(data = data, k = blocksize, n = n)
+    bootdata <- block_bootstrap_function(data = data, k = blocksize, n = n)
     margdataboot <- margtransf(data = bootdata, qmarg = qmarg)
     rc_orig <- rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))

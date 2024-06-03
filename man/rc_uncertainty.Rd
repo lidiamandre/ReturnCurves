@@ -20,8 +20,8 @@ rc_unc(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 }
 \value{
 An object of S4 class \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
-\item{median}{A vector containing the median estimates of the return curve. Set \code{median = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
-\item{mean}{A vector containing the mean estimates of the return curve. Set \code{mean = T} in \code{plot} to visualise these estimates (see \strong{Examples}).} 
+\item{median}{A vector containing the median estimates of the return curve.} 
+\item{mean}{A vector containing the mean estimates of the return curve.} 
 \item{lower}{A vector containing the lower bound of the confidence interval.}
 \item{upper}{A vector containing the upper bound of the confidence interval.}
 
@@ -29,7 +29,7 @@ The \code{plot} function takes an object of S4 class \code{rc_unc.class}, and a 
 \item{\code{"rc"}}{Plots the estimated Return Curve and its uncertainty (default).}
 \item{\code{"median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
 \item{\code{"mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
-\item{\code{"all"}}{Plots all the above mentioned plots.}
+\item{\code{"all"}}{Plots all the estimated Return Curve, the median and mean estimates of the Return Curve, and its uncertainty.}
 }
 \description{
 Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
@@ -54,7 +54,7 @@ margdata <- margtransf(data)
 
 rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 
-unc <- rc_unc(rc_orig)
+unc <- rc_unc(rc_orig, nboot = 100) 
 
 # Plots the estimated Return Curve 
 plot(unc, which = "rc") 
