@@ -76,7 +76,8 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' 
 #' @details \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
-#' For each angle \mjeqn{\theta}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
+#' Let \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} be the set of angles.
+#' For each angle \mjeqn{\theta\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
 #' the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
 #' \mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. Due to the use of empirical probabilities, the value of \mjeqn{p}{p} should be within the range of the data and not too extreme. 
 #' 

@@ -1,5 +1,5 @@
 .adf_gof.class <- setClass("adf_gof.class", representation(adf = "adf_est.class",
-                                                           w_ind = "numeric",
+                                                           ray = "numeric",
                                                            blocksize = "numeric",
                                                            nboot = "numeric",
                                                            alpha = "numeric",
@@ -8,16 +8,16 @@
 #' An S4 class to represent the Goodness-of-Fit of the Angular Dependence Function estimates
 #'
 #' @slot adf An S4 object of class \code{adf_est.class}.
-#' @slot w_ind Index of the ray to be considered on the goodness of fit assessment.
+#' @slot ray \loadmathjax{} Ray \mjeqn{\omega}{} to be considered on the goodness of fit assessment.
 #' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @slot nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @slot alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' @slot gof A list containing the model and empirical exponential quantiles, and the lower and upper bound of the confidence interval.
 #' 
 #' @keywords internal
-adf_gof.class <- function(adf, w_ind, blocksize, nboot, alpha, gof){
+adf_gof.class <- function(adf, ray, blocksize, nboot, alpha, gof){
   .adf_gof.class(adf = adf,
-                 w_ind = w_ind,
+                 ray = ray,
                  blocksize = blocksize,
                  nboot = nboot,
                  alpha = alpha,
@@ -62,7 +62,7 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' @docType methods
 #' 
 #' @param adf An S4 object of class \code{adf_est.class}. See \code{\link{adf_est}} for more details.
-#' @param w_ind Index of the ray to be considered on the goodness of fit assessment.
+#' @param ray \loadmathjax{} Ray \mjeqn{\omega}{} to be considered on the goodness of fit assessment.
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param alpha \loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
@@ -75,7 +75,13 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' 
 #' @details \loadmathjax{} Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
 #' variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-#' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
+#'
+#' Let \mjeqn{F^{-1}_E}{} denote the inverse of the cumulative distribution function of a standard exponential variable and \mjeqn{X_{(i)}}{} denote the \mjeqn{i}{i}-th ordered increasing statistic, \mjeqn{i = 1, \ldots, n}{}. 
+#' Function \code{plot} shows a Quantile-Quantile (QQ) plot between the model and empirical exponential quantiles, i.e. points \mjeqn{\left(F^{-1}_E\left(\frac{i}{n+1}\right), X_{(i)}\right)}{},
+#' along with the line \mjeqn{y=x}{}. Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
+#' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (mainly lie within the \mjeqn{(1-\alpha)}{}\% confidence band).
+#' 
+#' We note that, if the grid for \mjeqn{\omega}{} used to estimate the Angular Dependence Function (ADF) does not contain \code{ray}, then the closest \mjeqn{omega}{} in the grid is used to assess the goodness-of-fit of the ADF.
 #' 
 #' @note \loadmathjax{} It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for a few values of \mjeqn{\omega}{w}.
 #' 
@@ -96,8 +102,7 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' 
 #' lambda <- adf_est(margdata = margdata, method = "hill")
 #' 
-#' w_ind <- 31
-#' gof <- adf_gof(adf = lambda, w_ind = w_ind)
+#' gof <- adf_gof(adf = lambda, ray = 0.4)
 #' 
 #' plot(gof)
 #' 
@@ -111,7 +116,7 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' 
 #' @export
 #'  
-adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
+adf_gof <- function(adf, ray, blocksize = 1, nboot = 250, alpha = 0.05){
   if(!inherits(adf, "adf_est.class")){
     stop("The adf argument needs to be an object of class adf_est.class.")
   }
@@ -119,8 +124,8 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   data <- adf@data
   lambda <- adf@adf
   q <- adf@q
-  if(w_ind < 1 | w_ind > length(w)){
-    stop("The angle is not considered.")
+  if(ray < 0 | ray > 1){
+    stop("The ray should be in [0,1].")
   }
   if(nboot < 1 | nboot %% 1 != 0){
     stop("The number of bootstrap samples needs to be a positive integer.")
@@ -131,7 +136,9 @@ adf_gof <- function(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05){
   if(alpha > 0.5){
     warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
   }
-  result <- adf_gof.class(adf = adf, w_ind = w_ind, blocksize = blocksize,
+  raydif <- abs(ray - w)
+  w_ind <- which.min(raydif)
+  result <- adf_gof.class(adf = adf, ray = ray, blocksize = blocksize,
                           nboot = nboot, alpha = alpha, gof = list())
   min_proj <- minproj_lambda(data = data, w = w[w_ind], q_minproj = q)
   excdata <- (min_proj$minproj - min_proj$thresh)[min_proj$minproj > min_proj$thresh]

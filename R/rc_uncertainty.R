@@ -140,9 +140,15 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' \item{\code{"mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
 #' \item{\code{"all"}}{Plots all the estimated Return Curve, the median and mean estimates of the Return Curve, and its uncertainty.}
 #' 
-#' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} and \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace.}{}
+#' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} and let \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace}{} denote the like segment intersecting the origin with gradient \mjeqn{\tan(\theta) > 0.}{}
 #' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{RC(p)}{} exactly once, i.e., \mjeqn{\lbrace\hat{x}_\theta, \hat{y}_\theta\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
-#' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure. More details can be found in \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}
+#' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} via a (block) bootstrap procedure as follow:
+#' 
+#' 1. (Block) bootstrap the original data sample 
+#' 
+#' 2. For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} obtain \mjeqn{\hat{d}_\theta:=\left(\hat{x}^2_\theta + \hat{y}^2_\theta\right)^{1/2}}{} for the corresponding obtained return curve point estimate.
+#' 
+#' Full details can be found in \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}
 #' 
 #' @rdname rc_uncertainty
 #' 
@@ -223,9 +229,15 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   grad <- tan(angles)
   data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
+  bootwarnmarg <- integer()
   for(i in 1:nboot){
     bootdata <- block_bootstrap_function(data = data, k = blocksize, n = n)
-    margdataboot <- margtransf(data = bootdata, qmarg = qmarg)
+    margdataboot <- withCallingHandlers(margtransf(data = bootdata, qmarg = qmarg, constrainedshape = T),
+                                        warning = function(war){
+                                          if(war$message == "MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point."){
+                                            bootwarnmarg <<- c(bootwarnmarg, i)
+                                            }
+                                          invokeRestart("muffleWarning")})
     rc_orig <- rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
@@ -238,6 +250,10 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
       yhat <- data1[2] + s*(data2[2] - data1[2])
       norms[[j]][i] <- sqrt(xhat^2 + yhat^2)
     }
+  }
+  if(length(bootwarnmarg) > 0){
+    warning(sprintf("In iterations %s of the bootstrap procedure: estimated GPD shape parameter < -1. \n Fitted endpoint is the maximum data point.",
+                    paste(bootwarnmarg, collapse = ", ")))
   }
   lb <- sapply(1:nangles, function(i) quantile(norms[[i]], alpha/2))
   ub <- sapply(1:nangles, function(i) quantile(norms[[i]], 1 - alpha/2))

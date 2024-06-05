@@ -1,40 +1,76 @@
 ranktransform <- function(data, thresh) rank(data)[data <= thresh]/(length(data) + 1) 
 gpdtransform <- function(data, thresh, par, qmarg) 1 - (1 - qmarg)*pgpd(data, loc = thresh, scale = par[1], shape = par[2], lower.tail = F)
 
-empirical_cdf <- function(data, qmarg) { 
+gpdlikelihood <- function(data, par){
+  sigma <- par[1]
+  xi <- par[2]
+  gpdpdf <- function(data, sigma, xi){
+    if(abs(xi) < 1e-10){
+      dens <- (1/sigma) * exp(-data/sigma)
+      return(dens)
+    }
+    else{
+      dens <- (1/sigma) * (1 + (xi/sigma) * data)
+      return(dens)
+    }
+  }
+  if(sigma <= 0 | xi <= -1){
+    return(1000e10)
+  }
+  else{
+    logdens <- gpdpdf(data = data, sigma = sigma, xi = xi)
+    return(-sum(logdens))
+  }
+}
+
+empirical_cdf <- function(data, qmarg, constrainedshape) { 
   compldata <- data[complete.cases(data)]
   u <- c()
   thresh <- quantile(compldata, qmarg)
   if (qmarg == 1) {
-    stop("Threshold u too high, leading to no exceedances to fit the GPD.")
+    stop("Marginal quantile leading to threshold u too high and no exceedances to fit the GPD.")
   }
   par <- gpd.fit(compldata, threshold = thresh, show = FALSE)$mle
-  if (par[2] <= -1) {
-    warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
-  }
-  if (par[2] < -0.5 && par[2] > -1) {
+  if(par[2] < -0.5 && par[2] > -1){
     warning("MLE for the shape parameter of the GPD is in (-1, -0.5). \n Non-regular MLE and a very short marginal tail is estimated.")
+  }
+  if(constrainedshape == T && par[2] <= -1){
+    warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
+    opt <- optim(par = c(par[1], par[2]), fn = gpdlikelihood, data = compldata)
+    par <- opt$par
+  }
+  else if(constrainedshape == F && par[2] <= -1){
+    warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
   }
   u[!is.na(data) & data <= thresh] <- ranktransform(data = compldata, thresh = thresh)
   u[!is.na(data) & data > thresh] <- gpdtransform(data = compldata[compldata > thresh], thresh = thresh, par = par, qmarg = qmarg)
   u[is.na(data)] <- NA
-  return(u)
+  return(list("parameters" = par, "thresh" = thresh,"data" = u))
 }
 
 .margtransf.class <- setClass("margtransf.class", representation(data = "array",
                                                                  qmarg = "numeric",
+                                                                 constrainedshape = "logical",
+                                                                 parameters = "array",
+                                                                 thresh = "numeric",
                                                                  dataexp = "array"))
 
 #' An S4 class to represent the Marginal Transformation
 #'
 #' @slot data A matrix containing the data on the original margins.
 #' @slot qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
+#' @slot constrainedshape Logical. If \code{TRUE}, the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}. Default is \code{FALSE}.
+#' @slot parameters A vector containing the scale and shape parameters of the Generalised Pareto Distribution (GPD).
+#' @slot thresh \loadmathjax{} A vector containing the threshold \mjeqn{u}{u} above which the Generalised Pareto Distribution (GPD) is fitted.
 #' @slot dataexp A matrix containing the data on standard exponential margins.
 #' 
 #' @keywords internal
-margtransf.class <- function(data, qmarg, dataexp){
+margtransf.class <- function(data, qmarg, constrainedshape, parameters, thresh, dataexp){
   .margtransf.class(data = data,
                     qmarg = qmarg,
+                    constrainedshape = constrainedshape,
+                    parameters = parameters,
+                    thresh = thresh,
                     dataexp = dataexp)
 }
 
@@ -47,7 +83,7 @@ margtransf.class <- function(data, qmarg, dataexp){
 #' @param x An instance of an S4 class produced by \code{\link{margtransf}}.
 #' @param which String that indicates which type of plot to show. Must either be \code{"all"} (Default), \code{"hist"}, \code{"ts"} or \code{"joint"}.
 #' 
-#' @return \loadmathjax{} A ggplot object showing:
+#' @return A ggplot object showing:
 #' \item{\code{which = "hist"}}{histograms of each variable on original and standard exponential margins.}
 #' \item{\code{which = "ts"}}{time series of each variable on original and standard exponential margins.}
 #' \item{\code{which = "joint"}}{joint distribution on original and standard exponential margins.}
@@ -119,8 +155,9 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' 
 #' @param data A matrix containing the data on the original margins.
 #' @param qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
+#' @param constrainedshape Logical. If \code{TRUE} (Default), the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}.
 #' 
-#' @return An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
+#' @return An object of S4 class \code{margtransf.class}. This object returns the arguments of the function, a slot \code{parameters} containing a matrix with the shape and scale parameters of the Generalised Pareto Distribution (GPD) for each variable, a slot \code{thresh} containing a vector with the threshold \mjeqn{u}{u} above which the GPD is fitted, and a slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
 #' 
 #' The \code{plot} function takes an object of S4 class \code{margtransf.class}, and a \code{which} argument specifying the type of plot desired (see \strong{Examples}):
 #' \item{\code{"hist"}}{Plots the marginal distributions of the two variables on original and standard exponential margins.}
@@ -169,7 +206,7 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' 
 #' @export
 #' 
-margtransf <- function(data, qmarg = rep(0.95, 2)){
+margtransf <- function(data, qmarg = rep(0.95, 2), constrainedshape = TRUE){
   data <- as.matrix(data)
   if(is.null(dim(data)) || dim(data)[2] > 2){
     warning("Estimation of the Return Curves and/or ADF are only implemented for a bivariate setting.")
@@ -180,7 +217,7 @@ margtransf <- function(data, qmarg = rep(0.95, 2)){
   if(any(qmarg < 0) | any(qmarg > 1)){
     stop("Marginal quantile needs to be in [0, 1].")
   }
-  result <- margtransf.class(data = data, qmarg = qmarg, dataexp = array())
+  result <- margtransf.class(data = data, qmarg = qmarg, constrainedshape = constrainedshape, parameters = array(), thresh = numeric(), dataexp = array())
   nas <- colSums(is.na(data))
   if(any(nas > 0)){
     indnas <- which(nas > 0)
@@ -189,9 +226,16 @@ margtransf <- function(data, qmarg = rep(0.95, 2)){
     }
   }
   dataunif <- matrix(NA, ncol = 2, nrow = dim(data)[1])
+  par <- matrix(NA, ncol = 2, nrow = 2)
+  thresh <- c()
   for(i in 1:2){
-    dataunif[, i] <- empirical_cdf(data[, i], qmarg = qmarg[i])
+    marg <- empirical_cdf(data[, i], qmarg = qmarg[i], constrainedshape = constrainedshape)
+    par[, i] <- marg$parameters
+    thresh[i] <- marg$thresh
+    dataunif[, i] <- marg$data
   }
+  result@parameters <- par
+  result@thresh <- thresh
   result@dataexp <- apply(dataunif, 2, qexp)
   return(result)
 }  

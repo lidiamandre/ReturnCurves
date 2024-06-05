@@ -5,15 +5,17 @@
 \alias{margtransf}
 \title{Marginal Transformation}
 \usage{
-margtransf(data, qmarg = rep(0.95, 2))
+margtransf(data, qmarg = rep(0.95, 2), constrainedshape = TRUE)
 }
 \arguments{
 \item{data}{A matrix containing the data on the original margins.}
 
 \item{qmarg}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
+
+\item{constrainedshape}{Logical. If \code{TRUE} (Default), the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}.}
 }
 \value{
-An object of S4 class \code{margtransf.class}. This object returns the arguments of the function and extra slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
+An object of S4 class \code{margtransf.class}. This object returns the arguments of the function, a slot \code{parameters} containing a matrix with the shape and scale parameters of the Generalised Pareto Distribution (GPD) for each variable, a slot \code{thresh} containing a vector with the threshold \mjeqn{u}{u} above which the GPD is fitted, and a slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
 
 The \code{plot} function takes an object of S4 class \code{margtransf.class}, and a \code{which} argument specifying the type of plot desired (see \strong{Examples}):
 \item{\code{"hist"}}{Plots the marginal distributions of the two variables on original and standard exponential margins.}

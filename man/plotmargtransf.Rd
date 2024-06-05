@@ -14,7 +14,7 @@
 \item{which}{String that indicates which type of plot to show. Must either be \code{"all"} (Default), \code{"hist"}, \code{"ts"} or \code{"joint"}.}
 }
 \value{
-\loadmathjax{} A ggplot object showing:
+A ggplot object showing:
 \item{\code{which = "hist"}}{histograms of each variable on original and standard exponential margins.}
 \item{\code{which = "ts"}}{time series of each variable on original and standard exponential margins.}
 \item{\code{which = "joint"}}{joint distribution on original and standard exponential margins.}

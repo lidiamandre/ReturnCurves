@@ -4,7 +4,7 @@
 \alias{adf_gof.class}
 \title{An S4 class to represent the Goodness-of-Fit of the Angular Dependence Function estimates}
 \usage{
-adf_gof.class(adf, w_ind, blocksize, nboot, alpha, gof)
+adf_gof.class(adf, ray, blocksize, nboot, alpha, gof)
 }
 \description{
 An S4 class to represent the Goodness-of-Fit of the Angular Dependence Function estimates
@@ -14,7 +14,7 @@ An S4 class to represent the Goodness-of-Fit of the Angular Dependence Function 
 \describe{
 \item{\code{adf}}{An S4 object of class \code{adf_est.class}.}
 
-\item{\code{w_ind}}{Index of the ray to be considered on the goodness of fit assessment.}
+\item{\code{ray}}{\loadmathjax{} Ray \mjeqn{\omega}{} to be considered on the goodness of fit assessment.}
 
 \item{\code{blocksize}}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 

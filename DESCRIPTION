@@ -1,13 +1,15 @@
 Package: ReturnCurves
 Type: Package
-Title: What the package does (short line)
+Title: Estimation of the Return Curves
 Version: 1.0
-Date: 2024-04-16
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
-Imports: evd, ismev, Rdpack, mathjaxr, ggplot2, gridExtra, methods, stats
+Date: 2024-06-05
+Authors@R: c(person("Lídia", "André", role = c("aut", "cre"), email = "l.andre@lancaster.ac.uk"),
+             person("Callum", "Murphy-Barltrop", role = "aut", email = "callum.murphy-barltrop@tu-dresden.de"))
+Maintainer: Lídia André <l.andre@lancaster.ac.uk>
+Description: Estimates the p-probability return curve <doi:10.1002/env.2797>. Implements pointwise and smooth estimation of the angular dependence function <doi:10.3150/12-beja71>.
+License: GPL (>= 3)
+Depends: R (>= 4.1.2)
+Imports: evd, ismev, Rdpack, mathjaxr, ggplot2 (>= 3.4.4), gridExtra, methods, stats
 Encoding: UTF-8
 RoxygenNote: 7.3.1
 RdMacros: Rdpack, mathjaxr

@@ -1,16 +1,4 @@
-curve_inverse_transform <- function(curveunif, data, qmarg){
-  # compldata <- data[complete.cases(data)]
-  thresh <- quantile(data, qmarg)
-  if(qmarg == 1){
-    stop("Threshold u too high, leading to no exceedances to fit the GPD.")
-  }
-  par <- gpd.fit(data, threshold = thresh, show = FALSE)$mle
-  if(par[2] <= -1){
-    warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
-  }
-  if(par[2] < -0.5 && par[2] > -1){
-    warning("MLE for the shape parameter of the GPD is in (-1, -0.5). \n Non-regular MLE and a very short marginal tail is estimated.")
-  }
+curve_inverse_transform <- function(curveunif, data, par, thresh, qmarg){
   nvec <- c()
   nvec[curveunif > qmarg] <- qgpd((curveunif[curveunif > qmarg] - qmarg)/(1 - qmarg), loc = thresh, scale = par[1], shape = par[2])
   nvec[curveunif <= qmarg] <- quantile(data, curveunif[curveunif <= qmarg])
@@ -145,6 +133,8 @@ rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl
   }
   data <- margdata@data
   qmarg <- margdata@qmarg
+  parameters <- margdata@parameters
+  thresh <- margdata@thresh
   dataexp <- margdata@dataexp
   if(is.null(dim(data)) || dim(data)[2] > 2){
     stop("Estimation of the Return Curve is only implemented for a bivariate setting.")
@@ -166,7 +156,7 @@ rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl
   curveunif <- apply(rc_data, 2, pexp)
   data <- data[complete.cases(data), ]
   result@data <- data
-  result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], qmarg = qmarg[i]))
+  result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], par = parameters[, i], thresh = thresh[i], qmarg = qmarg[i]))
   return(result)
 }
 

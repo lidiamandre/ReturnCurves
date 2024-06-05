@@ -4,7 +4,7 @@
 \alias{margtransf.class}
 \title{An S4 class to represent the Marginal Transformation}
 \usage{
-margtransf.class(data, qmarg, dataexp)
+margtransf.class(data, qmarg, constrainedshape, parameters, thresh, dataexp)
 }
 \description{
 An S4 class to represent the Marginal Transformation
@@ -15,6 +15,12 @@ An S4 class to represent the Marginal Transformation
 \item{\code{data}}{A matrix containing the data on the original margins.}
 
 \item{\code{qmarg}}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
+
+\item{\code{constrainedshape}}{Logical. If \code{TRUE}, the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}. Default is \code{FALSE}.}
+
+\item{\code{parameters}}{A vector containing the scale and shape parameters of the Generalised Pareto Distribution (GPD).}
+
+\item{\code{thresh}}{\loadmathjax{} A vector containing the threshold \mjeqn{u}{u} above which the Generalised Pareto Distribution (GPD) is fitted.}
 
 \item{\code{dataexp}}{A matrix containing the data on standard exponential margins.}
 }}

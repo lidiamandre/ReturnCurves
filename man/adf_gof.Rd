@@ -5,12 +5,12 @@
 \alias{adf_gof}
 \title{Goodness of fit of the Angular Dependence function estimates}
 \usage{
-adf_gof(adf, w_ind, blocksize = 1, nboot = 250, alpha = 0.05)
+adf_gof(adf, ray, blocksize = 1, nboot = 250, alpha = 0.05)
 }
 \arguments{
 \item{adf}{An S4 object of class \code{adf_est.class}. See \code{\link{adf_est}} for more details.}
 
-\item{w_ind}{Index of the ray to be considered on the goodness of fit assessment.}
+\item{ray}{\loadmathjax{} Ray \mjeqn{\omega}{} to be considered on the goodness of fit assessment.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
@@ -32,7 +32,13 @@ Assessment of the goodness of fit of the angular dependence function estimates \
 \details{
 \loadmathjax{} Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
 variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
-A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (lie within the \mjeqn{(1-\alpha)}{} confidence band).
+
+Let \mjeqn{F^{-1}_E}{} denote the inverse of the cumulative distribution function of a standard exponential variable and \mjeqn{X_{(i)}}{} denote the \mjeqn{i}{i}-th ordered increasing statistic, \mjeqn{i = 1, \ldots, n}{}. 
+Function \code{plot} shows a Quantile-Quantile (QQ) plot between the model and empirical exponential quantiles, i.e. points \mjeqn{\left(F^{-1}_E\left(\frac{i}{n+1}\right), X_{(i)}\right)}{},
+along with the line \mjeqn{y=x}{}. Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
+A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (mainly lie within the \mjeqn{(1-\alpha)}{}\% confidence band).
+
+We note that, if the grid for \mjeqn{\omega}{} used to estimate the Angular Dependence Function (ADF) does not contain \code{ray}, then the closest \mjeqn{omega}{} in the grid is used to assess the goodness-of-fit of the ADF.
 }
 \note{
 \loadmathjax{} It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for a few values of \mjeqn{\omega}{w}.
@@ -48,8 +54,7 @@ margdata <- margtransf(data)
 
 lambda <- adf_est(margdata = margdata, method = "hill")
 
-w_ind <- 31
-gof <- adf_gof(adf = lambda, w_ind = w_ind)
+gof <- adf_gof(adf = lambda, ray = 0.4)
 
 plot(gof)
 
