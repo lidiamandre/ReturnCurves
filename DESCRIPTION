@@ -8,7 +8,7 @@ Authors@R: c(person("Lídia", "André", role = c("aut", "cre"), email = "l.andre
 Maintainer: Lídia André <l.andre@lancaster.ac.uk>
 Description: Estimates the p-probability return curve <doi:10.1002/env.2797>. Implements pointwise and smooth estimation of the angular dependence function <doi:10.3150/12-beja71>.
 License: GPL (>= 3)
-Depends: R (4.1.0)
+Depends: R (>= 4.1.0)
 Imports: evd, ismev, Rdpack, mathjaxr, ggplot2 (>= 3.4.4), gridExtra, methods, stats
 Encoding: UTF-8
 RoxygenNote: 7.3.1
