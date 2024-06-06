@@ -1,6 +1,6 @@
 Package: ReturnCurves
 Type: Package
-Title: Estimation of the Return Curves
+Title: Estimation of Return Curves
 Version: 1.0
 Date: 2024-06-05
 Authors@R: c(person("Lídia", "André", role = c("aut", "cre"), email = "l.andre@lancaster.ac.uk"),

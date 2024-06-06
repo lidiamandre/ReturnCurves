@@ -16,7 +16,7 @@ adf_gof(adf, ray, blocksize = 1, nboot = 250, alpha = 0.05)
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
+\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% tolerance intervals. Default is \code{0.05}.}
 }
 \value{
 An object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
@@ -33,12 +33,13 @@ Assessment of the goodness of fit of the angular dependence function estimates \
 \loadmathjax{} Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
 variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
 
-Let \mjeqn{F^{-1}_E}{} denote the inverse of the cumulative distribution function of a standard exponential variable and \mjeqn{X_{(i)}}{} denote the \mjeqn{i}{i}-th ordered increasing statistic, \mjeqn{i = 1, \ldots, n}{}. 
-Function \code{plot} shows a Quantile-Quantile (QQ) plot between the model and empirical exponential quantiles, i.e. points \mjeqn{\left(F^{-1}_E\left(\frac{i}{n+1}\right), X_{(i)}\right)}{},
+Let \mjeqn{F^{-1}_E}{} denote the inverse of the cumulative distribution function of a standard exponential variable and \mjeqn{T^1_{(i)}}{} denote the \mjeqn{i}{i}-th ordered increasing statistic, \mjeqn{i = 1, \ldots, n}{}. 
+Function \code{plot} shows a QQ plot between the model and empirical exponential quantiles, i.e. points \mjeqn{\left(F^{-1}_E\left(\frac{i}{n+1}\right), T^1_{(i)}\right)}{},
 along with the line \mjeqn{y=x}{}. Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
-A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{} (mainly lie within the \mjeqn{(1-\alpha)}{}\% confidence band).
+A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{}. 
+In addition, line \mjeqn{y = x}{} should mainly lie within the \mjeqn{(1-\alpha)}{}\% tolerance intervals.
 
-We note that, if the grid for \mjeqn{\omega}{} used to estimate the Angular Dependence Function (ADF) does not contain \code{ray}, then the closest \mjeqn{omega}{} in the grid is used to assess the goodness-of-fit of the ADF.
+We note that, if the grid for \mjeqn{\omega}{} used to estimate the Angular Dependence Function (ADF) does not contain \code{ray}, then the closest \mjeqn{\omega}{w} in the grid is used to assess the goodness-of-fit of the ADF.
 }
 \note{
 \loadmathjax{} It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for a few values of \mjeqn{\omega}{w}.

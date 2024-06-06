@@ -73,7 +73,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
     ggtitle(expression("Estimation of" ~ hat(RC)(p)))
 })
 
-#' Return Curve estimation
+#' Estimation of the Return Curve
 #' 
 #' @name rc_est
 #' 

@@ -29,12 +29,16 @@ Assessment of the goodness-of-fit of the return curve estimates following the ap
 }
 \details{
 \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
-Let \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} | 1\leq j\leq m\right\rbrace}{} be the set of angles.
-For each angle \mjeqn{\theta\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_\theta, \hat{y}_\theta \rbrace}{}, 
+Let \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} be a set of angles decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}.
+For each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_{\theta_j}, \hat{y}_{\theta_j} \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
-\mjeqn{(\hat{x}_\theta, \infty) \times (\hat{y}_\theta, \infty)}{}. Due to the use of empirical probabilities, the value of \mjeqn{p}{p} should be within the range of the data and not too extreme. 
+\mjeqn{(\hat{x}_{\theta_j}, \infty) \times (\hat{y}_{\theta_j}, \infty)}{}.
 
-The \mjeqn{(1-\alpha)}{}\% confidence region is obtained via a (block) bootstrapping procedure and ideally should contain the true probability \mjeqn{p}{p}.
+Thus, for each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} a (block) bootstrap procedure to the original data set is applied, and
+the empirical probabilities \mjeqn{\hat{p}_j}{} estimated. Then, the median and \mjeqn{(1-\alpha)}{}\% pointwise confidence intervals are obtained for each \mjeqn{\theta_j}{}.
+Function \code{plot} shows the median of \mjeqn{\hat{p}_j}{}, the confidence intervals and the true probability \mjeqn{p}{p}; ideally, this value should be contained in the confidence region.
+
+We note that due to the use of empirical probabilities, the value of \mjeqn{p}{p} should be within the range of the data and not too extreme.
 }
 \examples{
 library(ReturnCurves)

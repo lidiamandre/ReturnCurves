@@ -4,10 +4,11 @@
 \name{ReturnCurves-package}
 \alias{ReturnCurves}
 \alias{ReturnCurves-package}
-\title{ReturnCurves: Estimation of the Return Curves}
+\title{Estimation of Return Curves}
 \description{
 \loadmathjax{}
-Estimation of the angular dependence function \mjeqn{\lambda(\omega)}{} \insertCite{WadsworthTawn2013}{ReturnCurves}, and of the Return Curves \insertCite{MurphyBarltropetal2023}{ReturnCurves}
+Implements the estimation of the \mjeqn{p}{p}-probability return curve \insertCite{MurphyBarltropetal2023}{ReturnCurves}, 
+as well as a pointwise and smooth estimation of the angular dependence function \insertCite{WadsworthTawn2013}{ReturnCurves}.
 }
 \section{Available functions}{
  

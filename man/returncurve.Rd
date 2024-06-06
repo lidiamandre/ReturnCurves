@@ -3,7 +3,7 @@
 \docType{methods}
 \name{rc_est}
 \alias{rc_est}
-\title{Return Curve estimation}
+\title{Estimation of the Return Curve}
 \usage{
 rc_est(
   margdata,
@@ -29,15 +29,15 @@ rc_est(
 
 \item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
 
-\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default set to \code{rep(0.95, 2)}.}
+\item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.}
 
-\item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to \code{7}.}
+\item{k}{Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{7}.}
 
 \item{constrained}{Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
-\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
+\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Default is \code{0.0001}.}
 
-\item{par_init}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.}
+\item{par_init}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.}
 }
 \value{
 An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
