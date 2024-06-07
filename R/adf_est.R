@@ -1,5 +1,5 @@
 
-.adf_est.class <- setClass("adf_est.class", representation(data = "array",
+.adf_est.class <- setClass("adf_est.class", representation(dataexp = "array",
                                                            w = "numeric",
                                                            method = "character",
                                                            q = "numeric",
@@ -12,7 +12,7 @@
 
 #' An S4 class to represent the estimation of the Angular Dependence Function
 #'
-#' @slot data A matrix containing the data on the original margins.
+#' @slot dataexp A matrix containing the data on standard exponential margins.
 #' @slot w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @slot method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
 #' @slot q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
@@ -26,8 +26,8 @@
 #' @references \insertAllCited{}
 #' 
 #' @keywords internal
-adf_est.class <- function(data, w, method, q, qalphas, k, constrained, tol, par_init, adf){
-  .adf_est.class(data = data,
+adf_est.class <- function(dataexp, w, method, q, qalphas, k, constrained, tol, par_init, adf){
+  .adf_est.class(dataexp = dataexp,
                  w = w,
                  method = method,
                  q = q,
@@ -77,7 +77,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @docType methods
 #' 
 #' @param margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
-#' @param w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
+#' @param w Sequence of rays between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
 #' @param q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
 #' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.
@@ -141,7 +141,7 @@ adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl")
     stop("Marginal quantiles need to be in [0, 1].")
   }
   if(any(w < 0) | any(w > 1)){
-    stop("Angles need to be in [0, 1].")
+    stop("Rays need to be in [0, 1].")
   }
   if(!method %in% c("hill", "cl")){
     stop("ADF needs to be estimated either through the Hill estimator or Composite likelihood estimator.")
@@ -154,7 +154,7 @@ adf_est <- function(margdata, w = seq(0, 1, by = 0.01), method = c("hill", "cl")
     warning(paste0("There are ", nas, " missing values in the data.\n These were removed."))
   }
   data <- data[complete.cases(data), ]
-  result <- adf_est.class(data = data, w = w, method = method, 
+  result <- adf_est.class(dataexp = data, w = w, method = method, 
                           q = q, qalphas = qalphas, k = k, 
                           constrained = constrained, tol = tol, par_init = par_init, adf = double())
   

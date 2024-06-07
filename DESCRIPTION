@@ -27,3 +27,7 @@ Collate:
     'rc_gof.R'
     'rc_uncertainty.R'
     'ReturnCurves-package.R'
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
