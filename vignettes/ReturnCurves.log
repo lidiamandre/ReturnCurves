@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  7 JUN 2024 17:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  7 JUN 2024 17:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -551,14 +551,14 @@ d on input line 248.
 (pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
 [3 <./ReturnCurves_files/figure-latex/plotsmarghist-1.pdf> <./ReturnCurves_file
 s/figure-latex/plotsmargts-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf, id=84, 433.62pt x 144.54
+<ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf, id=84, 433.62pt x 216.81
 pt>
 File: ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf Graphic file (type p
 df)
 <use ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf  
 used on input line 259.
-(pdftex.def)             Requested size: 433.63878pt x 144.54623pt.
+(pdftex.def)             Requested size: 433.63878pt x 216.81938pt.
 <ReturnCurves_files/figure-latex/plotsmargall-1.pdf, id=85, 433.62pt x 578.16pt
 >
 File: ReturnCurves_files/figure-latex/plotsmargall-1.pdf Graphic file (type pdf
@@ -580,53 +580,57 @@ LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 388.
 
 [7]
-<ReturnCurves_files/figure-latex/plotsadfest-1.pdf, id=144, 578.16pt x 433.62pt
->
+<ReturnCurves_files/figure-latex/plotsadfest-1.pdf, id=144, 361.35pt x 180.675p
+t>
 File: ReturnCurves_files/figure-latex/plotsadfest-1.pdf Graphic file (type pdf)
 
 <use ReturnCurves_files/figure-latex/plotsadfest-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsadfest-1.pdf  use
-d on input line 443.
-(pdftex.def)             Requested size: 469.75385pt x 352.31538pt.
+d on input line 438.
+(pdftex.def)             Requested size: 361.34912pt x 180.67455pt.
 [8 <./ReturnCurves_files/figure-latex/plotsadfest-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsadfgof-1.pdf, id=158, 722.7pt x 216.81pt>
+<ReturnCurves_files/figure-latex/plotsadfgof-1.pdf, id=156, 722.7pt x 216.81pt>
 
 File: ReturnCurves_files/figure-latex/plotsadfgof-1.pdf Graphic file (type pdf)
 
 <use ReturnCurves_files/figure-latex/plotsadfgof-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsadfgof-1.pdf  use
-d on input line 536.
+d on input line 531.
 (pdftex.def)             Requested size: 469.76045pt x 140.92813pt.
-[9] [10 <./ReturnCurves_files/figure-latex/plotsadfgof-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsrcest-1.pdf, id=180, 433.62pt x 433.62pt>
-
+[9 <./ReturnCurves_files/figure-latex/plotsadfgof-1.pdf>] [10]
+<ReturnCurves_files/figure-latex/plotsrcest-1.pdf, id=179, 180.675pt x 180.675p
+t>
 File: ReturnCurves_files/figure-latex/plotsrcest-1.pdf Graphic file (type pdf)
 <use ReturnCurves_files/figure-latex/plotsrcest-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsrcest-1.pdf  used
- on input line 664.
-(pdftex.def)             Requested size: 433.63878pt x 433.63878pt.
-[11] [12 <./ReturnCurves_files/figure-latex/plotsrcest-1.pdf>] [13]
-<ReturnCurves_files/figure-latex/plotsrcunc-1.pdf, id=207, 578.16pt x 433.62pt>
+ on input line 654.
+(pdftex.def)             Requested size: 180.67455pt x 180.67455pt.
+[11 <./ReturnCurves_files/figure-latex/plotsrcest-1.pdf>]
+Overfull \vbox (0.19919pt too high) detected at line 806
+ []
+
+[12]
+<ReturnCurves_files/figure-latex/plotsrcunc-1.pdf, id=200, 578.16pt x 433.62pt>
 
 File: ReturnCurves_files/figure-latex/plotsrcunc-1.pdf Graphic file (type pdf)
 <use ReturnCurves_files/figure-latex/plotsrcunc-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsrcunc-1.pdf  used
- on input line 838.
+ on input line 827.
 (pdftex.def)             Requested size: 469.75385pt x 352.31538pt.
-[14] [15 <./ReturnCurves_files/figure-latex/plotsrcunc-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsrcgof-1.pdf, id=227, 433.62pt x 289.08pt>
+[13] [14 <./ReturnCurves_files/figure-latex/plotsrcunc-1.pdf>]
+<ReturnCurves_files/figure-latex/plotsrcgof-1.pdf, id=220, 433.62pt x 289.08pt>
 
 File: ReturnCurves_files/figure-latex/plotsrcgof-1.pdf Graphic file (type pdf)
 <use ReturnCurves_files/figure-latex/plotsrcgof-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsrcgof-1.pdf  used
- on input line 949.
+ on input line 938.
 (pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
-[16] (./ReturnCurves.bbl) [17 <./ReturnCurves_files/figure-latex/plotsrcgof-1.p
+[15] (./ReturnCurves.bbl) [16 <./ReturnCurves_files/figure-latex/plotsrcgof-1.p
 df>] (./ReturnCurves.aux) ) 
 Here is how much of TeX's memory you used:
- 14424 strings out of 480247
- 229103 string characters out of 5896152
- 565459 words of memory out of 5000000
+ 14423 strings out of 480247
+ 229096 string characters out of 5896152
+ 565457 words of memory out of 5000000
  31892 multiletter control sequences out of 15000+600000
  545486 words of font info for 169 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -649,10 +653,10 @@ e1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr
 /share/texmf/fonts/type1/public/lm/lmtko10.pfb></usr/share/texmf/fonts/type1/pu
 blic/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on ReturnCurves.pdf (17 pages, 1265720 bytes).
+Output written on ReturnCurves.pdf (16 pages, 1067569 bytes).
 PDF statistics:
- 381 PDF objects out of 1000 (max. 8388607)
- 295 compressed objects within 3 object streams
- 49 named destinations out of 1000 (max. 500000)
+ 373 PDF objects out of 1000 (max. 8388607)
+ 288 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
  41062 words of extra memory for PDF output out of 42996 (max. 10000000)
 

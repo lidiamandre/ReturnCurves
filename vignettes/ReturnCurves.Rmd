@@ -120,7 +120,7 @@ plot(expdata, which = "ts")
 The joint distribution on original and standard exponential margins can
 be access with `which = "joint"`:
 
-```{r plotsmargjoint, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.height = 3}
+```{r plotsmargjoint, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.height = 2.5}
 plot(expdata, which = "joint")
 ```
 
@@ -265,7 +265,7 @@ It is possible to plot an S4 object of `adf_est.class` with `plot`,
 where a comparison of the estimated ADF and its lower bound,
 $\max\{\omega, 1-\omega\},$ is shown.
 
-```{r plotsadfest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 3, fig.height = 3, fig.align = 'center'}
+```{r plotsadfest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 4.5, fig.height = 2.5, fig.align = 'center'}
 # plot of the ADF estimation based on the unconstrained Hill estimator
 plot(lambdah)
 ```
@@ -414,7 +414,7 @@ It is possible to plot an S4 object of `rc_est.class` with `plot`, where
 the original data is plotted with the estimated line for the return
 curve $\hat{\text{RC}}(p).$
 
-```{r plotsrcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 3, fig.height = 3, fig.align = 'center'}
+```{r plotsrcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 2.5, fig.height = 2.5, fig.align = 'center'}
 # plot of the ADF estimation based on the unconstrained Hill estimator
 plot(rch)
 ```
