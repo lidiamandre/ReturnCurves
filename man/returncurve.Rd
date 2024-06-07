@@ -21,7 +21,7 @@ rc_est(
 \arguments{
 \item{margdata}{An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details.}
 
-\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{w}{Sequence of rays between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
 \item{p}{\loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.}
 
@@ -52,7 +52,7 @@ the \mjeqn{p}{p}-probability return curve is defined as
 
 \mjeqn{Pr(X>x, Y>y)}{} is estimated using the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
 
-The return curve estimation \mjeqn{\hat{RC}(p)}{} is done in standard exponential margins and then back transformed onto the original margins.
+The return curve estimation \mjeqn{\hat{RC}(p)}{} is done on standard exponential margins and then back transformed onto the original margins.
 }
 \examples{
 library(ReturnCurves)

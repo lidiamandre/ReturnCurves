@@ -2,7 +2,7 @@ rc_exp <- function(margdata, w, p, method, q_minproj, qalphas, k, constrained, t
   n <- length(w)
   xp <- qexp(1 - p)
   lambda <- adf_est(margdata = margdata, w = w, method = method, q = q_minproj, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
-  thresh <- sapply(w, function(i) minproj_lambda(lambda@data, i, q_minproj = q_minproj)$thresh)
+  thresh <- sapply(w, function(i) minproj_lambda(lambda@dataexp, i, q_minproj = q_minproj)$thresh)
   r <- sapply(1:n, function(i) thresh[i] - log(p/(1 - q_minproj))/lambda@adf[i])
   x <- sapply(1:n, function(i) r[i] * w[i])
   y <- sapply(1:n, function(i) r[i] * (1 - w[i]))

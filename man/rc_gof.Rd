@@ -30,8 +30,8 @@ Assessment of the goodness-of-fit of the return curve estimates following the ap
 \details{
 \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
 Let \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} be a set of angles decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}.
-For each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace \hat{x}_{\theta_j}, \hat{y}_{\theta_j} \rbrace}{}, 
-the empirical probability \mjeqn{\hat{p}}{p} of lying in the survival region is given by the proportion of points in the region
+For each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace (\hat{x}_{\theta_j}, \hat{y}_{\theta_j}) \rbrace}{}, 
+the empirical probability \mjeqn{\hat{p}_j}{p} of lying in the survival region is given by the proportion of points in the region
 \mjeqn{(\hat{x}_{\theta_j}, \infty) \times (\hat{y}_{\theta_j}, \infty)}{}.
 
 Thus, for each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} a (block) bootstrap procedure to the original data set is applied, and

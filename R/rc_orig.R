@@ -93,7 +93,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' \mjeqn{Pr(X>x, Y>y)}{} is estimated using the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
 #' 
-#' The return curve estimation \mjeqn{\hat{RC}(p)}{} is done in standard exponential margins and then back transformed onto the original margins.
+#' The return curve estimation \mjeqn{\hat{RC}(p)}{} is done on standard exponential margins and then back transformed onto the original margins.
 #' 
 #' @rdname returncurve
 #' 

@@ -20,7 +20,7 @@ adf_est(
 \arguments{
 \item{margdata}{An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details.}
 
-\item{w}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{w}{Sequence of rays between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
 \item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.}
 

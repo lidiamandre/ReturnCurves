@@ -4,7 +4,18 @@
 \alias{adf_est.class}
 \title{An S4 class to represent the estimation of the Angular Dependence Function}
 \usage{
-adf_est.class(data, w, method, q, qalphas, k, constrained, tol, par_init, adf)
+adf_est.class(
+  dataexp,
+  w,
+  method,
+  q,
+  qalphas,
+  k,
+  constrained,
+  tol,
+  par_init,
+  adf
+)
 }
 \description{
 An S4 class to represent the estimation of the Angular Dependence Function
@@ -12,7 +23,7 @@ An S4 class to represent the estimation of the Angular Dependence Function
 \section{Slots}{
 
 \describe{
-\item{\code{data}}{A matrix containing the data on the original margins.}
+\item{\code{dataexp}}{A matrix containing the data on standard exponential margins.}
 
 \item{\code{w}}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 

@@ -58,7 +58,6 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                       "upperX" = x@unc$upper[, 1], "upperY" = x@unc$upper[, 2])
   colours <- c("Estimated RC" = "red", "Median RC" = "orange", "Mean RC" = "brown", 
                "Lower Bound" = 1, "Upper Bound" = 1)
-  plots <- list()
   if("rc" %in% which){
     rc <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
@@ -69,9 +68,9 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                                                                   linewidth = c(1, 0.5, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
-    plots <- c(plots, list(rc))
+    return(rc)
   }
-  if("median" %in% which){
+  else if("median" %in% which){
     median <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
@@ -81,9 +80,9 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                                                                   linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
-    plots <- c(plots, list(median))
+    return(median)
   }
-  if("mean" %in% which){
+  else if("mean" %in% which){
     mean <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
@@ -93,9 +92,9 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                                                                   linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
-    plots <- c(plots, list(mean))
+    return(mean)
   }
-  if("all" %in% which){
+  else if("all" %in% which){
     all <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
@@ -108,9 +107,8 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
                                                                   linewidth = c(1, 0.5, 1, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
-    plots <- c(plots, list(all))
+    return(all)
   }
-  grid.arrange(grobs = plots, ncol = 1)
 })
 
 #' Uncertainty of the Return Curve estimates
@@ -138,7 +136,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' \item{\code{"rc"}}{Plots the estimated Return Curve and its uncertainty (default).}
 #' \item{\code{"median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
 #' \item{\code{"mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
-#' \item{\code{"all"}}{Plots all the estimated Return Curve, the median and mean estimates of the Return Curve, and its uncertainty.}
+#' \item{\code{"all"}}{Plots the estimated Return Curve, the median and mean estimates of the Return Curve together, and the associated uncertainty.}
 #' 
 #' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}, 
 #' and let \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace}{} denote the line segment intersecting the origin with gradient \mjeqn{\tan(\theta) > 0.}{}
