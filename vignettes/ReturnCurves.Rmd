@@ -36,9 +36,9 @@ implemented in the package and is heavily based on the works of
 refer the user to these articles.
 
 The `ReturnCurves` package aims at estimating the $p$-probability return
-curve [@MurphyBarltropetal2023], while implementing pointwise and smooth
+curve [@MurphyBarltropetal2023] for small $p>0,$ while implementing pointwise and smooth
 approaches to estimate the so called angular dependence function first
-introduced by [@WadsworthTawn2013].
+introduced by @WadsworthTawn2013.
 
 ```{r package, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 library(ReturnCurves)
@@ -58,23 +58,23 @@ data <- cbind(rnorm(1000), rnorm(1000))
 
 # Marginal transformation
 
-The estimation of the Angular Dependence Function and/or of the Return
-Curve is implemented for a bivariate vector $(X_E,Y_E)$ marginally
-distributed as a standard exponential distribution, i.e,
-$X_E, \, Y_E\sim \text{Exp}(1).$ Thus, the original data needs to be
-marginally transformed, which is achieved via the Probability Integral
-Transform. We follow the procedure of @ColesTawn1991 where the empirical
+The estimation of the angular dependence function and/or of the return
+curve is implemented for a bivariate vector $(X_E,Y_E)$ marginally
+distributed as standard exponential, i.e,
+$X_E, \, Y_E\sim \text{Exp}(1).$ Thus, the original data $(X, Y)$ needs to be
+marginally transformed, which is achieved via the probability integral
+transform. We follow the procedure of @ColesTawn1991 where the empirical
 cumulative distribution function $\tilde{F}$ is fitted below a threshold
-$u$, and a Generalised Pareto Distribution (GPD) is fitted above, as
-follows: \begin{equation} \label{eq:pit}
+$u$, and a generalised Pareto distribution (GPD) is fitted above, giving the following estimate of the marginal cumulative distribution function (cdf) of $X$ or $Y:$ 
+\begin{equation} \label{eq:pit}
  \hat{F}(z) = \begin{cases} 
   1-\left(1-\tilde{F}(u)\right)\left[1+\xi\frac{z-u}{\sigma}\right]_+^{-1/\xi}, & \text{if } z>u, \\
   \tilde{F}(z), & \text{if } z \leq u,
   \end{cases}
-\end{equation} where $\sigma$ and $\xi$ are the scale and shape
-parameters of the GPD.
+\end{equation} where $\hat\sigma$ and $\hat\xi$ are the estimated scale and shape
+parameters of the GPD. Exponential margins are obtained by applying $-\log(1-\hat F(\cdot))$ to each margin, where $\hat F(\cdot)$ is estimated separately for each margin.
 
-This is done with the function `margtrasnf` which takes a matrix
+This is done with the function `margtransf` which takes a matrix
 containing the original data, a vector of the marginal quantiles used to
 fit the GPD and a boolean value `constrainedshape` which decides whether
 $\xi> -1$ if set to `TRUE` (Default), or $\xi \in \mathbb{R}$ if set to
@@ -131,33 +131,36 @@ Finally, it is possible to plot all these together by setting
 plot(expdata, which = "all") # or just plot(expdata)
 ```
 
-# Estimation of the Angular dependence function
+# Estimation of the angular dependence function
 
-In bivariate extremes, interest lies in studying regions where both
-variables are extreme (asymptotic dependence) and/or where only one is
-extreme (asymptotic independence). A few methods, such as the one
+In bivariate extremes, interest may lie in studying regions where both
+variables are extreme or where only one is
+extreme. A few methods, such as the one
 introduced by @WadsworthTawn2013, aim at characterising the joint tail
-behaviour are available in the literature. Given standard exponentially
+behaviour in both scenarios are available in the literature. Given standard exponentially
 distributed variables $X_E$ and $Y_E$ and a slowly varying function
-$\mathcal{L}(\cdot; \omega)$ at $\infty,$ the joint tail behaviour of
-$(X_E,Y_E)$ is captured through $\lambda(\omega)$ as \begin{equation*}
+$\mathcal{L}(\cdot; \omega)$ at infinity,s the joint tail behaviour of
+$(X_E,Y_E)$ is captured through $\lambda(\omega)$ via the assumption
+\begin{equation*}
   \text{Pr}(X_E > \omega u,\, Y_E > (1-\omega) u) = \mathcal{L}(e^u; \omega)e^{-\lambda(\omega)u} \quad \text{as } u \to \infty,
-\end{equation*} which can be rewritten as \begin{equation}\label{eq:wt}
+\end{equation*} 
+which can be rewritten as 
+\begin{equation}\label{eq:wt}
   \text{Pr}\left(\min\left\{\frac{X_E}{\omega}, \, \frac{Y_E}{1-\omega}\right\}\right) = \mathcal{L}(e^u; \omega)e^{-\lambda(\omega)u} \quad \text{as } u \to \infty,
 \end{equation} where $\omega\in[0,1]$ and
 $\lambda(\omega)\geq \max\{\omega, 1-\omega\}$ is called the angular
-dependence function (ADF). In the case of asymptotic dependence,
-$\lambda(\omega)=\max\{\omega, 1-\omega\}, \, \forall\omega\in[0,1].$
+dependence function (ADF). In the case of asymptotic dependence (see, e.g., @Colesetal1999), $\lambda(\omega)=\max\{\omega, 1-\omega\}$ for all $\omega\in[0,1].$
 
 Lastly, defining a min-projection variable at $\omega,$
 $T_\omega = \min\left\{\frac{X_E}{\omega}, \, \frac{Y_E}{1-\omega}\right\},$
-equation \eqref{eq:wt} implies that \begin{equation}\label{eq:minproj}
+equation \eqref{eq:wt} implies that 
+\begin{equation}\label{eq:minproj}
   \text{Pr}(T_\omega>u+t\mid T_\omega>u) = \frac{\mathcal{L}(e^{u+t}; \omega)}{\mathcal{L}(e^u; \omega)}e^{-\lambda(\omega)t} \to e^{-\lambda(\omega)t}  \quad \text{as } u \to \infty,
-\end{equation} for any $\omega\in[0,1]$ and $t>0.$ In addition, for all
+\end{equation} for any $\omega\in[0,1]$ and $t>0.$ In other words, for all
 $\omega\in[0,1]$ and, as $u_\omega\to \infty,$
 $T_\omega^1 := (T_\omega-u_\omega\mid T_\omega>u_\omega)\sim \text{Exp}(\lambda(\omega)).$
 Estimation of the ADF can be done in different ways;
-[@MurphyBarltropetal2024] present a few.
+@MurphyBarltropetal2024 present a few.
 
 For the `ReturnCurves` package, two approaches are implemented: a
 pointwise estimator using the Hill estimator [@Hill1975],
@@ -165,33 +168,31 @@ $\hat{\lambda}_H,$ and a smoother estimator based on Bernstein-Bézier
 polynomials estimated via composite likelihood methods,
 $\hat{\lambda}_{CL}.$ For the latter, @MurphyBarltropetal2024 propose
 using a family of Bernstein-Bézier polynomials to improve the estimation
-of the ADF; given $k\in \mathbb{N}$ \begin{align}\label{eq:bbp}
+of the ADF. Given $k\in \mathbb{N},$ it is assumed that $\lambda(\omega)=\lambda(\omega;\boldsymbol{\beta})$ can be represented by the following family of functions:
+\begin{align}\label{eq:bbp}
   \mathcal{B}_k^*=\left\{(1-\omega)^k+\sum_{i = 1}^{k-1}\beta_i {k \choose i} \omega^i(1-\omega)^{k-i}+\omega^k=:f(\omega)\mid \omega\in[0,1],\right. \nonumber \\
   \left.\phantom{\sum_{i = 1}^{k-1}{k \choose i}}\boldsymbol{\beta}\in[0, \infty)^{k-1} \text{ such that } f(\omega)\geq\max\{\omega, 1-\omega\}\right\}.
 \end{align}
 
 As $T_\omega^1$ is exponentially distributed when $u_\omega\to\infty,$
-$\boldsymbol{\beta}$ can be estimated using a composite likelihood
-function defined as \begin{equation}
+the parameter vector $\boldsymbol{\beta}$ can be estimated using a composite likelihood
+function defined as 
+\begin{equation} \label{eq:clf}
   \mathcal{L}_C(\boldsymbol{\beta}) = \left[\prod_{\omega \in \Omega}\lambda(\omega;\boldsymbol{\beta})^{\mid \boldsymbol{t}_\omega^1\mid}\right]\exp\left\{-\sum_{\omega \in \Omega}\sum_{t_\omega^1\in \boldsymbol{t}_\omega^1}\lambda(\omega;\boldsymbol{\beta})t_\omega\right\},
-\end{equation} where $\mid \boldsymbol{t}_\omega^1\mid$ represents the
-cardinality of set
-$\boldsymbol{t}_\omega^1:=\{t_\omega-u_\omega\mid t_\omega\in \boldsymbol{t}_\omega, \, t_\omega>u_\omega\}$
-and $\Omega$ is a finite subset spanning the interval $[0,1].$ The
+\end{equation} 
+where $\mid \boldsymbol{t}_\omega^1\mid$ represents the
+cardinality of set $\boldsymbol{t}_\omega^1:=\{t_\omega-u_\omega\mid t_\omega\in \boldsymbol{t}_\omega, \, t_\omega>u_\omega\}$ for some large values $u_\omega,$ and $\Omega$ is a finite subset spanning the interval $[0,1].$ The
 estimator of the ADF through composite likelihood methods is given by
 $\lambda(\cdot;\boldsymbol{\hat\beta}_{CL})$ where
-$\boldsymbol{\hat\beta}_{CL}$ is the maximum likelihood estimator of
-$\boldsymbol{\beta}.$
+$\boldsymbol{\hat\beta}_{CL}$ maximises equation \eqref{eq:clf}.
 
 Finally, @MurphyBarltropetal2024 showed that incorporating knowledge of
 the conditional extremes [@HeffernanTawn2004] parameters
 $\alpha_{y\mid x}$ and $\alpha_{x\mid y}$ improves the estimation of the
 ADF. In particular, the authors show that, in order to satisfy
-theoretical properties of $\lambda(\omega),$ for all
-$\omega\in[0, \alpha_{x\mid y}^1]\cup[\alpha_{y\mid x}^1, 1]$ with
+theoretical properties of $\lambda(\omega),$ $\lambda(\omega)=\max\{\omega, 1-\omega\}$ for all$\omega\in[0, \alpha_{x\mid y}^1]\cup[\alpha_{y\mid x}^1, 1]$ with
 $\alpha_{x\mid y}^1=\alpha_{x\mid y}/(1 + \alpha_{x\mid y})$ and
-$\alpha_{y\mid x}^1=1/(1 + \alpha_{y\mid x}),$
-$\lambda(\omega)=\max\{\omega, 1-\omega\}.$ Thus, after estimating the
+$\alpha_{y\mid x}^1=1/(1 + \alpha_{y\mid x}).$ Thus, after estimating the
 conditional extremes parameters $\alpha_{y\mid x}$ and
 $\alpha_{x\mid y}$ through maximum likelihood estimation, we can set
 $\lambda(\omega)=\max\{\omega, 1-\omega\}$ for
@@ -205,6 +206,7 @@ $\hat\alpha_{x\mid y}^1$ and $\hat\alpha_{y\mid x}^1,$ as defined below:
   \mathcal{B}_k^1=\left\{(1-\hat\alpha_{x\mid y}^1)\left(1-\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^k+\sum_{i = 1}^{k-1}\beta_i {k \choose i} \left(\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^i\left(1-\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^{k-i}+\right. \\
   \left.\hat\alpha_{y\mid x}^1\left(\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^k=:f(v)\mid v\in\left[\hat\alpha_{x\mid y}^1, \hat\alpha_{y\mid x}^1\right],\boldsymbol{\beta}\in[0, \infty)^{k-1} \text{ such that } f(v)\geq\max\{v, 1-v\}\right\}.
 \end{align*}
+$\lambda(\omega)=\lambda(\omega;\boldsymbol{\beta})$ is assumed to be represented by an element of $\mathcal{B}_k^1$ on $\left[\hat\alpha_{x\mid y}^1, \hat\alpha_{y\mid x}^1\right].$
 
 Estimation of the ADF can be done using the function `adf_est` which
 takes as inputs:
