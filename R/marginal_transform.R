@@ -59,7 +59,7 @@ empirical_cdf <- function(data, qmarg, constrainedshape) {
 #'
 #' @slot data A matrix containing the data on the original margins.
 #' @slot qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
-#' @slot constrainedshape Logical. If \code{TRUE}, the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}. Default is \code{FALSE}.
+#' @slot constrainedshape Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to strictly above \code{-1}.
 #' @slot parameters A vector containing the scale and shape parameters of the Generalised Pareto Distribution (GPD).
 #' @slot thresh \loadmathjax{} A vector containing the threshold \mjeqn{u}{u} above which the Generalised Pareto Distribution (GPD) is fitted.
 #' @slot dataexp A matrix containing the data on standard exponential margins.
@@ -149,13 +149,13 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' @name margtransf
 #' 
 #' @description
-#' Marginal transformation of a  bivariate random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. 
+#' Marginal transformation of a  bivariate random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. VAriables within each margin are assumed identically distributed.
 #' 
 #' @docType methods
 #' 
 #' @param data A matrix containing the data on the original margins.
 #' @param qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
-#' @param constrainedshape Logical. If \code{TRUE} (Default), the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}.
+#' @param constrainedshape Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to strictly above \code{-1}.
 #' 
 #' @return An object of S4 class \code{margtransf.class}. This object returns the arguments of the function, a slot \code{parameters} containing a matrix with the shape and scale parameters of the Generalised Pareto Distribution (GPD) for each variable, a slot \code{thresh} containing a vector with the threshold \mjeqn{u}{u} above which the GPD is fitted, and a slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
 #' 
@@ -168,6 +168,9 @@ setMethod("plot", signature = list("margtransf.class"), function(x, which = c("a
 #' @details \loadmathjax{} Given a threshold value \mjeqn{u}{u}, each stationary random vector 
 #' is transformed by using the empirical cumulative distribution function 
 #' (cdf) below \mjeqn{u}{u}, and a Generalise Pareto Distribution (GPD) fit above \mjeqn{u}{u}.    
+#' 
+#' The option to constrain \mjeqn{\xi > -1}{} is included as \mjeqn{\xi \leq -1}{} implies that the fitted
+#' upper endpoint of the distribution's support is the maximum data point. This situation is rarely encountered in practice.
 #' 
 #' @rdname marginaltransformation
 #' 

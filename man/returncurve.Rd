@@ -7,7 +7,7 @@
 \usage{
 rc_est(
   margdata,
-  w = seq(0, 1, by = 0.01),
+  w = NULL,
   p,
   method = c("hill", "cl"),
   q = 0.95,
@@ -21,13 +21,13 @@ rc_est(
 \arguments{
 \item{margdata}{An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details.}
 
-\item{w}{Sequence of rays between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{w}{Sequence of rays between \code{0} and \code{1}. Default is \code{NULL}, where a pre-defined grid is used.}
 
 \item{p}{\loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.}
 
 \item{method}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.}
 
-\item{q}{\loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
+\item{q}{\loadmathjax{} Marginal quantile used to define the threshold \mjeqn{u_\omega}{} of the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.}
 
 \item{qalphas}{A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.}
 
@@ -40,7 +40,9 @@ rc_est(
 \item{par_init}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.}
 }
 \value{
-An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
+An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} 
+\item{\code{interval}:}{A vector containing the maximum likelihood estimates from the conditional extremes model, \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{}, if \code{constrained = TRUE}. If \code{constrained = FALSE}, then \code{c(0, 1)} is returned; we note that this has no meaningful interpretation as the estimation is performed in an unconstrained interval.}
+\item{\code{rc}:}{A matrix with the estimates of the Return Curve.}
 }
 \description{
 \loadmathjax{} Estimation of the \mjeqn{p}{p}-probability return curve following \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
@@ -49,6 +51,8 @@ An object of S4 class \code{rc_est.class}. This object returns the arguments of 
 \loadmathjax{} Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
 the \mjeqn{p}{p}-probability return curve is defined as 
 \mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
+
+This method focuses on estimation of \mjeqn{RC(p)}{RC(p)} for small \mjeqn{p}{p} near \mjeqn{0}{0}, so that \mjeqn{(X,Y)}{} are in the tail of the distribution.
 
 \mjeqn{Pr(X>x, Y>y)}{} is estimated using the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
 

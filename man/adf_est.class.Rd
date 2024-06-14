@@ -14,6 +14,7 @@ adf_est.class(
   constrained,
   tol,
   par_init,
+  interval,
   adf
 )
 }
@@ -25,7 +26,7 @@ An S4 class to represent the estimation of the Angular Dependence Function
 \describe{
 \item{\code{dataexp}}{A matrix containing the data on standard exponential margins.}
 
-\item{\code{w}}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{\code{w}}{Sequence of rays between \code{0} and \code{1}. Default is \code{NULL}, where a pre-defined grid is used.}
 
 \item{\code{method}}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.}
 
@@ -40,6 +41,8 @@ An S4 class to represent the estimation of the Angular Dependence Function
 \item{\code{tol}}{Convergence tolerance for the composite maximum likelihood procedure. Default is \code{0.0001}.}
 
 \item{\code{par_init}}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.}
+
+\item{\code{interval}}{\loadmathjax{} Maximum likelihood estimates \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{} from the conditional extremes model if \code{constrained = TRUE}.}
 
 \item{\code{adf}}{A vector containing the estimates of the angular dependence function.}
 }}

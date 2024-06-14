@@ -40,5 +40,7 @@ rc_exp <- function(margdata, w, p, method, q_minproj, qalphas, k, constrained, t
       y[i] <- y[i - 1]
     }
   }
-  return(cbind(x, y))
+  rc <- cbind(x, y)
+  interval <- lambda@interval
+  return(list("rc" = rc, "alphas" = interval))
 }

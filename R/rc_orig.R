@@ -16,6 +16,7 @@ curve_inverse_transform <- function(curveunif, data, par, thresh, qmarg){
                                                          constrained = "logical",
                                                          tol = "numeric",
                                                          par_init = "numeric",
+                                                         interval = "numeric",
                                                          rc = "array"))
 
 #' An S4 class to represent the estimation of the Return Curve
@@ -30,10 +31,11 @@ curve_inverse_transform <- function(curveunif, data, par, thresh, qmarg){
 #' @slot constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @slot tol Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.
 #' @slot par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.
+#' @slot interval \loadmathjax{} Maximum likelihood estimates \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{} from the conditional extremes model if \code{constrained = TRUE}.
 #' @slot rc A matrix containing the estimates of the Return Curve.
 #' 
 #' @keywords internal
-rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, par_init, rc){
+rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, par_init, interval, rc){
   .rc_est.class(data = data,
                 qmarg = qmarg,
                 w = w,
@@ -45,6 +47,7 @@ rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, 
                 constrained = constrained,
                 tol = tol,
                 par_init = par_init,
+                interval = interval,
                 rc = rc)
 }
 
@@ -85,11 +88,15 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' @param p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
 #' @inheritParams adf_est
 #' 
-#' @return An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} containing a matrix with the estimates of the Return Curve.
+#' @return An object of S4 class \code{rc_est.class}. This object returns the arguments of the function and extra slot \code{rc} 
+#' \item{\code{interval}:}{A vector containing the maximum likelihood estimates from the conditional extremes model, \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{}, if \code{constrained = TRUE}. If \code{constrained = FALSE}, then \code{c(0, 1)} is returned; we note that this has no meaningful interpretation as the estimation is performed in an unconstrained interval.}
+#' \item{\code{rc}:}{A matrix with the estimates of the Return Curve.}
 #' 
 #' @details \loadmathjax{} Given a probability \mjeqn{p}{p} and a joint survival function \mjeqn{Pr(X>x, Y>y)}{}, 
 #' the \mjeqn{p}{p}-probability return curve is defined as 
 #' \mjdeqn{RC(p):=\left\lbrace(x, y) \in R^2: Pr(X>x, Y>y)=p\right\rbrace.}{} 
+#' 
+#' This method focuses on estimation of \mjeqn{RC(p)}{RC(p)} for small \mjeqn{p}{p} near \mjeqn{0}{0}, so that \mjeqn{(X,Y)}{} are in the tail of the distribution.
 #' 
 #' \mjeqn{Pr(X>x, Y>y)}{} is estimated using the angular dependence function \mjeqn{\lambda(\omega)}{} introduced by \insertCite{WadsworthTawn2013;textual}{ReturnCurves}. More details on how to estimate \mjeqn{\lambda(\omega)}{} can be found in \code{\link{adf_est}}.
 #' 
@@ -127,7 +134,7 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' }
 #' 
 #' @export
-rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
+rc_est <- function(margdata, w = NULL, p, method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){
   if(!inherits(margdata, "margtransf.class")){
     stop("The margdata argument needs to be an object of class margtransf.class.")
   }
@@ -142,6 +149,23 @@ rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl
   if(any(qmarg < 0) | any(qmarg > 1)){
     stop("Marginal quantiles need to be in [0, 1].")
   }
+  if(is.null(w)){
+    if(method == "cl"){
+      w <- seq(0, 1, by = 0.01)
+    }
+    else if(method == "hill"){
+      w <- seq(0, 1, by = 0.001)
+    }
+    else{
+      stop("Method to estimate the ADF not implemented.")
+    }
+  }
+  if(any(w < 0) | any(w > 1)){
+    stop("Rays need to be in [0, 1].")
+  }
+  if(!method %in% c("hill", "cl")){
+    stop("ADF needs to be estimated either through the Hill estimator or Composite likelihood estimator.")
+  }
   if(p < 0 | p > 1){
     stop("Probability needs to be in [0, 1].")
   }
@@ -151,10 +175,12 @@ rc_est <- function(margdata, w = seq(0, 1, by = 0.01), p, method = c("hill", "cl
   if(q < max(qmarg) | any(qalphas < max(qmarg))){
     stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
   }
-  result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, rc = array())
-  rc_data <- rc_exp(margdata = margdata, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
+  result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, interval = double(), rc = array())
+  rc_expdata <- rc_exp(margdata = margdata, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
+  rc_data <- rc_expdata$"rc"
   curveunif <- apply(rc_data, 2, pexp)
   data <- data[complete.cases(data), ]
+  result@interval <- rc_expdata$"alphas"
   result@data <- data
   result@rc <- sapply(1:dim(curveunif)[2], function(i) curve_inverse_transform(curveunif[, i], data = data[, i], par = parameters[, i], thresh = thresh[i], qmarg = qmarg[i]))
   return(result)

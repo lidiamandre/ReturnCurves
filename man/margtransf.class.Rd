@@ -16,7 +16,7 @@ An S4 class to represent the Marginal Transformation
 
 \item{\code{qmarg}}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
 
-\item{\code{constrainedshape}}{Logical. If \code{TRUE}, the shape parameter of the Generalised Pareto Distribution (GPD) is strictly above \code{-1}. Default is \code{FALSE}.}
+\item{\code{constrainedshape}}{Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to strictly above \code{-1}.}
 
 \item{\code{parameters}}{A vector containing the scale and shape parameters of the Generalised Pareto Distribution (GPD).}
 
