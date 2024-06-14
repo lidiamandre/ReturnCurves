@@ -122,7 +122,7 @@ adf_gof <- function(adf, ray, blocksize = 1, nboot = 250, alpha = 0.05){
     stop("The adf argument needs to be an object of class adf_est.class.")
   }
   w <- adf@w
-  data <- adf@data
+  data <- adf@dataexp
   lambda <- adf@adf
   q <- adf@q
   if(ray < 0 | ray > 1){

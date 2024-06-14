@@ -16,6 +16,7 @@ rc_est.class(
   constrained,
   tol,
   par_init,
+  interval,
   rc
 )
 }
@@ -44,6 +45,8 @@ An S4 class to represent the estimation of the Return Curve
 \item{\code{tol}}{Convergence tolerance for the composite maximum likelihood procedure. Default set to \code{0.0001}.}
 
 \item{\code{par_init}}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default set to a vector of \code{0} of length \code{k-1}.}
+
+\item{\code{interval}}{\loadmathjax{} Maximum likelihood estimates \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{} from the conditional extremes model if \code{constrained = TRUE}.}
 
 \item{\code{rc}}{A matrix containing the estimates of the Return Curve.}
 }}
