@@ -44,10 +44,6 @@ introduced by @WadsworthTawn2013.
 library(ReturnCurves)
 ```
 
-```{r packneeded, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-library(gridExtra)
-```
-
 To illustrate the functionality of the package, we use ... data *need to
 find better data yet*
 
@@ -206,7 +202,7 @@ $\hat\alpha_{x\mid y}^1$ and $\hat\alpha_{y\mid x}^1,$ as defined below:
   \mathcal{B}_k^1=\left\{(1-\hat\alpha_{x\mid y}^1)\left(1-\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^k+\sum_{i = 1}^{k-1}\beta_i {k \choose i} \left(\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^i\left(1-\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^{k-i}+\right. \\
   \left.\hat\alpha_{y\mid x}^1\left(\frac{v-\hat\alpha_{x\mid y}^1}{\hat\alpha_{y\mid x}^1-\hat\alpha_{x\mid y}^1}\right)^k=:f(v)\mid v\in\left[\hat\alpha_{x\mid y}^1, \hat\alpha_{y\mid x}^1\right],\boldsymbol{\beta}\in[0, \infty)^{k-1} \text{ such that } f(v)\geq\max\{v, 1-v\}\right\}.
 \end{align*}
-$\lambda(\omega)=\lambda(\omega;\boldsymbol{\beta})$ is assumed to be represented by an element of $\mathcal{B}_k^1$ on $\left[\hat\alpha_{x\mid y}^1, \hat\alpha_{y\mid x}^1\right].$
+$\lambda(\omega)=\lambda(\omega;\boldsymbol{\beta})$ is assumed to be represented by an element of $\mathcal{B}_k^1$ on $\left[\hat\alpha_{x\mid y}^1, \hat\alpha_{y\mid x}^1\right].$ Finally, the estimators used for estimation are processed in order to satisfy theoretical conditions on $\lambda$ as identified in @MurphyBarltropetal2024.
 
 Estimation of the ADF can be done using the function `adf_est` which
 takes as inputs:
@@ -223,11 +219,8 @@ takes as inputs:
 Additional arguments can be defined outside of the default values; these
 include marginal quantiles for the min-projection variable $T^1,$
 marginal quantiles to fit the conditional extremes method if
-`constrained=T`, the polynomial degree $k,$ the convergence tolerance
-and the initial values for $\boldsymbol{\beta}$ for the composite
-maximum likelihood procedure. Finally, due to its pointwise nature, a
-finer grid for $\omega$ when estimating the ADF using the Hill estimator
-is recommended.
+`constrained=T`, the polynomial degree $k,$ the initial values for $\boldsymbol{\beta}$ for the composite
+maximum likelihood procedure, and the convergence tolerance; this increases the probability of the function converging to its global maximum rather than getting stuck at a local maximum. 
 
 Function `adf_est` returns an object of S4 class `adf_est.class` with
 ten attributes, where the first nine are the inputs of the function and
@@ -276,8 +269,7 @@ plot(lambdah)
 
 After estimation of the ADF, it is important to assess its
 goodness-of-fit. Noting that
-$T_\omega^1=(T_\omega-u_\omega\mid T_\omega>u_\omega)\sim \text{Exp}(\lambda(\omega)) \Leftrightarrow \lambda(\omega)T_\omega^1\sim \text{Exp}(1)$
-as $u_\omega\to\infty,$ we can investigate whether there is agreement
+$T_\omega^1=(T_\omega-u_\omega\mid T_\omega>u_\omega)\sim \text{Exp}(\lambda(\omega)) \Leftrightarrow \lambda(\omega)T_\omega^1\sim \text{Exp}(1),$ we can investigate whether there is agreement
 between model and empirical exponential quantiles, or not. This is done
 in the `ReturnCurves` package through QQ plots by plotting points
 $\left(F_E^{-1}(i/(n+1),\, T^1_{(i)}\right)$, where $F_E^{-1}$ denotes
@@ -327,23 +319,25 @@ agreement between these quantile, line $y=x$ should mainly lie within
 the $(1-\alpha)\%$ tolerance intervals.
 
 ```{r plotsadfgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.width = 10, fig.height = 3}
+library(gridExtra)
 grid.arrange(plot(gofh[[1]]), plot(gofh[[2]]), plot(gofh[[3]]), ncol = 3)
 ```
 
-# Estimation of the Return Curve
+# Estimation of the return curve
 
 Given a probability $p$ and the joint survivor function
 $\text{Pr}(X>x, Y>y)$ of the bivariate vector $(X,Y),$ the
-$p$-probability return curve is defined as \begin{equation}\label{eq:rc}
+$p$-probability return curve is defined as 
+\begin{equation}\label{eq:rc}
   \text{RC}(p):=\{(x, y) \in \mathbb{R}^2 : \text{Pr}(X>x, Y>y) = p\}.
-\end{equation} The interest lies in values of $p$ close to $0$ as these
-are the ones characterising rare joint exceedances events. In addition,
-given any point $(x,y) \in \text{RC}(p),$ event $\{X >x, Y>y\}$ is
+\end{equation} 
+The interest lies in values of $p$ close to $0$ as these
+are the ones characterising rare joint exceedances events. Given any point $(x,y) \in \text{RC}(p),$ the event $\{X >x, Y>y\}$ is
 expected to happen once each return period $1/p,$ on average. This is
-equivalent to observing $np$ points in the region
+equivalent to having an expected value of $np$ points in the region
 $(x, \infty)\times (y, \infty)$ in a sample size of $n$ from $(X,Y).$
 
-Since probability $p$ is close to $0,$ methods that can accurately
+Since the probability $p$ is close to $0,$ methods that can accurately
 capture the behaviour of the joint tail are necessary in order to
 realistically extrapolate and estimate $\text{RC}(p)$ for values of $p$
 outside of the observation period. @MurphyBarltropetal2023 consider a
@@ -372,9 +366,9 @@ In the `ReturnCurves` package, estimation of the return curve is done
 through function `rc_est` which shares the same inputs as function
 `adf_est` with an additional argument `p` representing the curve
 survival probability. This probability value should be smaller than
-$1-q,$ where $q$ is the marginal quantile for the min-projection
-variable $T^1,$ and, when applicable, smaller than $1-q_\alpha,$ where
-$q_\alpha$ are the marginal quantiles used in the conditional extremes
+$1-q,$ where $q$ is the quantile for the min-projection
+variables $T^1_\omega,$ and, when applicable, smaller than $1-q_\alpha,$ where
+$q_\alpha$ are the quantiles used in the conditional extremes
 method.
 
 Function `rc_est` returns an S4 object of class `rc_est.class` with
@@ -428,7 +422,7 @@ the return curve estimates. For large positive $m\in\mathbb{N},$ let
 \begin{equation}\label{eq:angles}
   \boldsymbol{\Theta}:=\left\{\frac{\pi(m+1-j)}{2(m+1)} \mid 1 \leq j\leq m\right\},
 \end{equation} define a set of angles. For each
-$\theta \in \boldsymbol{\Theta},$ line
+$\theta \in \boldsymbol{\Theta},$ the line
 $L_\theta :=\{(x,y) \in \mathbb{R}^2_+ \mid \tan(\theta)>0\}$ intersects
 the estimated $\hat{\text{RC}}(p)$ exactly once, i.e.,
 $\{(\hat{x}_\theta, \hat{y}_\theta)\}:= \hat{\text{RC}}(p) \cap L_\theta$
@@ -504,6 +498,7 @@ Finally, by setting `which = "all"`, plots the estimated return curve,
 the empirical median and mean estimates and the associated uncertainty.
 
 ```{r plotsrcunc, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.height=6,fig.width=8}
+library(gridExtra)
 grid.arrange(plot(rch_unc, which = "rc"), plot(rch_unc, which = "median"), 
              plot(rch_unc, which = "mean"), plot(rch_unc, which = "all"), nrow = 2)
 ```
@@ -564,8 +559,8 @@ It is possible to plot an instance of the S4 class `rc_gof.class` with
 function `plot`, where a comparison between the true probability $p$ (in
 red) and the empirical median estimates (in black) is shown. Ideally,
 $p$ should be contained in the confidence region, shaded in grey.
-Finally, in practice, value $p$ should not be within the range of the
-data and not too extreme given the nature of empirical probabilities.
+Finally, in practice, the value of $p$ should be within the range of the
+data and not too extreme, given the nature of empirical probabilities.
 
 ```{r plotsrcgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center'}
 plot(rch_gof)

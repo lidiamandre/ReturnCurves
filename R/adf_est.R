@@ -86,7 +86,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{7}.
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
-#' @param tol Convergence tolerance for the composite maximum likelihood procedure. Default is \code{0.0001}.
+#' @param tol Convergence tolerance for the composite maximum likelihood procedure. This argument ensures convergence to the global maximum rather than getting stuck at a local maximum. Default is \code{0.0001}.
 #' @param par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.
 #' 
 #' @return \loadmathjax{} An object of S4 class \code{adf_est.class}. This object returns the arguments of the function and two extra slots: 
