@@ -172,7 +172,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
-#' unc <- rc_unc(rc_orig, nboot = 100) 
+#' unc <- rc_unc(rc_orig, nboot = 50) 
 #' 
 #' # Plots the estimated Return Curve 
 #' plot(unc, which = "rc") 

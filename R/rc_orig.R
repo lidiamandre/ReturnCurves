@@ -131,6 +131,10 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' # To access the return curve estimation
 #' retcurve@@rc
+#' 
+#' # If constrained = T, the MLE estimates for the conditional extremes model
+#' # can be accessed as
+#' retcurve@@interval
 #' }
 #' 
 #' @export

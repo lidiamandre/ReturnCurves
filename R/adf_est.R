@@ -16,7 +16,7 @@
 #' @slot dataexp A matrix containing the data on standard exponential margins.
 #' @slot w Sequence of rays between \code{0} and \code{1}. Default is \code{NULL}, where a pre-defined grid is used.
 #' @slot method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
-#' @slot q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
+#' @slot q \loadmathjax{} Marginal quantile used to define the threshold \mjeqn{u_\omega}{} of the min-projection variable \mjeqn{T^1}{} at ray \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
 #' @slot qalphas A vector containing the marginal quantiles used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.
 #' @slot k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{7}.
 #' @slot constrained Logical. If \code{FALSE} (Default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
@@ -82,7 +82,7 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @param margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
 #' @param w Sequence of rays between \code{0} and \code{1}. Default is \code{NULL}, where a pre-defined grid is used.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
-#' @param q \loadmathjax{} Marginal quantile used to define the threshold \mjeqn{u_\omega}{} of the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
+#' @param q \loadmathjax{} Marginal quantile used to define the threshold \mjeqn{u_\omega}{} of the min-projection variable \mjeqn{T^1}{} at ray \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
 #' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{7}.
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
@@ -126,6 +126,10 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' 
 #' # To access the estimates of the ADF
 #' lambda@@adf
+#' 
+#' # If constrained = T, the MLE estimates for the conditional extremes model
+#' # can be accessed as
+#' lambda@@interval
 #' }
 #'
 #' @export

@@ -12,7 +12,7 @@ margtransf(data, qmarg = rep(0.95, 2), constrainedshape = TRUE)
 
 \item{qmarg}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
 
-\item{constrainedshape}{Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to strictly above \code{-1}.}
+\item{constrainedshape}{Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to lie strictly above \code{-1}.}
 }
 \value{
 An object of S4 class \code{margtransf.class}. This object returns the arguments of the function, a slot \code{parameters} containing a matrix with the shape and scale parameters of the Generalised Pareto Distribution (GPD) for each variable, a slot \code{thresh} containing a vector with the threshold \mjeqn{u}{u} above which the GPD is fitted, and a slot \code{dataexp} containing a matrix with the data on standard exponential margins. 
@@ -24,7 +24,7 @@ The \code{plot} function takes an object of S4 class \code{margtransf.class}, an
 \item{\code{"all"}}{Plots all the above mentioned plots (default).}
 }
 \description{
-Marginal transformation of a  bivariate random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. VAriables within each margin are assumed identically distributed.
+Marginal transformation of a  bivariate random vector to standard exponential margins following \insertCite{ColesTawn1991;textual}{ReturnCurves}. Variables within each margin are assumed identically distributed.
 }
 \details{
 \loadmathjax{} Given a threshold value \mjeqn{u}{u}, each stationary random vector 

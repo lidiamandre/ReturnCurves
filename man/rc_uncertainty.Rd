@@ -63,7 +63,7 @@ margdata <- margtransf(data)
 
 rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 
-unc <- rc_unc(rc_orig, nboot = 100) 
+unc <- rc_unc(rc_orig, nboot = 50) 
 
 # Plots the estimated Return Curve 
 plot(unc, which = "rc") 
