@@ -35,7 +35,7 @@ rc_est(
 
 \item{constrained}{Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
-\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. This argument ensures convergence to the global maximum rather than getting stuck at a local maximum. Default is \code{0.0001}.}
+\item{tol}{Convergence tolerance for the composite maximum likelihood procedure. Success is declared when the difference of (log)-likelihood values between iterations does not exceed this value. Default is \code{0.0001}.}
 
 \item{par_init}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.}
 }

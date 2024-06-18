@@ -38,7 +38,7 @@ An S4 class to represent the estimation of the Angular Dependence Function
 
 \item{\code{constrained}}{Logical. If \code{FALSE} (Default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation.}
 
-\item{\code{tol}}{Convergence tolerance for the composite maximum likelihood procedure. Default is \code{0.0001}.}
+\item{\code{tol}}{Convergence tolerance for the composite maximum likelihood procedure. Success is declared when the difference of (log)-likelihood values between iterations does not exceed this value. Default is \code{0.0001}.}
 
 \item{\code{par_init}}{\loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.}
 

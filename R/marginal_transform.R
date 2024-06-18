@@ -4,22 +4,25 @@ gpdtransform <- function(data, thresh, par, qmarg) 1 - (1 - qmarg)*pgpd(data, lo
 gpdlikelihood <- function(data, par){
   sigma <- par[1]
   xi <- par[2]
-  gpdpdf <- function(data, sigma, xi){
+  gpdpdf <- function(x, sigma, xi){
     if(abs(xi) < 1e-10){
-      dens <- (1/sigma) * exp(-data/sigma)
+      dens <- (1/sigma) * exp(-x/sigma)
       return(dens)
     }
     else{
-      dens <- (1/sigma) * (1 + (xi/sigma) * data)
+      dens <- (1/sigma) * ((1 + (xi/sigma) * x)^(-1/xi - 1))
       return(dens)
     }
   }
   if(sigma <= 0 | xi <= -1){
     return(1000e10)
   }
-  else{
-    logdens <- gpdpdf(data = data, sigma = sigma, xi = xi)
+  else if(all(1 + (xi/sigma) * data > 0)){
+    logdens <- log(gpdpdf(x = data, sigma = sigma, xi = xi))
     return(-sum(logdens))
+  }
+  else{
+    return(1000e10)
   }
 }
 
