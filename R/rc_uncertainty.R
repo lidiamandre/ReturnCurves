@@ -140,7 +140,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}, 
 #' and let \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace}{} denote the line segment intersecting the origin with gradient \mjeqn{\tan(\theta) > 0.}{}
-#' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{\hat{RC}(p)}{} exactly once, i.e., \mjeqn{\lbrace(\hat{x}_\theta, \hat{y}_\theta)\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
+#' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{\hat{RC}(p)}{} exactly once, i.e. \mjeqn{\lbrace(\hat{x}_\theta, \hat{y}_\theta)\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
 #' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=(\hat{x}^2_\theta + \hat{y}^2_\theta)^{1/2}}{} via a (block) bootstrap procedure. 
 #' 
 #' This procedure is as follows; for \mjeqn{k = 1, \ldots, }{} \code{nboot}:
@@ -238,10 +238,14 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
                                         warning = function(war){
                                           if(war$message == "MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point." | war$message == "MLE for the constrained shape parameter of the GPD is close to -1. \n Unconstrained MLE is likely to be < -1."){
                                             bootwarnmarg <<- c(bootwarnmarg, i)
-                                            }
-                                          invokeRestart("muffleWarning")},
-                                        error = function(e) stop("Optimisation issues due infinite values. Try setting constrainedshape = TRUE when transforming the data to exponential."))
-    rc_orig <- rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
+                                          }
+                                          invokeRestart("muffleWarning")})
+    rc_data <- tryCatch(rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol),
+                        error = function(e){
+                          message("Optimisation issues due to infinite values. \n Try setting constrainedshape = TRUE when transforming the data to exponential.")
+                          stop(invisible(e))
+                        })
+    rc_orig <- rc_data@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
     for(j in 1:nangles){

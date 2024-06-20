@@ -81,12 +81,12 @@ $\xi> -1$ if set to `TRUE` (Default), or $\xi \in \mathbb{R}$ if set to
 `FALSE`.
 
 Function `margtransf` returns an object of S4 class `margtrasnf.class`
-with six attributes:
+with 6 attributes:
 
 -   `data`: matrix with the data on the original margins
 -   `qmarg`: vector of marginal quantiles used to fit the GPD
--   `constrainedshape`: whether $\xi>-1$ or $\xi\in\mathbb{R}$
--   `parameters`: matrix containing parameters $(\sigma, \xi)$
+-   `constrainedshape`: whether $\xi>-1$ (`TRUE`) or $\xi\in\mathbb{R}$ (`FALSE`)
+-   `parameters`: matrix containing estimates of parameters $(\hat \sigma, \hat\xi)$
 -   `thresh`: vector containing threshold $u$ above which the GPD is
     fitted
 -   `dataexp`: matrix with the data on standard exponential margins
@@ -118,7 +118,7 @@ plot(expdata, which = "ts")
 ```
 
 The joint distribution on original and standard exponential margins can
-be access with `which = "joint"`:
+be accessed with `which = "joint"`:
 
 ```{r plotsmargjoint, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.height = 2.5}
 plot(expdata, which = "joint")
@@ -134,10 +134,7 @@ plot(expdata, which = "all") # or just plot(expdata)
 # Estimation of the angular dependence function
 
 In bivariate extremes, interest may lie in studying regions where both
-variables are extreme or where only one is extreme. A few methods, such
-as the one introduced by @WadsworthTawn2013, aim at characterising the
-joint tail behaviour in both scenarios, are available in the literature.
-Given standard exponentially distributed variables $X_E$ and $Y_E$ and a
+variables are extreme or where only one is extreme. For this, methods that aim at characterising the joint tail behaviour in both scenarios, such as the one introduced by @WadsworthTawn2013, are required. Given standard exponentially distributed variables $X_E$ and $Y_E$ and a
 slowly varying function $\mathcal{L}(\cdot; \omega)$ at infinity, the
 joint tail behaviour of $(X_E,Y_E)$ is captured through
 $\lambda(\omega)$ via the assumption \begin{equation*}
@@ -146,8 +143,7 @@ $\lambda(\omega)$ via the assumption \begin{equation*}
   \text{Pr}\left(\min\left\{\frac{X_E}{\omega}, \, \frac{Y_E}{1-\omega}\right\}\right) = \mathcal{L}(e^u; \omega)e^{-\lambda(\omega)u} \quad \text{as } u \to \infty,
 \end{equation} where $\omega\in[0,1]$ and
 $\lambda(\omega)\geq \max\{\omega, 1-\omega\}$ is called the angular
-dependence function (ADF). In the case of asymptotic dependence (see,
-e.g., @Colesetal1999), $\lambda(\omega)=\max\{\omega, 1-\omega\},$ for
+dependence function (ADF). In the case of asymptotic dependence (see for instance, @Colesetal1999), $\lambda(\omega)=\max\{\omega, 1-\omega\},$ for
 all $\omega\in[0,1].$
 
 Lastly, defining a min-projection variable at $\omega,$
@@ -227,9 +223,9 @@ takes as inputs:
     $\alpha_{x\mid y}$ in the estimation.
 
 Additional arguments can be defined outside of the default values; these
-include marginal quantiles for the min-projection variable $T^1,$
+include marginal quantiles for the min-projection variable $T^1$ at ray $\omega,$
 marginal quantiles to fit the conditional extremes method if
-`constrained=TRUE`, the polynomial degree $k$ and the initial values for
+`constrained=TRUE`, and, if `method= "cl"`, the polynomial degree $k,$ the initial values for
 $\boldsymbol{\beta}$ for the composite maximum likelihood procedure, and
 the convergence tolerance. Convergence is declared when the difference of 
 log-likelihood values between iterations does not exceed the value of `tol`. 
@@ -237,8 +233,8 @@ This repeated optimisation helps to avoid convergence to local maxima, although
 does not guarantee finding the global maximum.
 
 Function `adf_est` returns an object of S4 class `adf_est.class` with
-eleven attributes, where the first nine are the inputs of the function and
-the lasts two are two vectors:
+11 attributes, where the first 9 are the inputs of the function and
+the last 2 are vectors:
 
 - `interval`: contains the maximum likelihood estimates from the conditional extremes model $\hat\alpha^1_{x\mid y}$ and $\hat\alpha^1_{y\mid x}$ if `constrained  = TRUE`. Otherwise, it returns the values $0$ and $1;$ this has no meaningful interpretation as the estimation is performed in an unconstrained interval.
 - `adf`: contains the estimates of $\lambda(\omega).$
@@ -276,7 +272,7 @@ It is possible to plot an S4 object of `adf_est.class` with `plot`,
 where a comparison of the estimated ADF and its lower bound,
 $\max\{\omega, 1-\omega\},$ is shown.
 
-```{r plotsadfest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 4.5, fig.height = 2.5, fig.align = 'center'}
+```{r plotsadfest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 4, fig.height = 2.5, fig.align = 'center'}
 # plot of the ADF estimation based on the unconstrained Hill estimator
 plot(lambdah)
 ```
@@ -290,16 +286,15 @@ we can investigate whether there is agreement between model and
 empirical exponential quantiles, or not. This is done in the
 `ReturnCurves` package through QQ plots by plotting points
 $\left(F_E^{-1}(i/(n+1),\, T^1_{(i)}\right)$, where $F_E^{-1}$ denotes
-the inverse of the cumulative distribution of a standard exponential
+the inverse of the cumulative distribution function of a standard exponential
 distribution and $T_{(i)}^{-1}$ is the $i$-th ordered increasing
 statistic, $i=1, \ldots, n$. The uncertainty of the empirical quantiles
 is quantified using a bootstrap approach. If temporal dependence is
-present in the data, a block bootstrap approach should be used
-(`blocksize` $>1$).
+present in the data, a block bootstrap approach should be used, i.e. `blocksize` $>1.$
 
 The assessment of the goodness-of-fit of $\lambda(\omega)$ can be done
 using the function `adf_gof` which takes an S4 object of class
-`adf_est.class`, ray $\omega$ to be considered, the size of the blocks
+`adf_est.class`, a ray $\omega$ to be considered, the size of the blocks
 for the bootstrap procedure and the corresponding number of samples, and
 the significance level $\alpha$ for the tolerance intervals as inputs.
 In turn, it returns an S4 object of class `adf_gof.class` with an extra
@@ -330,7 +325,7 @@ head(gofh[[1]]@gof$upper)
 ```
 
 As before, it is possible to plot an S4 object of `adf_gof.class` with
-`plot`, where the QQ-plot with the model and empirical quantiles are
+`plot`, where the QQ-plot with the model and empirical quantiles is
 shown. The points should lie close to the line $y=x;$ for a good fit and
 agreement between these quantiles, the line $y=x$ should mainly lie within
 the $(1-\alpha)\%$ tolerance intervals.
@@ -369,7 +364,7 @@ transform them onto the original margins. Estimates of $\text{RC}(p)$
 are obtained through estimates of $t$ and $u$ from equation
 \eqref{eq:minproj}, and rays $\omega.$ In particular, the value of $t>0$
 can be obtained by first estimating $u$ as the $(1-p^*)$-th quantile of
-$T_\omega$ where $p^*>p$ is a small probability, and then ensuring that
+$T_\omega,$ where $p^*>p,$ is a small probability, and then ensuring that
 $\text{Pr}(T_\omega > t + u)=p.$ Since $u$ is estimated as the
 $(1-p^*)$-th quantile of $T_\omega,$ we have that
 $\text{Pr}(T_\omega > u) = p^*;$ thus, \begin{equation*}
@@ -387,10 +382,10 @@ $T^1_\omega,$ and, when applicable, smaller than $1-q_\alpha,$ where
 $q_\alpha$ are the quantiles used in the conditional extremes method.
 
 Function `rc_est` returns an S4 object of class `rc_est.class` with
-thirteen attributes, with a list and a matrix in the last two slots:
+14 attributes, with a list and a matrix in the last 2 slots:
 
 - `interval`: vector with the maximum likelihood estimates from the conditional extremes model $\hat\alpha^1_{x\mid y}$ and $\hat\alpha^1_{y\mid x}$ if `constrained  = TRUE`. Otherwise, it returns the values $0$ and $1;$ this has no meaningful interpretation as the estimation is performed in an unconstrained interval.
-- `rc``:  matrix with the estimates of the return curve on the original margins.
+- `rc`:  matrix with the estimates of the return curve on the original margins.
 
 ```{r rcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 n <- dim(data)[1] 
@@ -441,14 +436,12 @@ the return curve estimates. For large positive $m\in\mathbb{N},$ let
 \end{equation} define a set of angles. For each
 $\theta \in \boldsymbol{\Theta},$ the line
 $L_\theta :=\{(x,y) \in \mathbb{R}^2_+ \mid \tan(\theta)>0\}$ intersects
-the estimated $\hat{\text{RC}}(p)$ exactly once, i.e.,
+the estimated $\hat{\text{RC}}(p)$ exactly once, i.e.
 $\{(\hat{x}_\theta, \hat{y}_\theta)\}:= \hat{\text{RC}}(p) \cap L_\theta$
 where $(\hat{x}_\theta, \hat{y}_\theta) \in \hat{\text{RC}}(p).$
 Moreover, let
 $\hat{d}_\theta := \left(\hat{x}_\theta^2 + \hat{y}_\theta^2\right)^{1/2}$
-denote the $L_2$-norm of the point estimate.
-
-Uncertainty in the return curve estimates is quantified using the
+denote the $L_2$-norm of the point estimate. Uncertainty in the return curve estimates is quantified using the
 distribution of $\hat{d}_\theta$ at each angle
 $\theta \in \boldsymbol{\Theta}$ as follows: for $k = 1, \ldots,$
 `nboot`:
@@ -468,14 +461,14 @@ which takes as inputs:
 -   `retcurve`: an S4 object of class `rc_est.class` containing the
     return curve estimates,
 -   `blocksize`: size of blocks for the block bootstrap procedure; if no
-    temporal dependence is present, then set `blocksize = 1`,
+    temporal dependence is present, then set `blocksize = 1` (default),
 -   `nboot`: number of bootstrap samples to be taken,
 -   `nangles`: number of angles $m$,
 -   `alpha`: significance level to compute the $(1-\alpha)\%$ confidence
     intervals.
 
-Function `rc_unc` returns an S4 object of class `rc_unc.class` with six
-attributes, where the last slot `unc` contains a list with
+Function `rc_unc` returns an S4 object of class `rc_unc.class` with 6
+attributes, where the last slot `unc` contains a list with:
 
 -   `median`: a vector containing the empirical estimates of the median
     return curve
@@ -491,7 +484,7 @@ the unconstrained Hill estimator is computed here.
 
 ```{r rcunc, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # blocksize, nangles and alpha set to default
-# nboot set to 50 for computational time < 5s
+# nboot set to 50 for simplicity
 rch_unc <- rc_unc(rch, blocksize = 1, nboot = 50, nangles = 150, alpha = 0.05)
 
 # attributes of the S4 object
@@ -543,14 +536,14 @@ temporal dependence is present in the data, a block bootstrap approach
 should be taken and the size of the blocks must be defined. We note that
 for each $j,$ `nboot` empirical probabilities are estimated and, so the
 median and the $(1-\alpha)\%$ pointwise confidence intervals for the
-probabilities are obtained by taking the $50\%,$ $(\alpha/2)\%$ and
+probabilities can be obtained by taking the $50\%,$ $(\alpha/2)\%$ and
 $(1-\alpha/2)\%$ quantiles of the set of empirical probabilities for
 each $j,$ respectively.
 
 The goodness-of-fit for an estimated return curve is implemented through
 function `rc_gof`. This shares the same input arguments as the `rc_unc`
-function and returns an S4 object with six attributes with the last slot
-`gof` containing a list with
+function and returns an S4 object with 5 attributes with the last slot
+`gof` containing a list with:
 
 -   `median`: a vector with the median of the empirical probabilities,
 -   `lower`: a vector with the lower bound of the confidence interval,
