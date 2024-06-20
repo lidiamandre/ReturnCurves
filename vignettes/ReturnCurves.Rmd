@@ -232,12 +232,9 @@ marginal quantiles to fit the conditional extremes method if
 `constrained=TRUE`, the polynomial degree $k$ and the initial values for
 $\boldsymbol{\beta}$ for the composite maximum likelihood procedure, and
 the convergence tolerance. Convergence is declared when the difference of 
-(log)-likelihood values between iterations does not exceed the value of `tol`,
-increasing the probability of converging towards the global maximum.
-
-<!-- the latter increases the probability of the -->
-<!-- function converging to its global maximum rather than getting stuck at a -->
-<!-- local maximum. -->
+log-likelihood values between iterations does not exceed the value of `tol`. 
+This repeated optimisation helps to avoid convergence to local maxima, although 
+does not guarantee finding the global maximum.
 
 Function `adf_est` returns an object of S4 class `adf_est.class` with
 eleven attributes, where the first nine are the inputs of the function and

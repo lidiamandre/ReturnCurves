@@ -212,6 +212,7 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   if(alpha > 0.5){
     warning("This will lead to a confidence interval smaller than 50%. Perhaps you mean 1-alpha.")
   }
+  constrainedshape = retcurve@constrainedshape
   result <- rc_unc.class(retcurve = retcurve, blocksize = blocksize, nboot = nboot, nangles = nangles, 
                          alpha = alpha, unc = list())
   rc_origin <- result@retcurve@rc
@@ -233,12 +234,13 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   bootwarnmarg <- integer()
   for(i in 1:nboot){
     bootdata <- block_bootstrap_function(data = data, k = blocksize, n = n)
-    margdataboot <- withCallingHandlers(margtransf(data = bootdata, qmarg = qmarg, constrainedshape = T),
+    margdataboot <- withCallingHandlers(margtransf(data = bootdata, qmarg = qmarg, constrainedshape = constrainedshape),
                                         warning = function(war){
-                                          if(war$message == "MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point."){
+                                          if(war$message == "MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point." | war$message == "MLE for the constrained shape parameter of the GPD is close to -1. \n Unconstrained MLE is likely to be < -1."){
                                             bootwarnmarg <<- c(bootwarnmarg, i)
                                             }
-                                          invokeRestart("muffleWarning")})
+                                          invokeRestart("muffleWarning")},
+                                        error = function(e) stop("Optimisation issues due infinite values. Try setting constrainedshape = TRUE when transforming the data to exponential."))
     rc_orig <- rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol)@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
     curve_w <- atan((rc_orig[, 2] - data0[2])/(rc_orig[, 1] - data0[1]))
@@ -253,7 +255,7 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
     }
   }
   if(length(bootwarnmarg) > 0){
-    warning(sprintf("In iterations %s of the bootstrap procedure: estimated GPD shape parameter < -1. \n Fitted endpoint is the maximum data point.",
+    warning(sprintf("In iterations %s of the bootstrap procedure: estimated GPD shape parameter is close to or smaller than -1. \n Fitted endpoint is likely to be the maximum data point.",
                     paste(bootwarnmarg, collapse = ", ")))
   }
   lb <- sapply(1:nangles, function(i) quantile(norms[[i]], alpha/2))

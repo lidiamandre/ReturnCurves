@@ -7,6 +7,7 @@
 rc_est.class(
   data,
   qmarg,
+  constrainedshape,
   w,
   p,
   method,
@@ -28,7 +29,11 @@ An S4 class to represent the estimation of the Return Curve
 \describe{
 \item{\code{data}}{A matrix containing the data on the original margins.}
 
-\item{\code{w}}{Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
+\item{\code{qmarg}}{A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.}
+
+\item{\code{constrainedshape}}{Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to strictly above \code{-1}.}
+
+\item{\code{w}}{Sequence of rays between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.}
 
 \item{\code{method}}{String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.}
 

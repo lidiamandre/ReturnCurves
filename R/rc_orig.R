@@ -7,6 +7,7 @@ curve_inverse_transform <- function(curveunif, data, par, thresh, qmarg){
 
 .rc_est.class <- setClass("rc_est.class", representation(data = "array",
                                                          qmarg = "numeric",
+                                                         constrainedshape = "logical",
                                                          w = "numeric",
                                                          p = "numeric",
                                                          method = "character",
@@ -22,7 +23,9 @@ curve_inverse_transform <- function(curveunif, data, par, thresh, qmarg){
 #' An S4 class to represent the estimation of the Return Curve
 #'
 #' @slot data A matrix containing the data on the original margins.
-#' @slot w Sequence of angles between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
+#' @slot qmarg A vector containing the marginal quantile used to fit the Generalised Pareto Distribution (GPD) for each variable. Default is \code{rep(0.95, 2)}.
+#' @slot constrainedshape Logical. If \code{TRUE} (Default), the estimated shape parameter of the Generalised Pareto Distribution (GPD) is constrained to strictly above \code{-1}.
+#' @slot w Sequence of rays between \code{0} and \code{1}. Default is \code{seq(0, 1, by = 0.01)}.
 #' @slot method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
 #' @slot p \loadmathjax{} Curve survival probability. Must be \mjeqn{p < 1-q}{p < 1-q} and \mjeqn{p < 1-q_\alpha}{p < 1-qalphas}.
 #' @slot q \loadmathjax{} Marginal quantile used for the min-projection variable \mjeqn{T^1}{} at angle \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
@@ -35,9 +38,10 @@ curve_inverse_transform <- function(curveunif, data, par, thresh, qmarg){
 #' @slot rc A matrix containing the estimates of the Return Curve.
 #' 
 #' @keywords internal
-rc_est.class <- function(data, qmarg, w, p, method, q, qalphas, k, constrained, tol, par_init, interval, rc){
+rc_est.class <- function(data, qmarg, constrainedshape, w, p, method, q, qalphas, k, constrained, tol, par_init, interval, rc){
   .rc_est.class(data = data,
                 qmarg = qmarg,
+                constrainedshape = constrainedshape,
                 w = w,
                 p = p,
                 method = method,
@@ -144,6 +148,7 @@ rc_est <- function(margdata, w = NULL, p, method = c("hill", "cl"), q = 0.95, qa
   }
   data <- margdata@data
   qmarg <- margdata@qmarg
+  constrainedshape <- margdata@constrainedshape
   parameters <- margdata@parameters
   thresh <- margdata@thresh
   dataexp <- margdata@dataexp
@@ -179,7 +184,7 @@ rc_est <- function(margdata, w = NULL, p, method = c("hill", "cl"), q = 0.95, qa
   if(q < max(qmarg) | any(qalphas < max(qmarg))){
     stop("Marginal quantiles need to be higher than the highest marginal quantile used for the marginal transformation.")
   }
-  result <- rc_est.class(data = data, qmarg = qmarg, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, interval = double(), rc = array())
+  result <- rc_est.class(data = data, qmarg = qmarg, constrainedshape = constrainedshape, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init, interval = double(), rc = array())
   rc_expdata <- rc_exp(margdata = margdata, w = w, p = p, method = method, q_minproj = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init)
   rc_data <- rc_expdata$"rc"
   curveunif <- apply(rc_data, 2, pexp)
