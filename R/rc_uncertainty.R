@@ -61,10 +61,10 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
   if("rc" %in% which){
     rc <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
-      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
-      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dotted") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dotted") +
       scale_color_manual(values = colours, 
-                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "dashed"),
+                         guide = guide_legend(override.aes = list(linetype = c("solid", "dotted", "dotted"),
                                                                   linewidth = c(1, 0.5, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
@@ -73,10 +73,10 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
   else if("median" %in% which){
     median <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
-      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
-      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dotted") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dotted") +
       scale_color_manual(values = colours, 
-                         guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "dashed"),
+                         guide = guide_legend(override.aes = list(linetype = c("dotted", "solid", "dotted"),
                                                                   linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
@@ -85,10 +85,10 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
   else if("mean" %in% which){
     mean <- ggplot(data = df, aes(x = X, y = Y)) + geom_point(na.rm = T, col = "grey80") +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
-      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
-      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dotted") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dotted") +
       scale_color_manual(values = colours, 
-                         guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "dashed"),
+                         guide = guide_legend(override.aes = list(linetype = c("dotted", "solid", "dotted"),
                                                                   linewidth = c(0.5, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
@@ -99,11 +99,11 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
       geom_line(data = rcdf, aes(x = rcX, y = rcY, col = names(colours)[1]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = meanX, y = meanY, col = names(colours)[3]), linewidth = 1) +
       geom_line(data = uncdf, aes(x = medianX, y = medianY, col = names(colours)[2]), linewidth = 1) +
-      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dashed") +
-      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dashed") +
+      geom_line(data = uncdf, aes(x = lowerX, y = lowerY, col = names(colours)[4]), linetype = "dotted") +
+      geom_line(data = uncdf, aes(x = upperX, y = upperY, col = names(colours)[5]), linetype = "dotted") +
       scale_color_manual(values = colours,
-                         guide = guide_legend(override.aes = list(linetype = c("solid", "dashed", "solid",
-                                                                               "solid", "dashed"),
+                         guide = guide_legend(override.aes = list(linetype = c("solid", "dotted", "solid",
+                                                                               "solid", "dotted"),
                                                                   linewidth = c(1, 0.5, 1, 1, 0.5)))) +
       theme_minimal() + theme(legend.title = element_blank()) +
       ggtitle(expression("Uncertainty of" ~ hat(RC)(p)))
