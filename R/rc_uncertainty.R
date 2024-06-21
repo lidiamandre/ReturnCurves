@@ -172,7 +172,9 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
-#' unc <- rc_unc(rc_orig, nboot = 50) 
+#' \dontrun{
+#' # Set nboot = 50 for an illustrative example
+#' unc <- rc_unc(rc_orig) 
 #' 
 #' # Plots the estimated Return Curve 
 #' plot(unc, which = "rc") 
@@ -186,7 +188,6 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' # Plots the estimated Return Curve and its the median and mean estimates
 #' plot(unc, which = "all") 
 #' 
-#' \dontrun{
 #' # To see the the S4 object's slots
 #' str(unc)
 #' 
