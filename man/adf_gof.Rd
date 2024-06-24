@@ -10,13 +10,13 @@ adf_gof(adf, ray, blocksize = 1, nboot = 250, alpha = 0.05)
 \arguments{
 \item{adf}{An S4 object of class \code{adf_est.class}. See \code{\link{adf_est}} for more details.}
 
-\item{ray}{\loadmathjax{} Ray \mjeqn{\omega}{} to be considered on the goodness of fit assessment.}
+\item{ray}{Ray \mjeqn{\omega}{} to be considered on the goodness of fit assessment.}
 
 \item{blocksize}{Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.}
 
 \item{nboot}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{alpha}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% tolerance intervals. Default is \code{0.05}.}
+\item{alpha}{Significance level to compute the \mjeqn{(1-\alpha)}{}\% tolerance intervals. Default is \code{0.05}.}
 }
 \value{
 An object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
@@ -30,7 +30,7 @@ An object of S4 class \code{adf_gof.class}. This object returns the arguments of
 Assessment of the goodness of fit of the angular dependence function estimates \mjeqn{\lambda(\omega)}{} following the procedure of \insertCite{MurphyBarltropetal2024;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
+Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
 variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
 
 Let \mjeqn{F^{-1}_E}{} denote the inverse of the cumulative distribution function of a standard exponential variable and \mjeqn{T^1_{(i)}}{} denote the \mjeqn{i}{i}-th ordered increasing statistic, \mjeqn{i = 1, \ldots, n}{}. 
@@ -42,7 +42,7 @@ In addition, line \mjeqn{y = x}{} should mainly lie within the \mjeqn{(1-\alpha)
 We note that, if the grid for \mjeqn{\omega}{} used to estimate the Angular Dependence Function (ADF) does not contain \code{ray}, then the closest \mjeqn{\omega}{w} in the grid is used to assess the goodness-of-fit of the ADF.
 }
 \note{
-\loadmathjax{} It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for a few values of \mjeqn{\omega}{w}.
+It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for a few values of \mjeqn{\omega}{w}.
 }
 \examples{
 library(ReturnCurves)

@@ -20,7 +20,7 @@ An S4 class to represent the Goodness-of-Fit of the Angular Dependence Function 
 
 \item{\code{nboot}}{Number of bootstrap samples to be taken. Default is \code{250} samples.}
 
-\item{\code{alpha}}{\loadmathjax{}Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
+\item{\code{alpha}}{Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 
 \item{\code{gof}}{A list containing the model and empirical exponential quantiles, and the lower and upper bound of the confidence interval.}
 }}

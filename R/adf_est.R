@@ -21,8 +21,8 @@
 #' @slot k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{7}.
 #' @slot constrained Logical. If \code{FALSE} (Default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @slot tol Convergence tolerance for the composite maximum likelihood procedure. Success is declared when the difference of log-likelihood values between iterations does not exceed this value. Default is \code{0.0001}.
-#' @slot par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.
-#' @slot interval \loadmathjax{} Maximum likelihood estimates \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{} from the conditional extremes model if \code{constrained = TRUE}.
+#' @slot par_init Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.
+#' @slot interval Maximum likelihood estimates \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{} from the conditional extremes model if \code{constrained = TRUE}.
 #' @slot adf A vector containing the estimates of the angular dependence function.
 #' 
 #' @references \insertAllCited{}
@@ -50,7 +50,7 @@ adf_est.class <- function(dataexp, w, method, q, qalphas, k, constrained, tol, p
 #'
 #' @param x An instance of an S4 class produced by \code{\link{adf_est}}.
 #' 
-#' @return \loadmathjax{} A ggplot object showing a comparison between the Angular Dependence Function (ADF) estimates and the lower bound max\mjeqn{\lbrace \omega, 1-\omega\rbrace}{}.
+#' @return A ggplot object showing a comparison between the Angular Dependence Function (ADF) estimates and the lower bound max\mjeqn{\lbrace \omega, 1-\omega\rbrace}{}.
 #'
 #' @rdname plotadfest
 #'
@@ -82,18 +82,18 @@ setMethod("plot", signature = list("adf_est.class"), function(x){
 #' @param margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
 #' @param w Sequence of rays between \code{0} and \code{1}. Default is \code{NULL}, where a pre-defined grid is used.
 #' @param method String that indicates which method is used for the estimation of the angular dependence function. Must either be \code{"hill"}, to use the Hill estimator \insertCite{Hill1975}{ReturnCurves}, or \code{"cl"} to use the smooth estimator based on Bernstein-Bezier polynomials estimated by composite maximum likelihood.
-#' @param q \loadmathjax{} Marginal quantile used to define the threshold \mjeqn{u_\omega}{} of the min-projection variable \mjeqn{T^1}{} at ray \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
+#' @param q Marginal quantile used to define the threshold \mjeqn{u_\omega}{} of the min-projection variable \mjeqn{T^1}{} at ray \mjeqn{\omega}{} \mjeqn{\left(t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega\right)}{}, and/or Hill estimator \insertCite{Hill1975}{ReturnCurves}. Default is \code{0.95}.
 #' @param qalphas A vector containing the marginal quantile used for the Heffernan and Tawn conditional extremes model \insertCite{HeffernanTawn2004}{ReturnCurves} for each variable, if \code{constrained = TRUE}. Default is \code{rep(0.95, 2)}.
 #' @param k Polynomial degree for the Bernstein-Bezier polynomials used for the estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{7}.
 #' @param constrained Logical. If \code{FALSE} (default) no knowledge of the conditional extremes parameters is incorporated in the angular dependence function estimation. 
 #' @param tol Convergence tolerance for the composite maximum likelihood procedure. Success is declared when the difference of log-likelihood values between iterations does not exceed this value. Default is \code{0.0001}.
-#' @param par_init \loadmathjax{} Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.
+#' @param par_init Initial values for the parameters \mjeqn{\beta}{} of the Bernstein-Bezier polynomials used for estimation of the angular dependence function with the composite likelihood method \insertCite{MurphyBarltropetal2024}{ReturnCurves}. Default is \code{rep(0, k-1)}.
 #' 
-#' @return \loadmathjax{} An object of S4 class \code{adf_est.class}. This object returns the arguments of the function and two extra slots: 
+#' @return An object of S4 class \code{adf_est.class}. This object returns the arguments of the function and two extra slots: 
 #' \item{\code{interval}:}{A vector containing the maximum likelihood estimates from the conditional extremes model, \mjeqn{\hat{\alpha}^1_{x\mid y}}{} and \mjeqn{\hat{\alpha}^1_{y\mid x}}{}, if \code{constrained = TRUE}. If \code{constrained = FALSE}, then \code{c(0, 1)} is returned; we note that this has no meaningful interpretation as the estimation is performed in an unconstrained interval.}
 #' \item{\code{adf}:}{A vector containing the estimates of the angular dependence function.}
 #' 
-#' @details \loadmathjax{} The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, obtained using Bernstein-Bezier polynomials and estimated via composite likelihood methods. 
+#' @details The angular dependence function \mjeqn{\lambda(\omega)}{} can be estimated through a pointwise estimator, obtained with the Hill estimator, or via a smoother approach, obtained using Bernstein-Bezier polynomials and estimated via composite likelihood methods. 
 #' 
 #' Knowledge of the conditional extremes framework introduced by \insertCite{HeffernanTawn2004;textual}{ReturnCurves} can be incorporated by setting \code{constrained = TRUE}.
 #' Let \mjeqn{\alpha^1_{x\mid y}=\alpha_{x\mid y} / (1+\alpha_{x\mid y})}{} and \mjeqn{\alpha^1_{y\mid x}=1 /(1+\alpha_{y\mid x})}{} with \mjeqn{\alpha_{x\mid y}}{} and \mjeqn{\alpha_{y\mid x}}{} 

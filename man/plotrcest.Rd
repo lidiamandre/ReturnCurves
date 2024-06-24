@@ -12,7 +12,7 @@
 \item{x}{An instance of an S4 class produced by \code{\link{rc_est}}.}
 }
 \value{
-\loadmathjax{} A ggplot object showing the original data with the estimated Return Curve.
+A ggplot object showing the original data with the estimated Return Curve.
 }
 \description{
 Plot method for an S4 object returned by \code{\link{rc_est}}.

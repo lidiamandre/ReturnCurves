@@ -12,7 +12,7 @@
 \item{x}{An instance of an S4 class produced by \code{\link{adf_gof}}.}
 }
 \value{
-\loadmathjax{} A ggplot object showing the QQ-plot between the model and empirical exponential quantiles.
+A ggplot object showing the QQ-plot between the model and empirical exponential quantiles.
 }
 \description{
 Plot method for an S4 object returned by \code{\link{adf_gof}}.

@@ -16,7 +16,7 @@ rc_gof(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 
 \item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
 
-\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
+\item{alpha}{Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
 An object of S4 class \code{rc_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing:
@@ -28,7 +28,7 @@ An object of S4 class \code{rc_gof.class}. This object returns the arguments of 
 Assessment of the goodness-of-fit of the return curve estimates following the approach of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
+Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
 Let \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} be a set of angles decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}.
 For each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace (\hat{x}_{\theta_j}, \hat{y}_{\theta_j}) \rbrace}{}, 
 the empirical probability \mjeqn{\hat{p}_j}{p} of lying in the survival region is given by the proportion of points in the region

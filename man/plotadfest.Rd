@@ -12,7 +12,7 @@
 \item{x}{An instance of an S4 class produced by \code{\link{adf_est}}.}
 }
 \value{
-\loadmathjax{} A ggplot object showing a comparison between the Angular Dependence Function (ADF) estimates and the lower bound max\mjeqn{\lbrace \omega, 1-\omega\rbrace}{}.
+A ggplot object showing a comparison between the Angular Dependence Function (ADF) estimates and the lower bound max\mjeqn{\lbrace \omega, 1-\omega\rbrace}{}.
 }
 \description{
 Plot method for an S4 object returned by \code{\link{adf_est}}.

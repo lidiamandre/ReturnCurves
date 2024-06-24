@@ -12,7 +12,7 @@
 \item{x}{An instance of an S4 class produced by \code{\link{rc_gof}}.}
 }
 \value{
-\loadmathjax{} A ggplot object comparing the true and median estimates of the empirical probability of lying in a survival region.
+A ggplot object comparing the true and median estimates of the empirical probability of lying in a survival region.
 }
 \description{
 Plot method for an S4 object returned by \code{\link{rc_gof}}.

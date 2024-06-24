@@ -16,7 +16,7 @@ rc_unc(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
 
 \item{nangles}{\loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.}
 
-\item{alpha}{\loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
+\item{alpha}{Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.}
 }
 \value{
 An object of S4 class \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
@@ -35,7 +35,7 @@ The \code{plot} function takes an object of S4 class \code{rc_unc.class}, and a 
 Uncertainty assessment of the return curve estimates following the procedure of \insertCite{MurphyBarltropetal2023;textual}{ReturnCurves}.
 }
 \details{
-\loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}, 
+Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}, 
 and let \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace}{} denote the line segment intersecting the origin with gradient \mjeqn{\tan(\theta) > 0.}{}
 For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{\hat{RC}(p)}{} exactly once, i.e. \mjeqn{\lbrace(\hat{x}_\theta, \hat{y}_\theta)\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
 Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=(\hat{x}^2_\theta + \hat{y}^2_\theta)^{1/2}}{} via a (block) bootstrap procedure. 
@@ -63,7 +63,9 @@ margdata <- margtransf(data)
 
 rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 
-unc <- rc_unc(rc_orig, nboot = 50) 
+\dontrun{
+# Set nboot = 50 for an illustrative example
+unc <- rc_unc(rc_orig) 
 
 # Plots the estimated Return Curve 
 plot(unc, which = "rc") 
@@ -77,7 +79,6 @@ plot(unc, which = "mean")
 # Plots the estimated Return Curve and its the median and mean estimates
 plot(unc, which = "all") 
 
-\dontrun{
 # To see the the S4 object's slots
 str(unc)
 

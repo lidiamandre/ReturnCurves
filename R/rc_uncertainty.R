@@ -11,7 +11,7 @@
 #' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @slot nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @slot nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
-#' @slot alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
+#' @slot alpha Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' @slot unc A list containing the median and mean estimates of the Return Curve, and the lower and upper bound of the confidence interval.
 #' 
 #' @keywords internal
@@ -33,7 +33,7 @@ rc_unc.class <- function(retcurve, blocksize, nboot, nangles, alpha, unc){
 #' @param x An instance of an S4 class produced by \code{\link{rc_unc}}.
 #' @param which String that indicates which return curve estimates to show. Must either be \code{"rc"} (Default), \code{"median"}, \code{"mean"} or \code{"all"}.
 #' 
-#' @return \loadmathjax{} A ggplot object showing:
+#' @return A ggplot object showing:
 #' \item{\code{which = "rc"}}{Plots the estimated Return Curve and its uncertainty.}
 #' \item{\code{which = "median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
 #' \item{\code{which = "mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
@@ -124,7 +124,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' @param blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @param nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @param nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
-#' @param alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
+#' @param alpha Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' 
 #' @return An object of S4 class \code{rc_unc.class}. This object returns the arguments of the function and an extra slot \code{unc} which is a list containing:
 #' \item{median}{A vector containing the median estimates of the return curve.} 
@@ -138,7 +138,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' \item{\code{"mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}
 #' \item{\code{"all"}}{Plots the estimated Return Curve, the median and mean estimates of the Return Curve together, and the associated uncertainty.}
 #' 
-#' @details \loadmathjax{} Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}, 
+#' @details Define a set of angles \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}, 
 #' and let \mjeqn{L_\theta:=\left\lbrace(x,y)\in R^2_+ | \tan(\theta)=y/x\right\rbrace}{} denote the line segment intersecting the origin with gradient \mjeqn{\tan(\theta) > 0.}{}
 #' For each \mjeqn{\theta\in \boldsymbol{\Theta},}{} \mjeqn{L_\theta}{} intersects the estimated \mjeqn{\hat{RC}(p)}{} exactly once, i.e. \mjeqn{\lbrace(\hat{x}_\theta, \hat{y}_\theta)\rbrace:= \hat{RC}(p)\cap L_\theta.}{} 
 #' Uncertainty of the return curve is then quantified by the distribution of \mjeqn{\hat{d}_\theta:=(\hat{x}^2_\theta + \hat{y}^2_\theta)^{1/2}}{} via a (block) bootstrap procedure. 

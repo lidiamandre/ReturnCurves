@@ -14,7 +14,7 @@
 \item{which}{String that indicates which return curve estimates to show. Must either be \code{"rc"} (Default), \code{"median"}, \code{"mean"} or \code{"all"}.}
 }
 \value{
-\loadmathjax{} A ggplot object showing:
+A ggplot object showing:
 \item{\code{which = "rc"}}{Plots the estimated Return Curve and its uncertainty.}
 \item{\code{which = "median"}}{Plots the median estimates of the Return Curve and its uncertainty.}
 \item{\code{which = "mean"}}{Plots the mean estimates of the Return Curve and its uncertainty.}

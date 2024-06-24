@@ -11,7 +11,7 @@
 #' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
 #' @slot nboot Number of bootstrap samples to be taken. Default is \code{250} samples.
 #' @slot nangles \loadmathjax{} Number of angles \mjeqn{m}{m} in the interval \mjeqn{(0, \pi/2)}{} \insertCite{MurphyBarltropetal2023}{ReturnCurves}. Default is \code{150} angles.
-#' @slot alpha \loadmathjax{} Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
+#' @slot alpha Significance level to compute the \mjeqn{(1-\alpha)}{}\% confidence intervals. Default is \code{0.05}.
 #' @slot gof A list containing the median of the empirical probability and the lower and upper bound of the confidence interval.
 #' 
 #' @keywords internal
@@ -31,7 +31,7 @@ rc_gof.class <- function(retcurve, blocksize, nboot, alpha, gof){
 #'
 #' @param x An instance of an S4 class produced by \code{\link{rc_gof}}.
 #' 
-#' @return \loadmathjax{} A ggplot object comparing the true and median estimates of the empirical probability of lying in a survival region.
+#' @return A ggplot object comparing the true and median estimates of the empirical probability of lying in a survival region.
 #'
 #' @rdname plotrcgof
 #'
@@ -75,7 +75,7 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' \item{lower}{A vector containing the lower bound of the confidence interval.}
 #' \item{upper}{A vector containing the upper bound of the confidence interval.}
 #' 
-#' @details \loadmathjax{} Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
+#' @details Given a return curve RC(\mjeqn{p}{p}), the probability of lying in a survival region is \mjeqn{p}{p}. 
 #' Let \mjdeqn{\boldsymbol{\Theta}:= \left\lbrace \frac{\pi(m+1-j)}{2(m+1)} \mid 1\leq j\leq m\right\rbrace}{} be a set of angles decreasing from near \mjeqn{\pi/2}{} to \mjeqn{0}{0}.
 #' For each angle \mjeqn{\theta_j\in \boldsymbol{\Theta,}}{} and corresponding point in the estimated return curve \mjeqn{\lbrace (\hat{x}_{\theta_j}, \hat{y}_{\theta_j}) \rbrace}{}, 
 #' the empirical probability \mjeqn{\hat{p}_j}{p} of lying in the survival region is given by the proportion of points in the region
@@ -86,7 +86,6 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' Function \code{plot} shows the median of \mjeqn{\hat{p}_j}{}, the confidence intervals and the true probability \mjeqn{p}{p}; ideally, this value should be contained in the confidence region.
 #' 
 #' We note that due to the use of empirical probabilities, the value of \mjeqn{p}{p} should be within the range of the data and not too extreme.
-#' 
 #' 
 #' @rdname rc_gof
 #' 
