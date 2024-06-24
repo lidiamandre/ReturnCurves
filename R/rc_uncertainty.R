@@ -160,15 +160,13 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' @examples
 #' library(ReturnCurves)
 #' 
-#' # Generating data for illustration purposes
-#' set.seed(321)
-#' data <- cbind(rnorm(1000), rnorm(1000))
+#' data(airdata)
 #' 
-#' n <- dim(data)[1]
+#' n <- dim(airdata)[1]
 #' 
 #' prob <- 10/n
 #' 
-#' margdata <- margtransf(data)
+#' margdata <- margtransf(airdata)
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
@@ -232,13 +230,17 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   grad <- tan(angles)
   data0 <- apply(data, 2, min)
   norms <- lapply(1:nangles, function(i) vector())
-  bootwarnmarg <- integer()
+  bootwarnmargconst <- integer()
+  bootwarnmargunconst <- integer()
   for(i in 1:nboot){
     bootdata <- block_bootstrap_function(data = data, k = blocksize, n = n)
     margdataboot <- withCallingHandlers(margtransf(data = bootdata, qmarg = qmarg, constrainedshape = constrainedshape),
                                         warning = function(war){
-                                          if(war$message == "MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point." | war$message == "MLE for the constrained shape parameter of the GPD is close to -1. \n Unconstrained MLE is likely to be < -1."){
-                                            bootwarnmarg <<- c(bootwarnmarg, i)
+                                          if(war$message == "MLE for the constrained shape parameter of the GPD is close to -1. \n Unconstrained MLE is likely to be < -1."){
+                                            bootwarnmargconst <<- c(bootwarnmargconst, i)
+                                          }
+                                          else if(war$message == "MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point."){
+                                            bootwarnmargunconst <<- c(bootwarnmargunconst, i)
                                           }
                                           invokeRestart("muffleWarning")})
     rc_data <- tryCatch(rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol),
@@ -259,9 +261,13 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
       norms[[j]][i] <- sqrt(xhat^2 + yhat^2)
     }
   }
-  if(length(bootwarnmarg) > 0){
-    warning(sprintf("In iterations %s of the bootstrap procedure: estimated GPD shape parameter is close to or smaller than -1. \n Fitted endpoint is likely to be the maximum data point.",
-                    paste(bootwarnmarg, collapse = ", ")))
+  if(length(bootwarnmargconst) > 0){
+    warning(sprintf("In iterations %s of the bootstrap procedure: estimated constrained GPD shape parameter is close to -1. \n Unconstrained MLE is likely to be < -1.",
+                    paste(bootwarnmargconst, collapse = ", ")))
+  }
+  if(length(bootwarnmargunconst) > 0){
+    warning(sprintf("In iterations %s of the bootstrap procedure: estimated GPD shape parameter is < -1. \n Fitted endpoint is the maximum data point.",
+                    paste(bootwarnmargunconst, collapse = ", ")))
   }
   lb <- sapply(1:nangles, function(i) quantile(norms[[i]], alpha/2))
   ub <- sapply(1:nangles, function(i) quantile(norms[[i]], 1 - alpha/2))

@@ -44,12 +44,15 @@ dependence function first introduced by @WadsworthTawn2013.
 library(ReturnCurves)
 ```
 
-To illustrate the functionality of the package, we use ... data *need to
-find better data yet*
+To illustrate the functionality of the package, we use the data set `airdata` which contained air pollution data collected from Marylebone, London (UK). The data set contains $1427$ daily measurements of air pollutant concentrations of NOx and PM10.
+
+<!-- ```{r data, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE} -->
+<!-- set.seed(321) -->
+<!-- data <- cbind(rnorm(1000), rnorm(1000)) -->
+<!-- ``` -->
 
 ```{r data, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-set.seed(321)
-data <- cbind(rnorm(1000), rnorm(1000))
+data(airdata)
 ```
 
 # Marginal transformation
@@ -93,7 +96,7 @@ with 6 attributes:
 
 ```{r margdata, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # qmarg and constrainedshape set to the default values
-expdata <- margtransf(data = data, qmarg = rep(0.95, 2), constrainedshape = T)
+expdata <- margtransf(data = airdata, qmarg = rep(0.95, 2), constrainedshape = T)
 
 # attributes of the S4 object
 str(expdata)
@@ -388,7 +391,7 @@ Function `rc_est` returns an S4 object of class `rc_est.class` with
 - `rc`:  matrix with the estimates of the return curve on the original margins.
 
 ```{r rcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-n <- dim(data)[1] 
+n <- dim(airdata)[1] 
 prob <- 10/n
 # Estimation using Hill estimator without conditional extremes parameters
 whill <- seq(0, 1, by = 0.001)
@@ -422,7 +425,7 @@ It is possible to plot an S4 object of `rc_est.class` with `plot`, where
 the original data is plotted with the estimated line for the return
 curve $\hat{\text{RC}}(p).$
 
-```{r plotsrcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 2.5, fig.height = 2.5, fig.align = 'center'}
+```{r plotsrcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 3.5, fig.height = 3.5, fig.align = 'center'}
 # plot of the ADF estimation based on the unconstrained Hill estimator
 plot(rch)
 ```

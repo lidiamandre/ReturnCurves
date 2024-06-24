@@ -57,11 +57,11 @@ is estimated as before for \mjeqn{\omega \in [\hat{\alpha}^1_{x\mid y},\hat{\alp
 \examples{
 library(ReturnCurves)
 
-# Generating data for illustration purposes
-set.seed(321)
-data <- cbind(rnorm(1000), rnorm(1000))
+data(airdata)
 
-margdata <- margtransf(data)
+n <- dim(airdata)[1]
+
+margdata <- margtransf(airdata)
 
 lambda <- adf_est(margdata = margdata, method = "hill")
 

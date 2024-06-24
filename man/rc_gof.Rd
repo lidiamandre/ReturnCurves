@@ -43,15 +43,13 @@ We note that due to the use of empirical probabilities, the value of \mjeqn{p}{p
 \examples{
 library(ReturnCurves)
 
-# Generating data for illustration purposes
-set.seed(321)
-data <- cbind(rnorm(1000), rnorm(1000))
+data(airdata)
 
-n <- dim(data)[1]
+n <- dim(airdata)[1]
 
 prob <- 10/n
 
-margdata <- margtransf(data)
+margdata <- margtransf(airdata)
 
 rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 

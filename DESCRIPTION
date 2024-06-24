@@ -27,7 +27,9 @@ Collate:
     'rc_gof.R'
     'rc_uncertainty.R'
     'ReturnCurves-package.R'
+    'airdata.R'
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+LazyData: true

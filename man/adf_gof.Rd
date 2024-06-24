@@ -47,11 +47,11 @@ It is recommended to assess the goodness-of-fit of \mjeqn{\lambda(\omega)}{} for
 \examples{
 library(ReturnCurves)
 
-# Generating data for illustration purposes
-set.seed(321)
-data <- cbind(rnorm(1000), rnorm(1000))
+data(airdata)
 
-margdata <- margtransf(data)
+n <- dim(airdata)[1]
+
+margdata <- margtransf(airdata)
 
 lambda <- adf_est(margdata = margdata, method = "hill")
 

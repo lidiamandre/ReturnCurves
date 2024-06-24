@@ -51,7 +51,8 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
     labs(x = "Angle Index", y = "Probability") +
     scale_color_manual(values = coloursl,
                        guide = guide_legend(override.aes = list(linetype = c("dashed", "solid", "solid"))))  +
-    ylim(c(-0.001, range(df$upper)[2] + 0.001)) + 
+    # ylim(c(range(df$lower)[1] - 2.220446e-16, range(df$upper)[2] + 2.220446e-16)) + 
+    ylim(min(df$lower), max(df$upper)) + 
     theme_minimal() +
     theme(legend.title = element_blank(),
           legend.position = "bottom") +
@@ -96,15 +97,13 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' @examples
 #' library(ReturnCurves)
 #' 
-#' # Generating data for illustration purposes
-#' set.seed(321)
-#' data <- cbind(rnorm(1000), rnorm(1000))
+#' data(airdata)
 #' 
-#' n <- dim(data)[1]
+#' n <- dim(airdata)[1]
 #' 
 #' prob <- 10/n
 #' 
-#' margdata <- margtransf(data)
+#' margdata <- margtransf(airdata)
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #'
