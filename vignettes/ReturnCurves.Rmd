@@ -288,7 +288,7 @@ $T_\omega^1=(T_\omega-u_\omega\mid T_\omega>u_\omega)\sim \text{Exp}(\lambda(\om
 we can investigate whether there is agreement between model and
 empirical exponential quantiles, or not. This is done in the
 `ReturnCurves` package through QQ plots by plotting points
-$\left(F_E^{-1}(i/(n+1),\, T^1_{(i)}\right)$, where $F_E^{-1}$ denotes
+$\left(F_E^{-1}(i/(n+1)),\, T^1_{(i)}\right)$, where $F_E^{-1}$ denotes
 the inverse of the cumulative distribution function of a standard exponential
 distribution and $T_{(i)}^{-1}$ is the $i$-th ordered increasing
 statistic, $i=1, \ldots, n$. The uncertainty of the empirical quantiles
