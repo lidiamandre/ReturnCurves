@@ -12,11 +12,11 @@ Data frame with 1427 observations (rows) and 2 variables (columns):
 }
 }
 \source{
-\code{airdata} is a subset of the data provided in the \code{openair} package.
+\code{airdata} is a subset of the data provided in the \code{\link[openair]{openair}} package.
 }
 \description{
-Air pollution data from Marylebone, London (UK), for the winters (December to February) of 1998 to 2005. 
-It contains daily measurements of air pollutant concentrations of NOx and
+Air pollution data from Marylebone, London (UK), between December and February 
+of 1998 to 2005. It contains daily measurements of air pollutant concentrations of NOx and
 PM10. The dataset is a subset of the data from the \code{openair} package and
 consists of \code{1427} observations.
 }
