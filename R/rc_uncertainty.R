@@ -246,7 +246,7 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
     rc_data <- tryCatch(rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol),
                         error = function(e){
                           message("Optimisation issues due to infinite values. \n Try setting constrainedshape = TRUE when transforming the data to exponential.")
-                          stop(invisible(e))
+                          stop(invisible(e), call. = FALSE)
                         })
     rc_orig <- rc_data@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))

@@ -28,14 +28,12 @@ as well as a pointwise and smooth estimation of the angular dependence function 
 \examples{
 library(ReturnCurves)
 
-# Generating data for illustration purposes
-set.seed(321)
-data <- cbind(rnorm(1000), rnorm(1000))
+data(airdata)
 
-n <- dim(data)[1]
+n <- dim(airdata)[1]
 
 # Marginal Transformation
-margdata <- margtransf(data)
+margdata <- margtransf(airdata)
 
 head(margdata@dataexp)
 
