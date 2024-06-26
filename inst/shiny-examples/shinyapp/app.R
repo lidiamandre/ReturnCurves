@@ -236,7 +236,6 @@ server <- function(input, output, session) {
   })
   
   output$hist <- renderPlot({
-    # req(data())
     req(data(), input$colX, input$colY)
     validate(
       need(input$colX %in% names(data()), "Select a valid first variable"),
@@ -248,7 +247,6 @@ server <- function(input, output, session) {
   })
   
   output$timeseries <- renderPlot({
-    # req(data())
     req(data(), input$colX, input$colY)
     validate(
       need(input$colX %in% names(data()), "Select a valid first variable"),
@@ -260,7 +258,6 @@ server <- function(input, output, session) {
   })
   
   output$acf <- renderPlot({
-    # req(data())
     req(data(), input$colX, input$colY)
     validate(
       need(input$colX %in% names(data()), "Select a valid first variable"),
@@ -272,7 +269,6 @@ server <- function(input, output, session) {
   })
   
   output$joint <- renderPlot({
-    # req(data())
     req(data(), input$colX, input$colY)
     validate(
       need(input$colX %in% names(data()), "Select a valid first variable"),
@@ -335,22 +331,23 @@ server <- function(input, output, session) {
         )
       }
     })
-    output$rcunc <- renderPlot({
-      if (rcunctoggleState()) {
-        req(rcplotOutput())
-        uncrcplot(rcplotOutput(), input$rcblocksize, input$rcnboot, input$rcnangles, input$rcalpha)
-      }
-    })
-    output$rcgof <- renderPlot({
-      if (rcgoftoggleState()) {
-        req(rcplotOutput())
-        gofrcplot(rcplotOutput(), input$rcgofblocksize, input$rcgofnboot, input$rcgofnangles, input$rcgofalpha)
-      }
-    })
+  })
+  
+  output$rcunc <- renderPlot({
+    req(rcplotOutput(), input$rcblocksize, input$rcnboot, input$rcnangles, input$rcalpha)
+    if (rcunctoggleState()) {
+      uncrcplot(rcplotOutput(), input$rcblocksize, input$rcnboot, input$rcnangles, input$rcalpha)
+    }
+  })
+  
+  output$rcgof <- renderPlot({
+    req(rcplotOutput(), input$rcgofblocksize, input$rcgofnboot, input$rcgofnangles, input$rcgofalpha)
+    if (rcgoftoggleState()) {
+      gofrcplot(rcplotOutput(), input$rcgofblocksize, input$rcgofnboot, input$rcgofnangles, input$rcgofalpha)
+    }
   })
   
   output$rc <- renderPlot({
-    # req(data())
     req(data(), input$colX, input$colY)
     validate(
       need(input$colX %in% names(data()), "Select a valid first variable"),
@@ -393,7 +390,6 @@ server <- function(input, output, session) {
   })
       
   output$adfplot <- renderPlot({
-    # req(data())
     req(data(), input$colX, input$colY)
     validate(
       need(input$colX %in% names(data()), "Select a valid first variable"),
