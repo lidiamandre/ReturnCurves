@@ -38,17 +38,20 @@ empirical_cdf <- function(data, qmarg, constrainedshape) {
     opt <- optim(par = c(0.1, 0.1), fn = gpdlikelihood, data = excdata)
     par <- opt$par
     if(par[2] < -0.999){
-      warning("MLE for the constrained shape parameter of the GPD is close to -1. \n Unconstrained MLE is likely to be < -1.")
+      warning("MLE for the constrained shape parameter of the GPD is close to -1. \n Unconstrained MLE is likely to be < -1.",
+              call. = FALSE)
     }
   }
   else if(constrainedshape == F){
-    par <- gpd.fit(compldata, threshold = thresh, show = FALSE)$mle
+    par <- suppressWarnings(gpd.fit(compldata, threshold = thresh, show = FALSE)$mle)
     if(par[2] <= -1){
-      warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.")
+      warning("MLE for the shape parameter of the GPD is < -1. \n Fitted endpoint is the maximum data point.",
+              call. = FALSE)
     }
   }
   if(par[2] < -0.5 && par[2] > -1){
-    warning("MLE for the shape parameter of the GPD is in (-1, -0.5). \n Non-regular MLE and a very short marginal tail is estimated.")
+    warning("MLE for the shape parameter of the GPD is in (-1, -0.5). \n Non-regular MLE and a very short marginal tail is estimated.",
+            call. = FALSE)
   }
   u[!is.na(data) & data <= thresh] <- ranktransform(data = compldata, thresh = thresh)
   u[!is.na(data) & data > thresh] <- gpdtransform(data = compldata[compldata > thresh], thresh = thresh, par = par, qmarg = qmarg)

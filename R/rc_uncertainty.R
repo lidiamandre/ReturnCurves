@@ -225,6 +225,7 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
   k <- result@retcurve@k
   constrained <- result@retcurve@constrained
   tol <- result@retcurve@tol
+  par_init <- result@retcurve@par_init
   n <- dim(data)[1]
   angles <- ((nangles:1)/(nangles + 1)) * (pi/2)
   grad <- tan(angles)
@@ -243,10 +244,10 @@ rc_unc <- function(retcurve, blocksize = 1, nboot = 250, nangles = 150, alpha = 
                                             bootwarnmargunconst <<- c(bootwarnmargunconst, i)
                                           }
                                           invokeRestart("muffleWarning")})
-    rc_data <- tryCatch(rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol),
+    rc_data <- tryCatch(rc_est(margdata = margdataboot, w = w, p = p, method = method, q = q, qalphas = qalphas, k = k, constrained = constrained, tol = tol, par_init = par_init),
                         error = function(e){
                           message("Optimisation issues due to infinite values. \n Try setting constrainedshape = TRUE when transforming the data to exponential.")
-                          stop(invisible(e), call. = FALSE)
+                          stop(invisible(e))
                         })
     rc_orig <- rc_data@rc
     rc_orig <- rbind(c(data0[1], rc_orig[1, 2]), rc_orig, c(rc_orig[dim(rc_orig)[1], 1], data0[2]))
