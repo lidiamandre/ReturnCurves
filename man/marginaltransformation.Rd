@@ -37,11 +37,11 @@ upper endpoint of the distribution's support is the maximum data point. This sit
 \examples{
 library(ReturnCurves)
 
-# Generating data for illustration purposes
-set.seed(321)
-data <- cbind(rnorm(1000), rnorm(1000))
+data(airdata)
 
-margdata <- margtransf(data)
+n <- dim(airdata)[1]
+
+margdata <- margtransf(airdata)
 
 # Plots the marginal distributions of X and Y on original vs standard exponential margins
 plot(margdata, which = "hist") 

@@ -29,6 +29,7 @@ Collate:
     'ReturnCurves-package.R'
     'airdata.R'
     'runShiny.R'
+    'gpd_diag.R'
 Suggests: 
     knitr,
     rmarkdown
