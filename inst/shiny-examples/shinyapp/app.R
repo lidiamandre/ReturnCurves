@@ -34,6 +34,7 @@ ui <- dashboardPage(
                      #qalphas2-label ~ span span.irs-line { background: linear-gradient(to right, #ff0e0e 0%, #37b61e 100%);}
                      #alpha-label ~ span span.irs-line { background: linear-gradient(to right, #37b61e 0%, #ff0e0e 100%);}
                      .irs--shiny .irs-bar { background: none;}
+                     .shiny-output-error-validation { color: #ff0e0e;}
                     ')),
     sidebarMenu(
       fileInput("data", label = "File input", accept = c(".csv", ".rds", ".txt"), buttonLabel = "Browse...", placeholder = "No file selected"),
@@ -353,7 +354,15 @@ server <- function(input, output, session) {
       need(input$colX %in% names(data()), "Select a valid first variable"),
       need(input$colY %in% names(data()), "Select a valid second variable"),
       need(is.numeric(data()[[input$colX]]), "First variable must be numeric"),
-      need(is.numeric(data()[[input$colY]]), "Second variable must be numeric")
+      need(is.numeric(data()[[input$colY]]), "Second variable must be numeric"),
+      need(
+            input$probability <= 1 - input$rcqmarg1 &&
+            input$probability <= 1 - input$rcqmarg2 && 
+            input$probability <= 1 - input$rcq &&
+            1 - input$rcqalphas1 && 
+            1 - input$rcqalphas2, 
+            "Warning: The curve survival probability p should not be too extreme and within the range of the data, i.e. smaller than the marginal quantiles"
+          )
     )
     rc_data <- rcplot(data(), input$colX, input$colY, input$rcqmarg1, input$rcqmarg2, input$rcconstrainedshape,
                       input$rclengthw, input$probability, input$rcmethod, input$rcq, input$rcqalphas1, 
