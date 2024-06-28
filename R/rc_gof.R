@@ -107,7 +107,8 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #'
-#' gof <- rc_gof(retcurve = rc_orig)
+#' # blocksize to account for temporal dependence
+#' gof <- rc_gof(retcurve = rc_orig, blocksize = 10)
 #' 
 #' plot(gof)
 #' 

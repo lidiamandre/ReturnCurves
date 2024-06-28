@@ -22,8 +22,8 @@ adf_gof(adf, ray, blocksize = 1, nboot = 250, alpha = 0.05)
 An object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
 \item{model}{A vector containing the model quantiles.} 
 \item{empirical}{A vector containing the empirical quantiles.}
-\item{lower}{A vector containing the lower bound of the confidence interval.}
-\item{upper}{A vector containing the upper bound of the confidence interval.}
+\item{lower}{A vector containing the lower bound of the tolerance interval.}
+\item{upper}{A vector containing the upper bound of the tolerance interval.}
 }
 \description{
 \loadmathjax{}
@@ -55,7 +55,8 @@ margdata <- margtransf(airdata)
 
 lambda <- adf_est(margdata = margdata, method = "hill")
 
-gof <- adf_gof(adf = lambda, ray = 0.4)
+# blocksize to account for temporal dependence
+gof <- adf_gof(adf = lambda, ray = 0.4, blocksize = 10)
 
 plot(gof)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  25 JUN 2024 09:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.5.8)  28 JUN 2024 12:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -503,11 +503,11 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) (./ReturnCurves.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 4.
+(Font)              <10> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 4.
+(Font)              <7> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 4.
+(Font)              <5> on input line 3.
 )
 \tf@toc=\write4
 \openout4 = `ReturnCurves.toc'.
@@ -532,7 +532,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line
 (/usr/share/texmf/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<ReturnCurves_files/figure-latex/plotsmarghist-1.pdf, id=55, 433.62pt x 289.08p
+<ReturnCurves_files/figure-latex/plotsmarghist-1.pdf, id=53, 433.62pt x 289.08p
 t>
 File: ReturnCurves_files/figure-latex/plotsmarghist-1.pdf Graphic file (type pd
 f)
@@ -541,7 +541,7 @@ Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsmarghist-1.pdf  u
 sed on input line 248.
 (pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
 [2]
-<ReturnCurves_files/figure-latex/plotsmargts-1.pdf, id=64, 433.62pt x 289.08pt>
+<ReturnCurves_files/figure-latex/plotsmargts-1.pdf, id=66, 433.62pt x 289.08pt>
 
 File: ReturnCurves_files/figure-latex/plotsmargts-1.pdf Graphic file (type pdf)
 
@@ -549,9 +549,8 @@ File: ReturnCurves_files/figure-latex/plotsmargts-1.pdf Graphic file (type pdf)
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsmargts-1.pdf  use
 d on input line 259.
 (pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
-[3 <./ReturnCurves_files/figure-latex/plotsmarghist-1.pdf> <./ReturnCurves_file
-s/figure-latex/plotsmargts-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf, id=83, 433.62pt x 180.67
+[3 <./ReturnCurves_files/figure-latex/plotsmarghist-1.pdf>]
+<ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf, id=79, 433.62pt x 180.67
 5pt>
 File: ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf Graphic file (type p
 df)
@@ -559,7 +558,7 @@ df)
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf  
 used on input line 270.
 (pdftex.def)             Requested size: 433.61894pt x 180.67455pt.
-<ReturnCurves_files/figure-latex/plotsmargall-1.pdf, id=84, 433.62pt x 578.16pt
+<ReturnCurves_files/figure-latex/plotsmargall-1.pdf, id=80, 433.62pt x 578.16pt
 >
 File: ReturnCurves_files/figure-latex/plotsmargall-1.pdf Graphic file (type pdf
 )
@@ -567,96 +566,106 @@ File: ReturnCurves_files/figure-latex/plotsmargall-1.pdf Graphic file (type pdf
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsmargall-1.pdf  us
 ed on input line 281.
 (pdftex.def)             Requested size: 433.63878pt x 578.18504pt.
-[4 <./ReturnCurves_files/figure-latex/plotsmargjoint-1.pdf>] [5 <./ReturnCurves
-_files/figure-latex/plotsmargall-1.pdf>]
+[4 <./ReturnCurves_files/figure-latex/plotsmargts-1.pdf> <./ReturnCurves_files/
+figure-latex/plotsmargjoint-1.pdf>] [5 <./ReturnCurves_files/figure-latex/plots
+margall-1.pdf>] [6]
+<ReturnCurves_files/figure-latex/plotsmarggpd-1.pdf, id=116, 361.35pt x 216.81p
+t>
+File: ReturnCurves_files/figure-latex/plotsmarggpd-1.pdf Graphic file (type pdf
+)
+<use ReturnCurves_files/figure-latex/plotsmarggpd-1.pdf>
+Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsmarggpd-1.pdf  us
+ed on input line 387.
+(pdftex.def)             Requested size: 361.34912pt x 216.80946pt.
+[7 <./ReturnCurves_files/figure-latex/plotsmarggpd-1.pdf>]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 327.
+(amsmath)                 on input line 433.
 
-[6]
+[8]
 
 LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 422.
+(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 528.
 
-[7]
-<ReturnCurves_files/figure-latex/plotsadfest-1.pdf, id=150, 289.08pt x 180.675p
+[9]
+<ReturnCurves_files/figure-latex/plotsadfest-1.pdf, id=169, 289.08pt x 180.675p
 t>
 File: ReturnCurves_files/figure-latex/plotsadfest-1.pdf Graphic file (type pdf)
 
 <use ReturnCurves_files/figure-latex/plotsadfest-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsadfest-1.pdf  use
-d on input line 473.
+d on input line 579.
 (pdftex.def)             Requested size: 289.07928pt x 180.67455pt.
-[8 <./ReturnCurves_files/figure-latex/plotsadfest-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsadfgof-1.pdf, id=163, 722.7pt x 216.81pt>
+[10 <./ReturnCurves_files/figure-latex/plotsadfest-1.pdf>]
+<ReturnCurves_files/figure-latex/plotsadfgof-1.pdf, id=181, 722.7pt x 216.81pt>
 
 File: ReturnCurves_files/figure-latex/plotsadfgof-1.pdf Graphic file (type pdf)
 
 <use ReturnCurves_files/figure-latex/plotsadfgof-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsadfgof-1.pdf  use
-d on input line 568.
+d on input line 675.
 (pdftex.def)             Requested size: 469.76045pt x 140.92813pt.
-[9] [10 <./ReturnCurves_files/figure-latex/plotsadfgof-1.pdf>] [11]
-<ReturnCurves_files/figure-latex/plotsrcest-1.pdf, id=189, 252.945pt x 252.945p
+[11 <./ReturnCurves_files/figure-latex/plotsadfgof-1.pdf>] [12]
+<ReturnCurves_files/figure-latex/plotsrcest-1.pdf, id=203, 252.945pt x 252.945p
 t>
 File: ReturnCurves_files/figure-latex/plotsrcest-1.pdf Graphic file (type pdf)
 <use ReturnCurves_files/figure-latex/plotsrcest-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsrcest-1.pdf  used
- on input line 709.
+ on input line 816.
 (pdftex.def)             Requested size: 252.94823pt x 252.94823pt.
-[12 <./ReturnCurves_files/figure-latex/plotsrcest-1.pdf>]
-Underfull \vbox (badness 1092) detected at line 864
+[13] [14 <./ReturnCurves_files/figure-latex/plotsrcest-1.pdf>]
+Underfull \vbox (badness 10000) detected at line 972
  []
 
-[13]
-<ReturnCurves_files/figure-latex/plotsrcunc-1.pdf, id=211, 578.16pt x 433.62pt>
+[15]
+<ReturnCurves_files/figure-latex/plotsrcunc-1.pdf, id=229, 578.16pt x 433.62pt>
 
 File: ReturnCurves_files/figure-latex/plotsrcunc-1.pdf Graphic file (type pdf)
 <use ReturnCurves_files/figure-latex/plotsrcunc-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsrcunc-1.pdf  used
- on input line 886.
+ on input line 994.
 (pdftex.def)             Requested size: 469.75385pt x 352.31538pt.
-[14] [15 <./ReturnCurves_files/figure-latex/plotsrcunc-1.pdf>]
-<ReturnCurves_files/figure-latex/plotsrcgof-1.pdf, id=230, 433.62pt x 289.08pt>
+[16] [17 <./ReturnCurves_files/figure-latex/plotsrcunc-1.pdf>] [18]
+<ReturnCurves_files/figure-latex/plotsrcgof-1.pdf, id=252, 289.08pt x 144.54pt>
 
 File: ReturnCurves_files/figure-latex/plotsrcgof-1.pdf Graphic file (type pdf)
 <use ReturnCurves_files/figure-latex/plotsrcgof-1.pdf>
 Package pdftex.def Info: ReturnCurves_files/figure-latex/plotsrcgof-1.pdf  used
- on input line 1002.
-(pdftex.def)             Requested size: 433.63878pt x 289.09251pt.
-[16] (./ReturnCurves.bbl) [17 <./ReturnCurves_files/figure-latex/plotsrcgof-1.p
-df>] (./ReturnCurves.aux) ) 
+ on input line 1111.
+(pdftex.def)             Requested size: 289.09251pt x 144.54623pt.
+(./ReturnCurves.bbl) [19 <./ReturnCurves_files/figure-latex/plotsrcgof-1.pdf>] 
+(./ReturnCurves.aux) ) 
 Here is how much of TeX's memory you used:
- 14428 strings out of 480247
- 229185 string characters out of 5896152
- 562587 words of memory out of 5000000
- 31895 multiletter control sequences out of 15000+600000
+ 14443 strings out of 480247
+ 229761 string characters out of 5896152
+ 563650 words of memory out of 5000000
+ 31905 multiletter control sequences out of 15000+600000
  545486 words of font info for 169 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  74i,13n,77p,1009b,436s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr
-/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/
-lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf
-/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathe
-x.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/font
-s/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb
-></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/typ
-e1/public/lm/lmmi5.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/
-share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/pub
-lic/lm/lmmib7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share
-/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/
-lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fo
-nts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb
-></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/typ
-e1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr
-/share/texmf/fonts/type1/public/lm/lmtko10.pfb></usr/share/texmf/fonts/type1/pu
-blic/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on ReturnCurves.pdf (17 pages, 1279943 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/shar
+e/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ma
+thit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/font
+s/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc
+}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/typ
+e1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></us
+r/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/pu
+blic/lm/lmmi5.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share
+/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/l
+m/lmmib7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texm
+f/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17
+.pfb></usr/share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fonts/t
+ype1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></us
+r/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/pu
+blic/lm/lmsy7.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/shar
+e/texmf/fonts/type1/public/lm/lmtko10.pfb></usr/share/texmf/fonts/type1/public/
+lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on ReturnCurves.pdf (19 pages, 1301163 bytes).
 PDF statistics:
- 385 PDF objects out of 1000 (max. 8388607)
- 299 compressed objects within 3 object streams
- 50 named destinations out of 1000 (max. 500000)
- 41062 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 408 PDF objects out of 1000 (max. 8388607)
+ 317 compressed objects within 4 object streams
+ 54 named destinations out of 1000 (max. 500000)
+ 41075 words of extra memory for PDF output out of 42996 (max. 10000000)
 

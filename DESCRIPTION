@@ -23,13 +23,13 @@ Collate:
     'marginal_transform.R'
     'min_projection_hill.R'
     'rc_exp.R'
-    'rc_orig.R'
+    'rc_est.R'
     'rc_gof.R'
     'rc_uncertainty.R'
     'ReturnCurves-package.R'
     'airdata.R'
     'runShiny.R'
-    'gpd_diag.R'
+    'marggpd.R'
 Suggests: 
     knitr,
     rmarkdown

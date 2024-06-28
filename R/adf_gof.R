@@ -70,8 +70,8 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' @return An object of S4 class \code{adf_gof.class}. This object returns the arguments of the function and an extra slot \code{gof} which is a list containing: 
 #' \item{model}{A vector containing the model quantiles.} 
 #' \item{empirical}{A vector containing the empirical quantiles.}
-#' \item{lower}{A vector containing the lower bound of the confidence interval.}
-#' \item{upper}{A vector containing the upper bound of the confidence interval.}
+#' \item{lower}{A vector containing the lower bound of the tolerance interval.}
+#' \item{upper}{A vector containing the upper bound of the tolerance interval.}
 #' 
 #' @details Define the min-projection variable as \mjeqn{t^1_\omega = t_\omega - u_\omega | t_\omega > u_\omega}{}, then
 #' variable \mjeqn{\lambda(\omega)T^1_\omega \sim Exp(1)}{} as \mjeqn{u_\omega \to \infty}{} for all \mjeqn{\omega \in [0,1]}{}. 
@@ -103,7 +103,8 @@ setMethod("plot", signature = list("adf_gof.class"), function(x){
 #' 
 #' lambda <- adf_est(margdata = margdata, method = "hill")
 #' 
-#' gof <- adf_gof(adf = lambda, ray = 0.4)
+#' # blocksize to account for temporal dependence
+#' gof <- adf_gof(adf = lambda, ray = 0.4, blocksize = 10)
 #' 
 #' plot(gof)
 #' 

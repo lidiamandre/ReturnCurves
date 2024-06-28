@@ -134,6 +134,42 @@ Finally, it is possible to plot all these together by setting
 plot(expdata, which = "all") # or just plot(expdata)
 ```
 
+## Assessing the marginal tail fits
+
+When transforming the data onto standard exponential variables as in equation \eqref{eq:pit}, it is assumed that above a threshold $u$ data follows a GPD. It is possible to assess if this is a reasonable assumption through checking if there is an agreement between model and empirical GPD quantiles. This is done via QQ plots in the `ReturnCurves` package by plotting points $\left(F_{GPD}^{-1}\left(\frac{i}{n_{exc} + 1}\right) + u, X^{GPD}_{(i)} + u\right),$ where $X^{GPD}_{(i)}$ denotes the $i$-th ordered increasing statistic $(i = 1, \ldots, n)$ of the exceedances, i.e., $X^{GPD}= (X-u \mid X >u),$ $n_{exc}$ denotes the sample size of these exceedances, and $F_{GPD}^{-1}$ denotes the inverse of the cumulative distribution function of a GPD. Finally, the uncertainty of the empirical quantiles is quantified using a bootstrap approach. If temporal dependence is present in the data, then a block bootstrap approach is required, i.e., `blocksize > 1`.
+
+This is done using the function `marggpd` function which takes as inputs an S4 object of class `margtransf.class`, the size of blocks size of the bootstrap procedure and the corresponding number of samples, and the significance level $\alpha$ for the tolerance intervals. It then returns an S4 object of class `marggpd.class` with an extra attribute `marggpd` containing a list with:
+
+- `model`: a list containing the model quantiles for each variable,
+- `empirical`: a list containing the empirical quantiles for each variable,
+- `lower`: a list containing the lower bounds of the tolerance intervals for each variable,
+- `upper`: a list containing the upper bounds of the tolerance intervals for each variable.
+
+```{r marggpd, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# nboot and alpha are set to the default values
+# blocksize is set to 10 to account for temporal dependence
+uncgpd <- marggpd(margdata = expdata, blocksize = 10, nboot = 250, alpha = 0.05)
+
+# attributes of the S4 object
+str(uncgpd)
+
+# head of the list elements of slot marggpd for variable X
+head(uncgpd@marggpd$model[[1]])
+head(uncgpd@marggpd$empirical[[1]])
+head(uncgpd@marggpd$lower[[1]])
+head(uncgpd@marggpd$upper[[1]])
+```
+
+It is possible to plot an S4 object of `marggpd.class` with
+`plot`, where the QQ plots with the model and empirical quantiles for each variable are
+shown. The points should lie close to the line $y=x;$ for a good fit and
+agreement between these quantiles, the line $y=x$ should mainly lie within
+the $(1-\alpha)\%$ tolerance intervals.
+
+```{r plotsmarggpd, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.width = 5, fig.height = 3}
+plot(uncgpd)
+```
+
 # Estimation of the angular dependence function
 
 In bivariate extremes, interest may lie in studying regions where both
@@ -301,7 +337,7 @@ using the function `adf_gof` which takes an S4 object of class
 for the bootstrap procedure and the corresponding number of samples, and
 the significance level $\alpha$ for the tolerance intervals as inputs.
 In turn, it returns an S4 object of class `adf_gof.class` with an extra
-attribute, `gof`, containing a list with the model and empirical
+attribute `gof` containing a list with the model and empirical
 quantiles, and the lower and upper bounds of the tolerance interval.
 
 We note that this function is implemented to evaluate the fit at a
@@ -314,8 +350,9 @@ the closest $\omega$ in the grid is used instead.
 
 # Goodness of fit of the adf for three rays w
 rays <- c(0.25, 0.5, 0.75)
-## blocksize, nboot and alpha are set to the default values
-gofh <- sapply(rays, adf_gof, adf = lambdah, blocksize = 1, nboot = 250, alpha = 0.05)
+## nboot and alpha are set to the default values
+## blocksize is set to 10 to account for temporal dependence
+gofh <- sapply(rays, adf_gof, adf = lambdah, blocksize = 10, nboot = 250, alpha = 0.05)
 
 # attributes of the S4 object
 str(gofh[[1]])
@@ -328,7 +365,7 @@ head(gofh[[1]]@gof$upper)
 ```
 
 As before, it is possible to plot an S4 object of `adf_gof.class` with
-`plot`, where the QQ-plot with the model and empirical quantiles is
+`plot`, where the QQ plot with the model and empirical quantiles is
 shown. The points should lie close to the line $y=x;$ for a good fit and
 agreement between these quantiles, the line $y=x$ should mainly lie within
 the $(1-\alpha)\%$ tolerance intervals.
@@ -486,9 +523,10 @@ For simplicity, just the uncertainty of the return curve obtained using
 the unconstrained Hill estimator is computed here.
 
 ```{r rcunc, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-# blocksize, nangles and alpha set to default
+# nangles and alpha set to default
 # nboot set to 50 for simplicity
-rch_unc <- rc_unc(rch, blocksize = 1, nboot = 50, nangles = 150, alpha = 0.05)
+# blocksize is set to 10 to account for temporal dependence
+rch_unc <- rc_unc(rch, blocksize = 10, nboot = 50, nangles = 150, alpha = 0.05)
 
 # attributes of the S4 object
 str(rch_unc)
@@ -556,8 +594,9 @@ For simplicity, just the goodness-of-fit of the return curve obtained
 using the unconstrained Hill estimator is computed here.
 
 ```{r rcgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-# blocksize, nboot, nangles and alpha set to default
-rch_gof <- rc_gof(rch, blocksize = 1, nboot = 250, nangles = 150, alpha = 0.05)
+# nboot, nangles and alpha set to default
+# blocksize is set to 10 to account for temporal dependence
+rch_gof <- rc_gof(rch, blocksize = 10, nboot = 250, nangles = 150, alpha = 0.05)
 
 # attributes of the S4 object
 str(rch_gof)
@@ -575,7 +614,7 @@ $p$ should be contained in the confidence region, shaded in grey.
 Finally, in practice, the value of $p$ should be within the range of the
 data and not too extreme, given the nature of empirical probabilities.
 
-```{r plotsrcgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center'}
+```{r plotsrcgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center',fig.width = 4}
 plot(rch_gof)
 ```
 

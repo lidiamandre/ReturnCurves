@@ -9,6 +9,7 @@ library(gridExtra)
 library(shinydashboard)
 
 source("plots_eda.R")
+source("plots_margtransf.R")
 source("plot_rc.R")
 source("plot_adf.R")
 
@@ -18,7 +19,10 @@ ui <- dashboardPage(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
     ),
-    tags$style(HTML('#rclengthw-label ~ span span.irs-line { background: #428bca;}
+    tags$style(HTML('#margqmarg1-label ~ span span.irs-line { background: linear-gradient(to right, #ff0e0e 0%, #37b61e 100%);}
+                     #margqmarg2-label ~ span span.irs-line { background: linear-gradient(to right, #ff0e0e 0%, #37b61e 100%);}
+                     #margalpha-label ~ span span.irs-line { background: linear-gradient(to right, #37b61e 0%, #ff0e0e 100%);}
+                     #rclengthw-label ~ span span.irs-line { background: #428bca;}
                      #rcqmarg1-label ~ span span.irs-line { background: linear-gradient(to right, #ff0e0e 0%, #37b61e 100%);}
                      #rcqmarg2-label ~ span span.irs-line { background: linear-gradient(to right, #ff0e0e 0%, #37b61e 100%);}
                      #rcq-label ~ span span.irs-line { background: linear-gradient(to right, #ff0e0e 0%, #37b61e 100%);}
@@ -42,6 +46,8 @@ ui <- dashboardPage(
       uiOutput("select_column_y"),
       menuItem("Exploratory Data Analysis",
                tabName = "eda", icon = icon("eye")),
+      menuItem("Marginal Transformation",
+               tabName = "margtransf", icon = icon("chart-column")),
       menuItem("Return Curve Estimation",
                tabName = "retcurve", icon = icon("chart-simple")),
       menuItem("Angular Dependence Function",
@@ -62,6 +68,45 @@ ui <- dashboardPage(
                        box(title = "Joint distribution", solidHeader = T, status = "primary",
                            plotOutput("joint")))
       ),
+      tabItem(tabName = "margtransf",
+              fluidRow(
+                box(title = "Marginal transformation inputs", solidHeader = T, status = "info", width = 12,
+                    column(4,
+                           sliderInput("margqmarg1", "Marginal quantile for the first variable",
+                                       min = 0.01, max = 0.99, step = 0.01, value = 0.95)
+                           ),
+                    column(4,
+                           sliderInput("margqmarg2", "Marginal quantile for the second variable",
+                                       min = 0.01, max = 0.99, step = 0.01, value = 0.95)
+                           ),
+                    column(4,
+                           radioButtons("margconstrainedshape", "Constrained the shape parameter of the GPD fit",
+                                        choices = c(TRUE, FALSE))
+                           )
+                    ),
+                box(title = "Histogram of transformed data", solidHeader = T, 
+                          status = "primary",plotOutput("histexp")),
+                box(title = "Joint distribution of transformed data", solidHeader = T, 
+                    status = "primary", plotOutput("jointexp"))),
+              fluidRow(box(title = "Marginal tail fits", solidHeader = T, 
+                           status = "primary", width = 12, height = 570,
+                           tagList(
+                             withMathJax(),
+                             column(4,
+                                    numericInput("margblocksize", "Size of blocks for block bootstrap",
+                                                 value = 1, min = 1, step = 1)
+                                    ),
+                             column(4,
+                                    numericInput("margnboot", "Number of bootstrap samples",
+                                                 value = 50, min = 1, step = 1)
+                                    ),
+                             column(4,
+                                    sliderInput("margalpha", "Significance level for the \\((1-\\alpha)\\)% CI",
+                                                min = 0.01, max = 0.99, step = 0.05, value = 0.05)
+                                    )
+                             ),
+                           plotOutput("qqplots")))
+              ),
       tabItem(tabName = "retcurve",
               withMathJax(),
               fluidRow(
@@ -280,6 +325,41 @@ server <- function(input, output, session) {
     jointplot(data(), input$colX, input$colY)
   })
   
+  output$histexp <- renderPlot({
+    req(data(), input$colX, input$colY)
+    validate(
+      need(input$colX %in% names(data()), "Select a valid first variable"),
+      need(input$colY %in% names(data()), "Select a valid second variable"),
+      need(is.numeric(data()[[input$colX]]), "First variable must be numeric"),
+      need(is.numeric(data()[[input$colY]]), "Second variable must be numeric")
+    )
+    histexpplot(data(), input$colX, input$colY, input$margqmarg1, input$margqmarg2, 
+                input$margconstrainedshape)
+  })
+  
+  output$qqplots <- renderPlot({
+    req(data(), input$colX, input$colY)
+    validate(
+      need(input$colX %in% names(data()), "Select a valid first variable"),
+      need(input$colY %in% names(data()), "Select a valid second variable"),
+      need(is.numeric(data()[[input$colX]]), "First variable must be numeric"),
+      need(is.numeric(data()[[input$colY]]), "Second variable must be numeric")
+    )
+    qqplot(data(), input$colX, input$colY, input$margqmarg1, input$margqmarg2, 
+           input$margconstrainedshape, input$margblocksize, input$margnboot, input$margalpha)
+  })
+  
+  output$jointexp <- renderPlot({
+    req(data(), input$colX, input$colY)
+    validate(
+      need(input$colX %in% names(data()), "Select a valid first variable"),
+      need(input$colY %in% names(data()), "Select a valid second variable"),
+      need(is.numeric(data()[[input$colX]]), "First variable must be numeric"),
+      need(is.numeric(data()[[input$colY]]), "Second variable must be numeric")
+    )
+    jointexpplot(data(), input$colX, input$colY, input$margqmarg1, input$margqmarg2, 
+                 input$margconstrainedshape)
+  })
   
   rcunctoggleState <- reactiveVal(FALSE)
   rcplotOutput <- reactiveVal(NULL)

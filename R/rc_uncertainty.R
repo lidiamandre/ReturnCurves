@@ -172,7 +172,8 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' \dontrun{
 #' # Set nboot = 50 for an illustrative example
-#' unc <- rc_unc(rc_orig) 
+#' # blocksize to account for temporal dependence
+#' unc <- rc_unc(rc_orig, bloscksize = 10) 
 #' 
 #' # Plots the estimated Return Curve 
 #' plot(unc, which = "rc") 

@@ -1,3 +1,18 @@
+gpdunc <- function(data, par, thresh, blocksize, nboot, alpha){
+  excdata <- data[data > thresh]
+  nexc <- length(excdata)
+  empquantile <- sort(excdata)
+  modquantile <- qgpd((1:nexc) / (nexc + 1), loc = thresh, scale = par[1], shape = par[2])
+  empquantileboot <- matrix(NA, nrow = nboot, ncol = nexc)
+  for(i in 1:nboot){
+    bdata <- block_bootstrap_function(data = excdata, k = blocksize, n = nexc)
+    empquantileboot[i, ] <- sort(bdata)
+  }
+  ub <- apply(empquantileboot, 2, quantile, probs = 1 - alpha/2)
+  lb <- apply(empquantileboot, 2, quantile, probs = alpha/2)
+  return(list("model" = modquantile, "empirical" = empquantile, "lower" = lb, "upper" = ub))
+}
+
 .marggpd.class <- setClass("marggpd.class", representation(margdata = "margtransf.class",
                                                            blocksize = "numeric",
                                                            nboot = "numeric",
@@ -38,10 +53,10 @@ marggpd.class <- function(margdata, blocksize, nboot, alpha, marggpd){
 #' @keywords internal
 setMethod("plot", signature = list("marggpd.class"), function(x){
   X <- Y <- model <- empirical <- NULL # NULL them out to satisfy CRAN checks
-  dfX <- data.frame("model" = x@marggpd$model[[1]], "empirical" = x@marggpd$empirical[[1]])
+  dfX <- data.frame("model" = x@marggpd$model[[1]], "empirical" = x@marggpd$empirica[[1]])
   ploygondfX <- data.frame("X" = c(rev(x@marggpd$model[[1]]), x@marggpd$model[[1]]),
                            "Y" = c(rev(x@marggpd$lower[[1]]), x@marggpd$upper[[1]]))
-  dfY <- data.frame("model" = x@marggpd$model[[2]], "empirical" = x@marggpd$empirical[[2]])
+  dfY <- data.frame("model" = x@marggpd$model[[2]], "empirical" = x@marggpd$empirica[[2]])
   ploygondfY <- data.frame("X" = c(rev(x@marggpd$model[[2]]), x@marggpd$model[[2]]),
                            "Y" = c(rev(x@marggpd$lower[[2]]), x@marggpd$upper[[2]]))
   qqX <- ggplot(data = ploygondfX, aes(x = X, y = Y)) + geom_polygon(fill = "grey80", col = NA) +
@@ -49,23 +64,23 @@ setMethod("plot", signature = list("marggpd.class"), function(x){
     geom_abline(col = 2, linewidth = 1) + 
     labs(x = "Model quantiles", y = "Empirical quantiles") +
     theme_minimal() +
-    ggtitle("GPD fit of X")
+    ggtitle("Marginal tail fit of X")
   qqY <- ggplot(data = ploygondfY, aes(x = X, y = Y)) + geom_polygon(fill = "grey80", col = NA) +
     geom_point(data = dfY, mapping = aes(x = model, y = empirical)) + 
     geom_abline(col = 2, linewidth = 1) + 
     labs(x = "Model quantiles", y = "Empirical quantiles") +
     theme_minimal() +
-    ggtitle("GPD fit of Y")
-  grid.arrange(qqX, qqY)
+    ggtitle("Marginal tail fit of Y")
+  grid.arrange(grobs = list(qqX, qqY), ncol = 2)
 })
 
 
-#' Assessing the Generalised Pareto Distribution Fit
+#' Assessing the Marginal Tail Fits
 #' 
 #' @name marggpd
 #' 
 #' @description \loadmathjax{}
-#' Assessment of the generalised Pareto distribution fit for each margin after following the marginal transformation procedure \code{\link{margtransf}}.
+#' Assessment of the marginal tail fits for each margin following the marginal transformation procedure \code{\link{margtransf}}.
 #' 
 #' @docType methods
 #' 
@@ -77,18 +92,22 @@ setMethod("plot", signature = list("marggpd.class"), function(x){
 #' @return An object of S4 class \code{marggpd.class}. This object returns the arguments of the function and an extra slot \code{marggpd} which is a list containing: 
 #' \item{model}{A list containing the model quantiles for each variable.} 
 #' \item{empirical}{A list containing the empirical quantiles for each variable.}
-#' \item{lower}{A list containing the lower bounds of the confidence interval for each variable.}
-#' \item{upper}{A list containing the upper bounds of the confidence interval for each variable.}
-#' 
-#' @details Let \mjeqn{F^{-1}_{GPD}}{} denote the inverse of the cumulative distribution function of a variable following a Generalised Pareto Distribution (GPD) and \mjeqn{X_{(i)}}{}, \mjeqn{Y_{(i)}}{}denote the \mjeqn{i}{i}-th ordered increasing statistics, \mjeqn{i = 1, \ldots, n}{}. 
-#' Function \code{plot} shows QQ plots between the model and empirical exponential quantiles for both variables, i.e. points \mjeqn{\left(F^{-1}_{GPD}\left(\frac{i}{n+1}\right), X_{(i)}\right)}{} and \mjeqn{\left(F^{-1}_{GPD}\left(\frac{i}{n+1}\right), Y_{(i)}\right)}{},
-#' along with the line \mjeqn{y=x}{}. Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
-#' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{}. 
-#' In addition, line \mjeqn{y = x}{} should mainly lie within the \mjeqn{(1-\alpha)}{}\% tolerance intervals.
+#' \item{lower}{A list containing the lower bounds of the tolerance intervals for each variable.}
+#' \item{upper}{A list containing the upper bounds of the tolerance intervals for each variable.}
 #' 
 #' @rdname marggpd
 #' 
-#' @references \insertAllCited{}
+#' @details Let \mjeqn{X^{GPD}_{(i)}}{} denote the \mjeqn{i}{i}-th ordered increasing statistic 
+#' \mjeqn{(i = 1, \ldots, n)}{} of the exceedances, i.e., \mjeqn{X^{GPD}= (X-u \mid X >u),}{} 
+#' \mjeqn{n_{exc}}{} denote the sample size of these exceedances, and \mjeqn{F_{GPD}^{-1}}{} denote the 
+#' inverse of the cumulative distribution function of a generalised Pareto distribution (GPD).
+#' Function \code{plot} shows QQ plots between the model and empirical GPD quantiles for both variables, i.e, for 
+#' the first variable points \mjeqn{\left(F^{-1}_{GPD}\left(\frac{i}{n_{exc}+1}\right) + u, X^{GPD}_{(i)} + u\right)}{}, 
+#' along with the line \mjeqn{y=x}{}. 
+#' 
+#' Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
+#' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{}. 
+#' In addition, line \mjeqn{y = x}{} should mainly lie within the \mjeqn{(1-\alpha)}{}\% tolerance intervals.
 #' 
 #' @aliases marggpd
 #' 
@@ -101,7 +120,8 @@ setMethod("plot", signature = list("marggpd.class"), function(x){
 #' 
 #' margdata <- margtransf(airdata)
 #' 
-#' marggpd <- marggpd(margdata = margdata)
+#' # blocksize to account for temporal dependence
+#' marggpd <- marggpd(margdata = margdata, blocksize = 10)
 #' 
 #' plot(marggpd)
 #' 
@@ -109,13 +129,13 @@ setMethod("plot", signature = list("marggpd.class"), function(x){
 #' # To see the the S4 object's slots
 #' str(marggpd)
 #' 
-#' # To access the list of vectors
+#' # To access the list of lists
 #' marggpd@@marggpd
 #' }
 #' 
 #' @export
 #' 
-marggpd <- function(margdata, nboot = 250, blocksize = 1, alpha = 0.05){
+marggpd <- function(margdata, blocksize = 1, nboot = 250, alpha = 0.05){
   if(!inherits(margdata, "margtransf.class")){
     stop("The margdata argument needs to be an object of class margtransf.class.")
   }
@@ -123,30 +143,12 @@ marggpd <- function(margdata, nboot = 250, blocksize = 1, alpha = 0.05){
   thresh <- margdata@thresh
   parameters <- margdata@parameters
   result <- marggpd.class(margdata = margdata, blocksize = blocksize,
-                                         nboot = nboot, alpha = alpha, marggpd = list())
-  excdataX <- data[, 1][data[, 1] > thresh[1]]
-  excdataY <- data[, 2][data[, 2] > thresh[2]]
-  nexcX <- length(excdataX)
-  nexcY <- length(excdataY)
-  empquantileX <- sort(excdataX)
-  empquantileY <- sort(excdataY)
-  modquantileX <- qgpd((1:nexcX) / (nexcX + 1), loc = thresh[1], scale = parameters[1, 1], shape = parameters[2, 1])
-  modquantileY <- qgpd((1:nexcY) / (nexcY + 1), loc = thresh[2], scale = parameters[1, 2], shape = parameters[2, 2])
-  empquantilebootX <- matrix(NA, nrow = nboot, ncol = nexcX)
-  empquantilebootY <- matrix(NA, nrow = nboot, ncol = nexcY)
-  for(i in 1:nboot){
-    bdataX <- block_bootstrap_function(data = excdataX, k = blocksize, n = nexcX)
-    empquantilebootX[i, ] <- sort(bdataX)
-    bdataY <- block_bootstrap_function(data = excdataY, k = blocksize, n = nexcY)
-    empquantilebootY[i, ] <- sort(bdataY)
-  }
-  ubX <- apply(empquantilebootX, 2, quantile, probs = 1 - alpha/2)
-  lbX <- apply(empquantilebootX, 2, quantile, probs = alpha/2)
-  ubY <- apply(empquantilebootY, 2, quantile, probs = 1 - alpha/2)
-  lbY <- apply(empquantilebootY, 2, quantile, probs = alpha/2)
-  result@marggpd <- list("model" = list(modquantileX, modquantileY), 
-                         "empirical" = list(empquantileX, empquantileY), 
-                         "lower" = list(lbX, lbY), "upper" = list(ubX, ubY))
+                          nboot = nboot, alpha = alpha, marggpd = list())
+  uncgpd <- sapply(1:dim(data)[2], function(i) gpdunc(data[, i], par = parameters[, i], 
+                                                      thresh = thresh[i], blocksize = blocksize, 
+                                                      nboot = nboot, alpha = alpha))
+  result@marggpd <- list("model" = uncgpd[1, ], "empirical" = uncgpd[2, ],
+                         "lower" = uncgpd[3, ], "upper" = uncgpd[4, ])
   return(result)
 }
 
