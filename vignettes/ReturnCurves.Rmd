@@ -46,11 +46,6 @@ library(ReturnCurves)
 
 To illustrate the functionality of the package, we use the data set `airdata` which contained air pollution data collected from Marylebone, London (UK). The data set contains $1427$ daily measurements of air pollutant concentrations of NOx and PM10.
 
-<!-- ```{r data, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE} -->
-<!-- set.seed(321) -->
-<!-- data <- cbind(rnorm(1000), rnorm(1000)) -->
-<!-- ``` -->
-
 ```{r data, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 data(airdata)
 ```
@@ -136,7 +131,7 @@ plot(expdata, which = "all") # or just plot(expdata)
 
 ## Assessing the marginal tail fits
 
-When transforming the data onto standard exponential variables as in equation \eqref{eq:pit}, it is assumed that above a threshold $u$ data follows a GPD. It is possible to assess if this is a reasonable assumption through checking if there is an agreement between model and empirical GPD quantiles. This is done via QQ plots in the `ReturnCurves` package by plotting points $\left(F_{GPD}^{-1}\left(\frac{i}{n_{exc} + 1}\right) + u, X^{GPD}_{(i)} + u\right),$ where $X^{GPD}_{(i)}$ denotes the $i$-th ordered increasing statistic $(i = 1, \ldots, n)$ of the exceedances, i.e., $X^{GPD}= (X-u \mid X >u),$ $n_{exc}$ denotes the sample size of these exceedances, and $F_{GPD}^{-1}$ denotes the inverse of the cumulative distribution function of a GPD. Finally, the uncertainty of the empirical quantiles is quantified using a bootstrap approach. If temporal dependence is present in the data, then a block bootstrap approach is required, i.e., `blocksize > 1`.
+When transforming the data onto standard exponential variables as in equation \eqref{eq:pit}, it is assumed that above a threshold $u$ data follows a GPD. It is possible to assess if this is a reasonable assumption through checking if there is an agreement between model and empirical GPD quantiles. This is done via QQ plots in the `ReturnCurves` package by plotting points $\left(F_{GPD}^{-1}\left(\frac{i}{n_{exc} + 1}\right) + u, X^{GPD}_{(i)} + u\right),$ where $X^{GPD}_{(i)}$ denotes the $i$-th ordered increasing statistic $(i = 1, \ldots, n)$ of the exceedances, i.e., $X^{GPD}=(X-u \mid X >u),$ $n_{exc}$ denotes the sample size of these exceedances, and $F_{GPD}^{-1}$ denotes the inverse of the cumulative distribution function of a GPD. Finally, the uncertainty of the empirical quantiles is quantified using a bootstrap approach. If temporal dependence is present in the data, then a block bootstrap approach is required, i.e., `blocksize > 1`.
 
 This is done using the function `marggpd` function which takes as inputs an S4 object of class `margtransf.class`, the size of blocks size of the bootstrap procedure and the corresponding number of samples, and the significance level $\alpha$ for the tolerance intervals. It then returns an S4 object of class `marggpd.class` with an extra attribute `marggpd` containing a list with:
 
