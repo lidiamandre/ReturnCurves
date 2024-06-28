@@ -9,6 +9,7 @@ export("marggpd")
 import(evd)
 import(ismev)
 import(mathjaxr)
+import(openair)
 importFrom(tools, file_ext)
 importFrom(ggplot2, ggplot, geom_histogram, geom_point, theme_minimal, labs, 
            ggtitle, geom_line, scale_color_manual, theme, geom_abline, geom_polygon, 

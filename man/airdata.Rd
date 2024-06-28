@@ -12,7 +12,7 @@ Data frame with 1427 observations (rows) and 2 variables (columns):
 }
 }
 \source{
-\code{airdata} is a subset of the data provided in the \code{\link[openair]{openair}} package.
+\code{airdata} is a subset of the data provided in the \code{\link[openair]{openair}} R package.
 }
 \description{
 Air pollution data from Marylebone, London (UK), between December and February 

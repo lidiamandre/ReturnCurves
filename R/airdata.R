@@ -15,7 +15,7 @@
 #' \item{pm10}{Vector containing daily measurements of PM10, in ug/m3.}
 #' }
 #' 
-#' @source \code{airdata} is a subset of the data provided in the \code{\link[openair]{openair}} package.
+#' @source \code{airdata} is a subset of the data provided in the \code{\link[openair]{openair}} R package.
 #' 
 #' @keywords datasets
 #' 
