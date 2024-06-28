@@ -2,12 +2,12 @@
 % Please edit documentation in R/marggpd.R
 \name{marggpd.class}
 \alias{marggpd.class}
-\title{An S4 class to represent the assessment of the Generalised Pareto Distribution Fit}
+\title{An S4 class to represent the assessment of the the Marginal Tail Fits}
 \usage{
 marggpd.class(margdata, blocksize, nboot, alpha, marggpd)
 }
 \description{
-An S4 class to represent the assessment of the Generalised Pareto Distribution Fit
+An S4 class to represent the assessment of the the Marginal Tail Fits
 }
 \section{Slots}{
 

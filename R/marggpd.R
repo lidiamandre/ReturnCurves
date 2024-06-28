@@ -19,7 +19,7 @@ gpdunc <- function(data, par, thresh, blocksize, nboot, alpha){
                                                            alpha = "numeric",
                                                            marggpd = "list"))
 
-#' An S4 class to represent the assessment of the Generalised Pareto Distribution Fit
+#' An S4 class to represent the assessment of the the Marginal Tail Fits
 #'
 #' @slot margdata An S4 object of class \code{margtransf.class}. See \code{\link{margtransf}} for more details. 
 #' @slot blocksize Size of the blocks for the block bootstrap procedure. If \code{1} (default), then a standard bootstrap approach is applied.
@@ -36,7 +36,7 @@ marggpd.class <- function(margdata, blocksize, nboot, alpha, marggpd){
                  marggpd = marggpd)
 }
 
-#' Visualisation of the assessment of the Generalised Pareto Distribution Fit
+#' Visualisation of the assessment of the Marginal Tail Fits
 #'
 #' @description Plot method for an S4 object returned by \code{\link{marggpd}}. 
 #'
@@ -105,7 +105,7 @@ setMethod("plot", signature = list("marggpd.class"), function(x){
 #' the first variable points \mjeqn{\left(F^{-1}_{GPD}\left(\frac{i}{n_{exc}+1}\right) + u, X^{GPD}_{(i)} + u\right)}{}, 
 #' along with the line \mjeqn{y=x}{}. 
 #' 
-#' Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
+#' Uncertainty on the empirical quantiles is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
 #' A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{}. 
 #' In addition, line \mjeqn{y = x}{} should mainly lie within the \mjeqn{(1-\alpha)}{}\% tolerance intervals.
 #' 

@@ -36,7 +36,7 @@ Function \code{plot} shows QQ plots between the model and empirical GPD quantile
 the first variable points \mjeqn{\left(F^{-1}_{GPD}\left(\frac{i}{n_{exc}+1}\right) + u, X^{GPD}_{(i)} + u\right)}{}, 
 along with the line \mjeqn{y=x}{}. 
 
-Uncertainty is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
+Uncertainty on the empirical quantiles is obtained via a (block) bootstrap procedure and shown by the grey region on the plot.
 A good fit is shown by agreement of model and empirical quantiles, i.e. points should lie close to the line \mjeqn{y=x}{}. 
 In addition, line \mjeqn{y = x}{} should mainly lie within the \mjeqn{(1-\alpha)}{}\% tolerance intervals.
 }

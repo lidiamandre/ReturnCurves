@@ -16,6 +16,10 @@ as well as a pointwise and smooth estimation of the angular dependence function 
 
 \code{\link{adf_gof}}: Goodness of fit of the Angular Dependence Function estimates
 
+\code{\link{airdata}}: Air pollution data
+
+\code{\link{marggpd}}: Assessing the Marginal Tail Fits
+
 \code{\link{margtransf}}: Marginal Transformation
 
 \code{\link{rc_est}}: Return Curve estimation
@@ -23,6 +27,8 @@ as well as a pointwise and smooth estimation of the angular dependence function 
 \code{\link{rc_gof}}: Goodness of fit of the Return Curve estimates
 
 \code{\link{rc_unc}}: Uncertainty of the Return Curve estimates
+
+\code{\link{runShiny}}: Complementary Shiny app for the ReturnCurves package
 }
 
 \examples{

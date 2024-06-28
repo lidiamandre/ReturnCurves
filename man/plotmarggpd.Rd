@@ -4,7 +4,7 @@
 \name{plot,marggpd.class-method}
 \alias{plot,marggpd.class-method}
 \alias{plot,marggpd.class}
-\title{Visualisation of the assessment of the Generalised Pareto Distribution Fit}
+\title{Visualisation of the assessment of the Marginal Tail Fits}
 \usage{
 \S4method{plot}{marggpd.class}(x)
 }
