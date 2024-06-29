@@ -5,11 +5,11 @@ date: "`r Sys.Date()`"
 bibliography: refvignette.bib
 link-citations: true
 output: 
-  pdf_document:
-    toc: true
-    number_sections: true
-    fig_width: 6 
-    fig_height: 4 
+  pdf_document: 
+    toc: yes
+    number_sections: yes
+    fig_height: 4
+    fig_width: 6
     citation_package: natbib
 vignette: >
   %\VignetteIndexEntry{Return Curves Estimation}
@@ -125,7 +125,7 @@ plot(expdata, which = "joint")
 Finally, it is possible to plot all these together by setting
 `which = "all"`, which is the default for this argument.
 
-```{r plotsmargall, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.height = 8}
+```{r plotsmargall, echo=TRUE, fig.align='center', fig.height = 8, message=FALSE, warning=FALSE, paged.print=FALSE}
 plot(expdata, which = "all") # or just plot(expdata)
 ```
 
@@ -161,7 +161,7 @@ shown. The points should lie close to the line $y=x;$ for a good fit and
 agreement between these quantiles, the line $y=x$ should mainly lie within
 the $(1-\alpha)\%$ tolerance intervals.
 
-```{r plotsmarggpd, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.width = 5, fig.height = 3}
+```{r plotsmarggpd, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.width = 6.5, fig.height = 2.5}
 plot(uncgpd)
 ```
 
@@ -306,7 +306,7 @@ It is possible to plot an S4 object of `adf_est.class` with `plot`,
 where a comparison of the estimated ADF and its lower bound,
 $\max\{\omega, 1-\omega\},$ is shown.
 
-```{r plotsadfest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 4, fig.height = 2.5, fig.align = 'center'}
+```{r plotsadfest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 5, fig.height = 2.5, fig.align = 'center'}
 # plot of the ADF estimation based on the unconstrained Hill estimator
 plot(lambdah)
 ```
@@ -343,8 +343,8 @@ the closest $\omega$ in the grid is used instead.
 
 ```{r adfgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 
-# Goodness of fit of the adf for three rays w
-rays <- c(0.25, 0.5, 0.75)
+# Goodness of fit of the adf for twp rays w
+rays <- c(0.25, 0.75)
 ## nboot and alpha are set to the default values
 ## blocksize is set to 10 to account for temporal dependence
 gofh <- sapply(rays, adf_gof, adf = lambdah, blocksize = 10, nboot = 250, alpha = 0.05)
@@ -365,9 +365,9 @@ shown. The points should lie close to the line $y=x;$ for a good fit and
 agreement between these quantiles, the line $y=x$ should mainly lie within
 the $(1-\alpha)\%$ tolerance intervals.
 
-```{r plotsadfgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.width = 10, fig.height = 3}
+```{r plotsadfgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.width = 6.5, fig.height = 2.5}
 library(gridExtra)
-grid.arrange(plot(gofh[[1]]), plot(gofh[[2]]), plot(gofh[[3]]), ncol = 3)
+grid.arrange(plot(gofh[[1]]), plot(gofh[[2]]), ncol = 2)
 ```
 
 # Estimation of the return curve
@@ -457,7 +457,7 @@ It is possible to plot an S4 object of `rc_est.class` with `plot`, where
 the original data is plotted with the estimated line for the return
 curve $\hat{\text{RC}}(p).$
 
-```{r plotsrcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 3.5, fig.height = 3.5, fig.align = 'center'}
+```{r plotsrcest, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.width = 5, fig.height = 3, fig.align = 'center'}
 # plot of the ADF estimation based on the unconstrained Hill estimator
 plot(rch)
 ```
@@ -609,7 +609,7 @@ $p$ should be contained in the confidence region, shaded in grey.
 Finally, in practice, the value of $p$ should be within the range of the
 data and not too extreme, given the nature of empirical probabilities.
 
-```{r plotsrcgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center',fig.width = 4}
+```{r plotsrcgof, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.align = 'center', fig.height = 3}
 plot(rch_gof)
 ```
 
