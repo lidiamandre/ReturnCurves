@@ -125,13 +125,11 @@ setMethod("plot", signature = list("marggpd.class"), function(x){
 #' 
 #' plot(marggpd)
 #' 
-#' \dontrun{
 #' # To see the the S4 object's slots
 #' str(marggpd)
 #' 
 #' # To access the list of lists
 #' marggpd@@marggpd
-#' }
 #' 
 #' @export
 #' 

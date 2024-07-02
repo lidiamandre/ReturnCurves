@@ -127,7 +127,6 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' 
 #' plot(retcurve)
 #' 
-#' \dontrun{
 #' # To see the the S4 object's slots
 #' str(retcurve)
 #' 
@@ -137,7 +136,6 @@ setMethod("plot", signature = list("rc_est.class"), function(x){
 #' # If constrained = T, the MLE estimates for the conditional extremes model
 #' # can be accessed as
 #' retcurve@@interval
-#' }
 #' 
 #' @export
 rc_est <- function(margdata, w = NULL, p, method = c("hill", "cl"), q = 0.95, qalphas = rep(0.95, 2), k = 7, constrained = FALSE, tol = 0.001, par_init = rep(0, k - 1)){

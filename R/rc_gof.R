@@ -112,13 +112,11 @@ setMethod("plot", signature = list("rc_gof.class"), function(x){
 #' 
 #' plot(gof)
 #' 
-#' \dontrun{
 #' # To see the the S4 object's slots
 #' str(gof)
 #' 
 #' # To access the list of vectors
 #' gof@@gof
-#' }
 #' 
 #' @export
 #'  

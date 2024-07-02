@@ -170,7 +170,7 @@ setMethod("plot", signature = list("rc_unc.class"), function(x, which = c("rc", 
 #' 
 #' rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 #' 
-#' \dontrun{
+#' \donttest{
 #' # Set nboot = 50 for an illustrative example
 #' # blocksize to account for temporal dependence
 #' unc <- rc_unc(rc_orig, bloscksize = 10) 
