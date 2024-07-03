@@ -64,7 +64,7 @@ rc_orig <- rc_est(margdata = margdata, p = prob, method = "hill")
 \donttest{
 # Set nboot = 50 for an illustrative example
 # blocksize to account for temporal dependence
-unc <- rc_unc(rc_orig, bloscksize = 10) 
+unc <- rc_unc(rc_orig, blocksize = 10) 
 
 # Plots the estimated Return Curve 
 plot(unc, which = "rc") 
