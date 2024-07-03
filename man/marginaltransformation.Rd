@@ -55,13 +55,11 @@ plot(margdata, which = "joint")
 # Plots all the available plots
 plot(margdata, which = "all") 
 
-\dontrun{
 # To see the the S4 object's slots
 str(margdata)
 
 # To access the matrix with the data on standard exponential margins
 margdata@dataexp
-}
 
 }
 \references{

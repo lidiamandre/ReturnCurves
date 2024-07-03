@@ -60,13 +60,11 @@ gof <- adf_gof(adf = lambda, ray = 0.4, blocksize = 10)
 
 plot(gof)
 
-\dontrun{
 # To see the the S4 object's slots
 str(gof)
 
 # To access the list of vectors
 gof@gof
-}
 
 }
 \references{

@@ -67,7 +67,6 @@ lambda <- adf_est(margdata = margdata, method = "hill")
 
 plot(lambda)
 
-\dontrun{
 # To see the the S4 object's slots
 str(lambda)
 
@@ -77,7 +76,6 @@ lambda@adf
 # If constrained = T, the MLE estimates for the conditional extremes model
 # can be accessed as
 lambda@interval
-}
 
 }
 \references{

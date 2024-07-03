@@ -73,7 +73,6 @@ retcurve <- rc_est(margdata = margdata, p = prob, method = "hill")
 
 plot(retcurve)
 
-\dontrun{
 # To see the the S4 object's slots
 str(retcurve)
 
@@ -83,7 +82,6 @@ retcurve@rc
 # If constrained = T, the MLE estimates for the conditional extremes model
 # can be accessed as
 retcurve@interval
-}
 
 }
 \references{
