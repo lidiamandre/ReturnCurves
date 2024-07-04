@@ -35,3 +35,4 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 LazyData: true
+URL: https://github.com/lidiamandre/ReturnCurves
