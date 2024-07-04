@@ -1,6 +1,7 @@
 # ReturnCurves
 
 [![R-CMD-check](https://github.com/lidiamandre/ReturnCurves/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lidiamandre/ReturnCurves/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/lidiamandre/ReturnCurves/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/lidiamandre/ReturnCurves/actions/workflows/test-coverage.yaml)
 
 This package implements the estimation of the $p$-probability return curve proposed by
 [Murphy-Barltrop et al. (2023)](https://onlinelibrary.wiley.com/doi/10.1002/env.2797), 
