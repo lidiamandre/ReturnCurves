@@ -6,3 +6,4 @@ for small $p>0,$ while implementing pointwise and smooth approaches to estimate 
 
 To install the package, please do:
 `install.packages("ReturnCurves")`
+More details can be found on [CRAN](https://cran.r-project.org/web/packages/ReturnCurves/index.html).
