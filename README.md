@@ -8,4 +8,4 @@ To install the package, please do:
 
 `install.packages("ReturnCurves")`
 
-More details can be found on [CRAN](https://cran.r-project.org/web/packages/ReturnCurves/index.html).
+More details can be found on [CRAN](https://cran.r-project.org/package=ReturnCurves).
