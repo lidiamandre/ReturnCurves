@@ -3,9 +3,9 @@ Type: Package
 Title: Estimation of Return Curves
 Version: 1.0.1
 Date: 2025-02-05
-Authors@R: c(person("Lídia", "André", role = c("aut", "cre"), email = "lidia.andre@unamur.be"),
+Authors@R: c(person("Lídia", "André", role = c("aut", "cre"), email = "lidiamandre@iseg.ulisboa.pt"),
              person("Callum", "Murphy-Barltrop", role = "aut", email = "callum.murphy-barltrop@tu-dresden.de"))
-Maintainer: Lídia André <lidia.andre@unamur.be>
+Maintainer: Lídia André <lidiamandre@iseg.ulisboa.pt>
 Description: Estimates the p-probability return curve proposed by Murphy-Barltrop et al. (2023) <doi:10.1002/env.2797>. Implements pointwise and smooth estimation of the angular dependence function introduced by Wadsworth and Tawn (2013) <doi:10.3150/12-BEJ471>.
 License: GPL (>= 3)
 Depends: R (>= 2.10)
