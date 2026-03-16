@@ -60,8 +60,15 @@ head(lambda@adf)
 \references{
 \insertAllCited{}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/lidiamandre/ReturnCurves}
+}
+
+}
 \author{
-\strong{Maintainer}: Lídia André \email{l.andre@lancaster.ac.uk}
+\strong{Maintainer}: Lídia André \email{lidiamandre@iseg.ulisboa.pt}
 
 Authors:
 \itemize{

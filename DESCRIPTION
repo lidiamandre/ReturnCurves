@@ -11,7 +11,7 @@ License: GPL (>= 3)
 Depends: R (>= 2.10)
 Imports: evd, ismev, Rdpack, mathjaxr, ggplot2 (>= 3.4.4), gridExtra, methods, stats, shiny, tools, DT, shinydashboard, openair
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 RdMacros: Rdpack, mathjaxr
 Collate: 
     'adf_est.R'
