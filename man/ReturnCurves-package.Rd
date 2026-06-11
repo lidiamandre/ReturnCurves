@@ -72,6 +72,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Lídia André \email{lidiamandre@iseg.ulisboa.pt}
   \item Callum Murphy-Barltrop \email{callum.murphy-barltrop@tu-dresden.de}
 }
 
